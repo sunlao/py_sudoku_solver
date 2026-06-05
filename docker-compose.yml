@@ -1,0 +1,58 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./deploy/api/Dockerfile
+    image: ${APP_CODE}-api:latest
+    platform: linux/amd64
+    container_name: ${APP_CODE}-api
+    command: ["/start-reload.sh"]
+    ports:
+      - "${API_PUB_PORT}:${API_PORT}"    
+    environment:
+      - APP_CODE=${APP_CODE}
+      - ENV=${ENV}
+      - SERVICE=${APP_CODE}-api
+      - APP_MODULE=src.api.main:api
+      - PORT=${API_PORT}
+      - API_STATIC_DIR=${API_STATIC_DIR}
+      - TZ=GMT
+      - LOG_LEVEL=info
+      - LOG_DIR=/logs
+      - LOG_TO_FILE=true
+      - BACKUP_COUNT=14
+      - PYTHONPATH=/app/src
+      - PYTHONDONTWRITEBYTECODE=1
+      - WATCHFILES_FORCE_POLLING=1
+    volumes:
+      - ./src/api:/app/src/api:rw
+      - ./src/shared:/app/src/shared:rw
+      - ./logs:/logs:rw
+    networks:
+      - "${APP_CODE}net"
+
+  test:
+    build:
+      context: .
+      dockerfile: ./deploy/test-runner/Dockerfile
+    container_name: ${APP_CODE}-test-runner
+    command: bash -lc "cd /app && tox -vv"
+    environment:
+      - SERVICE=${APP_CODE}-test
+      - APP_CODE=${APP_CODE}
+      - API_HOST=${APP_CODE}-api
+      - API_PORT=${API_PORT}
+      - ENV=${ENV}
+      - LOG_LEVEL=info
+      - LOG_DIR=/logs
+      - LOG_TO_FILE=true
+      - LOG_BACKUPS=14
+      - PYTHONPATH=/app/src
+    volumes:
+      - ./tests:/app/tests:rw
+      - ./logs:/logs:rw      
+      - ./src:/app/src:rw
+    networks:
+      - "${APP_CODE}net"
+networks:
+  pssnet:
