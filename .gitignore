@@ -121,9 +121,6 @@ job-output.txt
 # misc dev scripts
 .dev
 tests/.coveragesource
-scratchpad
-data/ready/*.txt
-data/zip/*.zip
 
 logs/*.log
 logs/*.gz
