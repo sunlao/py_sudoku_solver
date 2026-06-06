@@ -7,3 +7,12 @@ This provides a working reference implementation demonstrating FIFO queue-based 
 ## Prerequisites
 
 Review the [Getting Started](https://github.com/sunlao/py_sudoku_solver/wiki/Getting-Started) for more info for Mac setup and virtual environment details.
+
+## API docs
+
+- FastAPI dynamically generate docs using [OpenAPI Specifications](https://swagger.io/specification/)
+- During local development use:
+  - `http://localhost:8080/redoc`  new version for AstroChat API
+  - `http://localhost:8080/docs`  "classic" version for AstroChat API
+  - `http://localhost:8081/redoc`  new version for dbt API
+  - `http://localhost:8081/docs`  "classic" version for dbt API
