@@ -1,10 +1,17 @@
-class Mailbox:
+import asyncio
+from shared.models.messages import Message
+
+
+class Mailbox():
+    """FIFO async mailbox for actor messages"""
 
     def __init__(self) -> None:
-        pass
+        self._queue: asyncio.Queue[Message] = asyncio.Queue()
 
-    def enqueue(self) -> None:
-        pass
+    async def enqueue(self, message: Message) -> None:
+        """Put a message on the queue"""
+        await self._queue.put(message)
 
-    def dequeue(self) -> None:
-        pass
+    async def dequeue(self) -> Message:
+        """Get a message from the queue (blocks if empty)"""
+        return await self._queue.get()
