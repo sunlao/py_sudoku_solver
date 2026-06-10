@@ -18,4 +18,3 @@ async def test_send_recieve(
     )
     assert message.metadata.message_type == MessageTypes.STARTUP
     assert message.content.board == startup_board
-    print(message.content.board)
