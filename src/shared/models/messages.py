@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Generic
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from shared.models.constants import MessageTypes
 from shared.models.policy import DTO_CONFIG, INPUTTYPE
 
@@ -27,18 +27,29 @@ class Cell(BaseModel):
     value: int | None = Field(default=None, ge=1, le=9)
 
 
-class Row(BaseModel):
-    """Row of 9 cells"""
-
-    model_config = DTO_CONFIG
-    cells: tuple[Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
-
-
+# fmt: off
 class Board(BaseModel):
-    """9x9 sudoku board"""
+    """Sudoku board containing exactly 81 cells"""
 
     model_config = DTO_CONFIG
-    rows: tuple[Row, Row, Row, Row, Row, Row, Row, Row, Row]
+    cells: tuple[
+        Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell,
+        Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell,
+        Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell,
+        Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell,
+        Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell,
+        Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell,
+        Cell, Cell, Cell,
+    ]
+    @field_validator("cells")
+    @classmethod
+    def validate_unique_coordinates(cls, cells: tuple[Cell, ...]) -> tuple[Cell, ...]:
+        results = {(c.row, c.column) for c in cells}
+        if len(results) != 81:
+            raise ValueError(
+                "Board must contain exactly one cell for every row/column coordinate"
+            )
+        return cells
 
 
 class Startup(BaseModel):

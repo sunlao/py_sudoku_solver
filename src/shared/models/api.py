@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field
 from http import HTTPMethod, HTTPStatus
+from pydantic import BaseModel, Field
 from typing import Mapping
 from fastapi import Request, Response
 from shared.models.policy import DTO_CONFIG, DTO_EDGE_CONFIG

@@ -13,6 +13,5 @@ def startup_message(startup_board: Board) -> Message:
         timestamp=datetime.now(),
         message_type=MessageTypes.STARTUP,
     )
-
     content = Startup(board=startup_board)
     return Message(metadata=metadata, content=content)
