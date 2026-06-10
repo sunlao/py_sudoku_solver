@@ -11,7 +11,6 @@ class Handler:
         self.running = False
 
     async def _process_loop(self) -> None:
-        """Continuously dequeue and process messages"""
         self.running = True
         try:
             while self.running:
@@ -20,8 +19,8 @@ class Handler:
         except asyncio.CancelledError:
             self.running = False
 
-    async def _route(self, message: Message) -> None:
-        return message
+    async def _route(self, message: Message) -> Message:
+        print(message)
 
     def start(self) -> asyncio.Task:
         """Start the handler as a background task"""

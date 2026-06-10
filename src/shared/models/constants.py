@@ -46,6 +46,7 @@ class MessageTypes(StrEnum):
 
     STARTUP = "start-up"
 
+
 # Starlette/Uvicorn insist on lower case
 class PathParts(StrEnum):
     """DTO to Support Tracing Errors. Trace Event paths are filtered and trimmed by

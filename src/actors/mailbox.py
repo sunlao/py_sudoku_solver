@@ -2,7 +2,7 @@ import asyncio
 from shared.models.messages import Message
 
 
-class Mailbox():
+class Mailbox:
     """FIFO async mailbox for actor messages"""
 
     def __init__(self) -> None:

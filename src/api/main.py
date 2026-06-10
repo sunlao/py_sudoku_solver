@@ -30,9 +30,9 @@ async def lifespan(app: FastAPI):
     msg = "API Service Startup complete"
     core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
     app.state.log.write_core(core)
-    
+
     yield
-    
+
     msg = "API Service Shutdown complete"
     core = core_log(config_log, LogLevel.INFO, Events.SHUTDOWN, msg)
     app.state.log.write_core(core)

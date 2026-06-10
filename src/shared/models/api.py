@@ -9,6 +9,7 @@ class API(BaseModel):
     model_config = DTO_CONFIG
     app_version: str
 
+
 class APIEvent(BaseModel):
     """DTO - For API Event Log Output"""
 
@@ -33,6 +34,7 @@ class ASGIEvent(BaseModel):
     Response: Response
     DurationMS: int = Field(ge=0)
 
+
 class InfoResponse(BaseModel):
     """DTO for api output /info"""
 
@@ -48,11 +50,13 @@ class ReadyResponse(BaseModel):
     model_config = DTO_CONFIG
     API: bool
 
+
 class RootResponse(BaseModel):
     """DTO for api output /"""
 
     model_config = DTO_CONFIG
     Message: str
+
 
 class Routes(BaseModel):
     """Internal DTO for for helper.log"""
