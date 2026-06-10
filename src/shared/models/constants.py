@@ -41,6 +41,11 @@ class LogLevel(StrEnum):
     ERROR = "error"
 
 
+class MessageTypes(StrEnum):
+    """Constants for Supported Environments"""
+
+    STARTUP = "start-up"
+
 # Starlette/Uvicorn insist on lower case
 class PathParts(StrEnum):
     """DTO to Support Tracing Errors. Trace Event paths are filtered and trimmed by
