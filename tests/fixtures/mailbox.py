@@ -4,5 +4,9 @@ from actors.mailbox import Mailbox
 
 @pytest.fixture
 def mailbox() -> Mailbox:
-    """Create a mailbox for testing"""
+    return Mailbox()
+
+
+@pytest.fixture
+def test_mailbox() -> Mailbox:
     return Mailbox()
