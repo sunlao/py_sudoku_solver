@@ -2,7 +2,9 @@ import asyncio
 from shared.models.constants import MessageTypes
 
 
-async def test_send_handle(mailbox, test_mailbox, startup_message, startup_board, handler):
+async def test_send_handle(
+    mailbox, test_mailbox, startup_message, startup_board, handler
+):
     await mailbox.enqueue(startup_message)
 
     await asyncio.sleep(0.2)

@@ -22,7 +22,7 @@ class Handler:
 
     async def _route(self, message: Message) -> Message:
         if self.test is not None:
-            await self.test.enqueue(message)        
+            await self.test.enqueue(message)
 
     def start(self) -> asyncio.Task:
         """Start the handler as a background task"""
