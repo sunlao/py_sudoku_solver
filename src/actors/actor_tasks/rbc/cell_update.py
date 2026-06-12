@@ -3,7 +3,7 @@ class CellUpdate:
     def __init__(self) -> None:
         pass
 
-    def controller(self) -> None:
+    def director(self) -> None:
         pass
 
     def update_cell(self) -> None:

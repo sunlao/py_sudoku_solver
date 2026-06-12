@@ -3,7 +3,7 @@ class Evaluate:
     def __init__(self) -> None:
         pass
 
-    def controller(self) -> None:
+    def director(self) -> None:
         pass
 
     def algorithms(self) -> None:
