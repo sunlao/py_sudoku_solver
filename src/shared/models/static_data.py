@@ -6,10 +6,10 @@ class Actor(BaseModel):
     model_config = DTO_CONFIG
 
     name: ActorNames
+    rbc_flag: bool
     addresses: tuple[str, ...]
 
 
 class Actors(BaseModel):
     model_config = DTO_CONFIG
-
     actors: tuple[Actor, ...]

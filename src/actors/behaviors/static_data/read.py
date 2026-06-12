@@ -15,10 +15,10 @@ class Read:
         return yml
 
     def get_controller(self) -> Actors:
+        yml = self._yml()
         return Actors(
             actors=tuple(
                 Actor.model_validate(actor)
-                for actor in self._yml()["actors"]
+                for actor in yml["actors"]
             )
         )
-
