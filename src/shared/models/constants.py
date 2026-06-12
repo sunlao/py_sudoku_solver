@@ -2,6 +2,42 @@ from enum import StrEnum
 from typing import NamedTuple
 
 
+from enum import StrEnum
+
+
+class ActorNames(StrEnum):
+    GAME = "game"
+    BOARD = "board"
+    ROW1 = "row1"
+    ROW2 = "row2"
+    ROW3 = "row3"
+    ROW4 = "row4"
+    ROW5 = "row5"
+    ROW6 = "row6"
+    ROW7 = "row7"
+    ROW8 = "row8"
+    ROW9 = "row9"
+    BOX1 = "box1"
+    BOX2 = "box2"
+    BOX3 = "box3"
+    BOX4 = "box4"
+    BOX5 = "box5"
+    BOX6 = "box6"
+    BOX7 = "box7"
+    BOX8 = "box8"
+    BOX9 = "box9"
+    COLUMN1 = "column1"
+    COLUMN2 = "column2"
+    COLUMN3 = "column3"
+    COLUMN4 = "column4"
+    COLUMN5 = "column5"
+    COLUMN6 = "column6"
+    COLUMN7 = "column7"
+    COLUMN8 = "column8"
+    COLUMN9 = "column9"    
+
+
+
 class Audit(NamedTuple):
     last_hash: str | None
 

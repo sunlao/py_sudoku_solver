@@ -1,0 +1,144 @@
+actors:
+  - name: game
+    addresses:
+      - address/game/initialize
+      - address/game/cell_update
+
+  - name: board
+    addresses:
+      - address/board/initialize
+
+  - name: row1
+    addresses:
+      - address/row1/start
+      - address/row1/cell_update
+
+  - name: row2
+    addresses:
+      - address/row2/start
+      - address/row2/cell_update
+
+  - name: row3
+    addresses:
+      - address/row3/start
+      - address/row3/cell_update
+
+  - name: row4
+    addresses:
+      - address/row4/start
+      - address/row4/cell_update
+
+  - name: row5
+    addresses:
+      - address/row5/start
+      - address/row5/cell_update
+
+  - name: row6
+    addresses:
+      - address/row6/start
+      - address/row6/cell_update
+
+  - name: row7
+    addresses:
+      - address/row7/start
+      - address/row7/cell_update
+
+  - name: row8
+    addresses:
+      - address/row8/start
+      - address/row8/cell_update
+
+  - name: row9
+    addresses:
+      - address/row9/start
+      - address/row9/cell_update
+
+  - name: box1
+    addresses:
+      - address/box1/start
+      - address/box1/cell_update
+
+  - name: box2
+    addresses:
+      - address/box2/start
+      - address/box2/cell_update
+
+  - name: box3
+    addresses:
+      - address/box3/start
+      - address/box3/cell_update
+
+  - name: box4
+    addresses:
+      - address/box4/start
+      - address/box4/cell_update
+
+  - name: box5
+    addresses:
+      - address/box5/start
+      - address/box5/cell_update
+
+  - name: box6
+    addresses:
+      - address/box6/start
+      - address/box6/cell_update
+
+  - name: box7
+    addresses:
+      - address/box7/start
+      - address/box7/cell_update
+
+  - name: box8
+    addresses:
+      - address/box8/start
+      - address/box8/cell_update
+
+  - name: box9
+    addresses:
+      - address/box9/start
+      - address/box9/cell_update
+
+  - name: column1
+    addresses:
+      - address/column1/start
+      - address/column1/cell_update
+
+  - name: column2
+    addresses:
+      - address/column2/start
+      - address/column2/cell_update
+
+  - name: column3
+    addresses:
+      - address/column3/start
+      - address/column3/cell_update
+
+  - name: column4
+    addresses:
+      - address/column4/start
+      - address/column4/cell_update
+
+  - name: column5
+    addresses:
+      - address/column5/start
+      - address/column5/cell_update
+
+  - name: column6
+    addresses:
+      - address/column6/start
+      - address/column6/cell_update
+
+  - name: column7
+    addresses:
+      - address/column7/start
+      - address/column7/cell_update
+
+  - name: column8
+    addresses:
+      - address/column8/start
+      - address/column8/cell_update
+
+  - name: column9
+    addresses:
+      - address/column9/start
+      - address/column9/cell_update

@@ -1,0 +1,6 @@
+import pytest
+from actors.behaviors.static_data.read import Read 
+
+@pytest.fixture
+def controller():
+    return Read('controller').get_controller()
