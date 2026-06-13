@@ -8,7 +8,7 @@ from fastapi import FastAPI, Request, Response
 from api.metadata import tags
 from api.v1 import flush
 from api.v1.info import ready, version
-from api.v1.board import Board
+from api.v1.boards import Boards
 from api.v1.messages import start_up
 from shared.log.helpers.api_log_serializer import LogSerializer
 from shared.log.helpers.core import build as core_log
@@ -23,7 +23,7 @@ locker = Locker()
 config_log = locker.log()
 api_log = locker.api()
 mailbox = Mailbox() 
-start_up_board = Board().start_up()
+start_up_board = Boards().start_up()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

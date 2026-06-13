@@ -2,7 +2,7 @@ from shared.models.messages import Board, Cell
 from shared.models.board import BoardInput, RowInput
 
 
-class Board:
+class Boards:
 
     @staticmethod
     def _create(board_input: BoardInput) -> Board:
