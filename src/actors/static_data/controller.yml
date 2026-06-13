@@ -1,9 +1,16 @@
 actors:
+  - name: controller
+    rbc_flag: false
+    addresses:
+      - address/controller/start-up
+      - address/controller/rbc-status
+      - address/controller/update-process
+
   - name: game
     rbc_flag: false
     addresses:
       - address/game/initialize
-      - address/game/cell_update
+      - address/game/cell-update
 
   - name: board
     rbc_flag: false  
@@ -14,160 +21,160 @@ actors:
     rbc_flag: true  
     addresses:
       - address/row1/start
-      - address/row1/cell_update
+      - address/row1/cell-update
 
   - name: row2
     rbc_flag: true
     addresses:
       - address/row2/start
-      - address/row2/cell_update
+      - address/row2/cell-update
 
   - name: row3
     rbc_flag: true
     addresses:
       - address/row3/start
-      - address/row3/cell_update
+      - address/row3/cell-update
 
   - name: row4
     rbc_flag: true
     addresses:
       - address/row4/start
-      - address/row4/cell_update
+      - address/row4/cell-update
 
   - name: row5
     rbc_flag: true
     addresses:
       - address/row5/start
-      - address/row5/cell_update
+      - address/row5/cell-update
 
   - name: row6
     rbc_flag: true
     addresses:
       - address/row6/start
-      - address/row6/cell_update
+      - address/row6/cell-update
 
   - name: row7
     rbc_flag: true
     addresses:
       - address/row7/start
-      - address/row7/cell_update
+      - address/row7/cell-update
 
   - name: row8
     rbc_flag: true
     addresses:
       - address/row8/start
-      - address/row8/cell_update
+      - address/row8/cell-update
 
   - name: row9
     rbc_flag: true
     addresses:
       - address/row9/start
-      - address/row9/cell_update
+      - address/row9/cell-update
 
   - name: box1
     rbc_flag: true
     addresses:
       - address/box1/start
-      - address/box1/cell_update
+      - address/box1/cell-update
 
   - name: box2
     rbc_flag: true
     addresses:
       - address/box2/start
-      - address/box2/cell_update
+      - address/box2/cell-update
 
   - name: box3
     rbc_flag: true
     addresses:
       - address/box3/start
-      - address/box3/cell_update
+      - address/box3/cell-update
 
   - name: box4
     rbc_flag: true
     addresses:
       - address/box4/start
-      - address/box4/cell_update
+      - address/box4/cell-update
 
   - name: box5
     rbc_flag: true
     addresses:
       - address/box5/start
-      - address/box5/cell_update
+      - address/box5/cell-update
 
   - name: box6
     rbc_flag: true
     addresses:
       - address/box6/start
-      - address/box6/cell_update
+      - address/box6/cell-update
 
   - name: box7
     rbc_flag: true
     addresses:
       - address/box7/start
-      - address/box7/cell_update
+      - address/box7/cell-update
 
   - name: box8
     rbc_flag: true
     addresses:
       - address/box8/start
-      - address/box8/cell_update
+      - address/box8/cell-update
 
   - name: box9
     rbc_flag: true
     addresses:
       - address/box9/start
-      - address/box9/cell_update
+      - address/box9/cell-update
 
   - name: column1
     rbc_flag: true
     addresses:
       - address/column1/start
-      - address/column1/cell_update
+      - address/column1/cell-update
 
   - name: column2
     rbc_flag: true
     addresses:
       - address/column2/start
-      - address/column2/cell_update
+      - address/column2/cell-update
 
   - name: column3
     rbc_flag: true
     addresses:
       - address/column3/start
-      - address/column3/cell_update
+      - address/column3/cell-update
 
   - name: column4
     rbc_flag: true
     addresses:
       - address/column4/start
-      - address/column4/cell_update
+      - address/column4/cell-update
 
   - name: column5
     rbc_flag: true
     addresses:
       - address/column5/start
-      - address/column5/cell_update
+      - address/column5/cell-update
 
   - name: column6
     rbc_flag: true
     addresses:
       - address/column6/start
-      - address/column6/cell_update
+      - address/column6/cell-update
 
   - name: column7
     rbc_flag: true
     addresses:
       - address/column7/start
-      - address/column7/cell_update
+      - address/column7/cell-update
 
   - name: column8
     rbc_flag: true
     addresses:
       - address/column8/start
-      - address/column8/cell_update
+      - address/column8/cell-update
 
   - name: column9
     rbc_flag: true
     addresses:
       - address/column9/start
-      - address/column9/cell_update
+      - address/column9/cell-update

@@ -3,6 +3,7 @@ from typing import NamedTuple
 
 
 class ActorNames(StrEnum):
+    CONTROLLER = "controller"
     GAME = "game"
     BOARD = "board"
     ROW1 = "row1"

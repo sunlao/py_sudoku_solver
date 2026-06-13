@@ -100,6 +100,7 @@ def create_api() -> FastAPI:
     _api.include_router(version.router, prefix="/api/v1/info", tags=["info"])
     _api.include_router(ready.router, prefix="/api/v1/info", tags=["info"])
     _api.include_router(flush.router, prefix="/api/v1", tags=["flush"])
+    _api.include_router(flush.router, prefix="/api/v1", tags=["actor"])
 
     return _api
 
