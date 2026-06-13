@@ -53,3 +53,4 @@ class Startup:
 
     def director(self, message: Message) -> None:
         states = self._process_states()
+        pass
