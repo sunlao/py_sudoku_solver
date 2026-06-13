@@ -7,23 +7,26 @@ from starlette.responses import PlainTextResponse
 from fastapi import FastAPI, Request, Response
 from api.metadata import tags
 from api.v1 import flush
+from api.v1.addresses import controller
 from api.v1.info import ready, version
 from api.v1.boards import Boards
+from api.v1.client import client
 from api.v1.messages import start_up
 from shared.log.helpers.api_log_serializer import LogSerializer
 from shared.log.helpers.core import build as core_log
 from shared.log.helpers.error import Error
 from shared.log.writer import Writer
 from shared.config.locker import Locker
-from shared.models.constants import Events, LogLevel
-from shared.models.api import ASGIEvent, RootResponse
+from shared.models.constants import Events, LogLevel, ActorNames
+from shared.models.api import ASGIEvent, RootResponse, AddressInput
 from shared.models.log import EventError
 
 locker = Locker()
 config_log = locker.log()
 api_log = locker.api()
 mailbox = Mailbox() 
-start_up_board = Boards().start_up()
+start_up_message = start_up(Boards().start_up())
+input = AddressInput(actor=ActorNames.CONTROLLER, behavior='start-up')
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -38,7 +41,11 @@ async def lifespan(app: FastAPI):
     app.state.log.write_core(core)
     handler = Handler(mailbox=mailbox)
     handler_task = handler.start()
-    await mailbox.enqueue(start_up(start_up_board))
+    async with client(app) as api:
+        await api.post(
+            f"/address/{ActorNames.CONTROLLER}/start-up",
+            json=start_up_message.model_dump(mode="json")
+        )
 
     try:
         yield
@@ -117,9 +124,9 @@ def create_api() -> FastAPI:
     _api.include_router(ready.router, prefix="/api/v1/info", tags=["info"])
     _api.include_router(flush.router, prefix="/api/v1", tags=["flush"])
     _api.include_router(
-        flush.router, prefix="/address/controller/start-up", tags=["actor"]
+        controller.router, prefix="/address/controller", tags=["actor"]
     )
-    _api.include_router(flush.router, prefix="/address/game/start", tags=["actor"])
+    _api.include_router(flush.router, prefix="/address/game", tags=["actor"])
 
     return _api
 

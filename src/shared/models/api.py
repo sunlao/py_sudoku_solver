@@ -2,6 +2,7 @@ from http import HTTPMethod, HTTPStatus
 from pydantic import BaseModel, Field
 from typing import Mapping
 from fastapi import Request, Response
+from shared.models.constants import ActorNames
 from shared.models.policy import DTO_CONFIG, DTO_EDGE_CONFIG
 
 
@@ -65,3 +66,11 @@ class Routes(BaseModel):
     RoutePathTemplate: str
     RouteName: str
     RequestPath: str
+
+class AddressInput(BaseModel):
+    """Input for address client"""
+
+    model_config = DTO_CONFIG
+
+    actor: ActorNames
+    behavior: str
