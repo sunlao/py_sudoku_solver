@@ -1,5 +1,5 @@
 import pytest
-from api.v1.messages import start_up
+from api.v1.helpers.messages import start_up
 from shared.models.messages import Message, Board
 
 

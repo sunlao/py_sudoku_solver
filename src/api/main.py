@@ -6,12 +6,12 @@ from contextlib import asynccontextmanager
 from starlette.responses import PlainTextResponse
 from fastapi import FastAPI, Request, Response
 from api.metadata import tags
-from api.v1 import flush
+from api.v1.helpers import flush
 from api.v1.addresses import controller
 from api.v1.info import ready, version
-from api.v1.boards import Boards
-from api.v1.client import client
-from api.v1.messages import start_up
+from api.v1.helpers.boards import Boards
+from api.v1.helpers.client import client
+from api.v1.helpers.messages import start_up
 from shared.log.helpers.api_log_serializer import LogSerializer
 from shared.log.helpers.core import build as core_log
 from shared.log.helpers.error import Error
