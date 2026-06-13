@@ -24,9 +24,10 @@ from shared.models.log import EventError
 locker = Locker()
 config_log = locker.log()
 api_log = locker.api()
-mailbox = Mailbox() 
+mailbox = Mailbox()
 start_up_message = start_up(Boards().start_up())
-input = AddressInput(actor=ActorNames.CONTROLLER, behavior='start-up')
+input = AddressInput(actor=ActorNames.CONTROLLER, behavior="start-up")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -44,7 +45,7 @@ async def lifespan(app: FastAPI):
     async with client(app) as api:
         await api.post(
             f"/address/{ActorNames.CONTROLLER}/start-up",
-            json=start_up_message.model_dump(mode="json")
+            json=start_up_message.model_dump(mode="json"),
         )
 
     try:

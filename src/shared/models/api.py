@@ -67,6 +67,7 @@ class Routes(BaseModel):
     RouteName: str
     RequestPath: str
 
+
 class AddressInput(BaseModel):
     """Input for address client"""
 
