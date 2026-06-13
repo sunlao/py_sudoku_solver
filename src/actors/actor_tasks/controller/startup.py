@@ -6,7 +6,7 @@ from actors.static_data.read import Read
 class Startup:
 
     def __init__(self) -> None:
-        self.static_data = Read(StaticDataNames.CONTROLLER)
+        self.actors = Read(StaticDataNames.CONTROLLER).controller()
 
     def _set_process(self) -> None:
         pass
@@ -24,4 +24,4 @@ class Startup:
         pass
 
     def director(self, message: Message) -> None:
-        print(message.content)
+        pass
