@@ -1,10 +1,15 @@
 # pylint: disable=duplicate-code
+import asyncio
+from actors.handler import Handler
+from actors.mailbox import Mailbox
 from contextlib import asynccontextmanager
 from starlette.responses import PlainTextResponse
 from fastapi import FastAPI, Request, Response
 from api.metadata import tags
 from api.v1 import flush
 from api.v1.info import ready, version
+from api.v1.board import Board
+from api.v1.messages import start_up
 from shared.log.helpers.api_log_serializer import LogSerializer
 from shared.log.helpers.core import build as core_log
 from shared.log.helpers.error import Error
@@ -17,7 +22,8 @@ from shared.models.log import EventError
 locker = Locker()
 config_log = locker.log()
 api_log = locker.api()
-
+mailbox = Mailbox() 
+start_up_board = Board().start_up()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -30,12 +36,22 @@ async def lifespan(app: FastAPI):
     msg = "API Service Startup complete"
     core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
     app.state.log.write_core(core)
+    handler = Handler(mailbox=mailbox)
+    handler_task = handler.start()
+    await mailbox.enqueue(start_up(start_up_board))
 
-    yield
+    try:
+        yield
+    finally:
+        handler_task.cancel()
+        try:
+            await handler_task
+        except asyncio.CancelledError:
+            pass
 
-    msg = "API Service Shutdown complete"
-    core = core_log(config_log, LogLevel.INFO, Events.SHUTDOWN, msg)
-    app.state.log.write_core(core)
+        msg = "API Service Shutdown complete"
+        core = core_log(config_log, LogLevel.INFO, Events.SHUTDOWN, msg)
+        app.state.log.write_core(core)
 
 
 def create_api() -> FastAPI:

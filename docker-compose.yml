@@ -26,6 +26,7 @@ services:
       - WATCHFILES_FORCE_POLLING=1
     volumes:
       - ./src/api:/app/src/api:rw
+      - ./src/actors:/app/src/actors:rw
       - ./src/shared:/app/src/shared:rw
       - ./logs:/logs:rw
     networks:
