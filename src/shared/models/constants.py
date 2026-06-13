@@ -2,9 +2,6 @@ from enum import StrEnum
 from typing import NamedTuple
 
 
-from enum import StrEnum
-
-
 class ActorNames(StrEnum):
     GAME = "game"
     BOARD = "board"
@@ -95,3 +92,8 @@ class Services(StrEnum):
     """Pythonic Sudoku Solver Services"""
 
     API = "pss-api"
+
+
+class StaticDataNames(StrEnum):
+    CONTROLLER = "controller"
+    HANDLER = "handler"

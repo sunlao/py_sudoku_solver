@@ -19,3 +19,10 @@ class Actors(BaseModel):
 class Startup(BaseModel):
     model_config = DTO_CONFIG
     route: str
+
+
+class HandlerInput(BaseModel):
+    """Content DTO for startup messages"""
+
+    model_config = DTO_CONFIG
+    name: str

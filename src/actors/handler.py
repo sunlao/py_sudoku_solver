@@ -1,9 +1,10 @@
 from collections.abc import Callable
 from importlib import import_module
 import asyncio
-from shared.models.messages import Message
 from actors.mailbox import Mailbox
-from actors.static_data.read import Read
+from actors.static_data.read import Read, HandlerInput
+from shared.models.constants import StaticDataNames
+from shared.models.messages import Message
 
 
 class Handler:
@@ -12,9 +13,10 @@ class Handler:
     def __init__(self, mailbox: Mailbox, test: Mailbox | None = None) -> None:
         self.mailbox = mailbox
         self.test = test
-        self.static_data = Read("handler")
+        self.static_data = Read(StaticDataNames.HANDLER)
 
-    def _executable(self, route: str) -> Callable:
+    @staticmethod
+    def _executable(route: str) -> Callable:
         module_path, class_name, method_name = route.rsplit(".", 2)
         cls = getattr(import_module(module_path), class_name)
         return getattr(cls(), method_name)
@@ -27,7 +29,8 @@ class Handler:
     async def _route(self, message: Message) -> None:
         if self.test is not None:
             await self.test.enqueue(message)
-        data = self.static_data.get_handler(message.metadata.message_type)
+        dto = HandlerInput(name=message.metadata.message_type)
+        data = self.static_data.handler(dto)
         executable = self._executable(data.route)
         executable(message)
 

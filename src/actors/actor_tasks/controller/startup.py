@@ -1,3 +1,4 @@
+from shared.models.constants import StaticDataNames
 from shared.models.messages import Message
 from actors.static_data.read import Read
 
@@ -5,8 +6,8 @@ from actors.static_data.read import Read
 class Startup:
 
     def __init__(self) -> None:
-        pass
-    
+        self.static_data = Read(StaticDataNames.CONTROLLER)
+
     def _set_process(self) -> None:
         pass
 
