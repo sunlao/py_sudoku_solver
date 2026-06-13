@@ -13,7 +13,6 @@ async def test_controller(controller):
     board = [a for a in actors if a.name == ActorNames.BOARD]
     contrlr = [a for a in actors if a.name == ActorNames.CONTROLLER]
 
-
     assert len(actors) == 30
     assert len(contrlr) == 1
     assert len(game) == 1
@@ -36,4 +35,4 @@ async def test_controller(controller):
     assert len(contrlr[0].addresses) == 3
     assert contrlr[0].rbc_flag is False
     for address in contrlr[0].addresses:
-        assert address.startswith("/address/" + contrlr[0].name)        
+        assert address.startswith("/address/" + contrlr[0].name)
