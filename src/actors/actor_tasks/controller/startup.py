@@ -1,22 +1,26 @@
+from shared.models.messages import Message
+from actors.static_data.read import Read
+
+
 class Startup:
 
     def __init__(self) -> None:
         pass
-
-    def director(self) -> None:
+    
+    def _set_process(self) -> None:
         pass
 
-    def set_process(self) -> None:
+    def _send_start_game(self) -> None:
         pass
 
-    def send_start_game(self) -> None:
+    def _send_start_rbc(self) -> None:
         pass
 
-    def send_start_rbc(self) -> None:
+    def _set_rbc_status(self) -> None:
         pass
 
-    def set_rbc_status(self) -> None:
+    def _send_observer(self) -> None:
         pass
 
-    def send_observer(self) -> None:
-        pass
+    def director(self, message: Message) -> None:
+        print(message.content)

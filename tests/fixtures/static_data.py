@@ -1,5 +1,5 @@
 import pytest
-from actors.actor_tasks.static_data.read import Read 
+from actors.static_data.read import Read 
 
 @pytest.fixture
 def controller():

@@ -34,8 +34,7 @@ class ActorNames(StrEnum):
     COLUMN6 = "column6"
     COLUMN7 = "column7"
     COLUMN8 = "column8"
-    COLUMN9 = "column9"    
-
+    COLUMN9 = "column9"
 
 
 class Audit(NamedTuple):
