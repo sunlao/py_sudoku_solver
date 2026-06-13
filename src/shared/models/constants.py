@@ -97,3 +97,8 @@ class Services(StrEnum):
 class StaticDataNames(StrEnum):
     CONTROLLER = "controller"
     HANDLER = "handler"
+
+
+class ProcessStatuses(StrEnum):
+    STARTED = "started"
+    IDLE = "idle"

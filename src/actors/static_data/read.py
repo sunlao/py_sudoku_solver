@@ -5,6 +5,8 @@ from shared.models.static_data import Actors, Actor, Startup, HandlerInput
 
 
 class Read:
+    """Get static yml data by file name as a Data Transport Object (DTO)"""
+
     DIR_PATH = Path(__file__).resolve().parent
 
     def __init__(self, name: StaticDataNames) -> None:
