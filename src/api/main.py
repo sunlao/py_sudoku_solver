@@ -5,12 +5,14 @@ from fastapi import FastAPI, Request, Response
 from starlette.responses import PlainTextResponse
 from actors.handler import Handler
 from actors.mailbox import Mailbox
+from actors.static_data.read import Read
 from api.metadata import tags
 from api.v1.addresses import controller
 from api.v1.info import ready, version
 from api.v1.helpers.boards import Boards
 from api.v1.helpers.client import client
 from api.v1.helpers.messages import start_up
+from api.v1.helpers.load_executable import load_executable
 from shared.log.helpers.api_log_serializer import LogSerializer
 from shared.log.helpers.core import build as core_log
 from shared.log.helpers.error import Error
@@ -19,6 +21,8 @@ from shared.config.locker import Locker
 from shared.models.constants import Events, LogLevel, ActorNames
 from shared.models.api import ASGIEvent, RootResponse
 from shared.models.log import EventError
+from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
+from shared.models.constants import StaticDataNames
 
 locker = Locker()
 config_log = locker.log()
@@ -37,9 +41,16 @@ async def lifespan(app: FastAPI):
     msg = "API Service Startup complete"
     core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
     app.state.log.write_core(core)
-    app.state.mailbox = Mailbox()
-    app.state.ready_mailbox = Mailbox()
-    app.state.handler = Handler(mailbox=app.state.mailbox, test=app.state.ready_mailbox)
+    app.state.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    app.state.ready_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    handler_side_effects = HandlerSideEffects(
+        mailbox=app.state.mailbox,
+        ready_mailbox=app.state.ready_mailbox,
+        static_data=Read(StaticDataNames.HANDLER),
+        create_task=asyncio.create_task,
+        load_executable=load_executable,
+    )
+    app.state.handler = Handler(handler_side_effects)
     app.state.handler_task = app.state.handler.start()
     async with client(app) as client_api:
         await client_api.post(

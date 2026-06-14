@@ -1,25 +1,20 @@
-from collections.abc import Callable
-from importlib import import_module
-import asyncio
-from actors.mailbox import Mailbox
-from actors.static_data.read import Read, HandlerInput
-from shared.models.constants import StaticDataNames
+from actors.static_data.read import HandlerInput
 from shared.models.messages import Message, MessageTypes
+from shared.models.side_effects import HandlerSideEffects
 
 
 class Handler:
     """Handler dequeues, routes and sends telemetry"""
 
-    def __init__(self, mailbox: Mailbox, test: Mailbox | None = None) -> None:
-        self.mailbox = mailbox
-        self.test = test
-        self.static_data = Read(StaticDataNames.HANDLER)
+    def __init__(self, dto: HandlerSideEffects) -> None:
+        self.mailbox = dto.mailbox
+        self.ready_mailbox = dto.ready_mailbox
+        self.static_data = dto.static_data
+        self.create_task = dto.create_task
+        self.load_executable = dto.load_executable
 
-    @staticmethod
-    def _executable(route: str) -> Callable:
-        module_path, class_name, method_name = route.rsplit(".", 2)
-        cls = getattr(import_module(module_path), class_name)
-        return getattr(cls(), method_name)
+    def _executable(self, route: str):
+        return self.load_executable(route)
 
     async def _process_loop(self) -> None:
         while True:
@@ -36,5 +31,5 @@ class Handler:
         executable = self._executable(data.route)
         executable(message)
 
-    def start(self) -> asyncio.Task:
-        return asyncio.create_task(self._process_loop())
+    def start(self):
+        return self.create_task(self._process_loop())
