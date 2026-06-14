@@ -42,8 +42,8 @@ async def lifespan(app: FastAPI):
     app.state.ready_mailbox = Mailbox()
     app.state.handler = Handler(mailbox=app.state.mailbox, test=app.state.ready_mailbox)
     app.state.handler_task = app.state.handler.start()
-    async with client(app) as api:
-        await api.post(
+    async with client(app) as client_api:
+        await client_api.post(
             f"/address/{ActorNames.CONTROLLER}/start-up",
             json=start_up_message.model_dump(mode="json"),
         )
