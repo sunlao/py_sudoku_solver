@@ -1,10 +1,10 @@
 # pylint: disable=duplicate-code
 import asyncio
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, Request, Response
+from starlette.responses import PlainTextResponse
 from actors.handler import Handler
 from actors.mailbox import Mailbox
-from contextlib import asynccontextmanager
-from starlette.responses import PlainTextResponse
-from fastapi import FastAPI, Request, Response
 from api.metadata import tags
 from api.v1.helpers import flush
 from api.v1.addresses import controller
@@ -18,15 +18,13 @@ from shared.log.helpers.error import Error
 from shared.log.writer import Writer
 from shared.config.locker import Locker
 from shared.models.constants import Events, LogLevel, ActorNames
-from shared.models.api import ASGIEvent, RootResponse, AddressInput
+from shared.models.api import ASGIEvent, RootResponse
 from shared.models.log import EventError
 
 locker = Locker()
 config_log = locker.log()
 api_log = locker.api()
-mailbox = Mailbox()
 start_up_message = start_up(Boards().start_up())
-input = AddressInput(actor=ActorNames.CONTROLLER, behavior="start-up")
 
 
 @asynccontextmanager
@@ -40,20 +38,21 @@ async def lifespan(app: FastAPI):
     msg = "API Service Startup complete"
     core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
     app.state.log.write_core(core)
-    handler = Handler(mailbox=mailbox)
-    handler_task = handler.start()
+    app.state.mailbox = Mailbox()
+    app.state.ready_mailbox = Mailbox()
+    app.state.handler = Handler(mailbox=app.state.mailbox, test=app.state.ready_mailbox)
+    app.state.handler_task = app.state.handler.start()
     async with client(app) as api:
         await api.post(
             f"/address/{ActorNames.CONTROLLER}/start-up",
             json=start_up_message.model_dump(mode="json"),
         )
-
     try:
         yield
     finally:
-        handler_task.cancel()
+        app.state.handler_task.cancel()
         try:
-            await handler_task
+            await app.state.handler_task
         except asyncio.CancelledError:
             pass
 

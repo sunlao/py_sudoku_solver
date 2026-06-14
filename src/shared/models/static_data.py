@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from shared.models.policy import DTO_CONFIG
 from shared.models.constants import ActorNames
 

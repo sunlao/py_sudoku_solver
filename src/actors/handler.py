@@ -4,7 +4,7 @@ import asyncio
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read, HandlerInput
 from shared.models.constants import StaticDataNames
-from shared.models.messages import Message
+from shared.models.messages import Message, MessageTypes
 
 
 class Handler:
@@ -29,6 +29,8 @@ class Handler:
     async def _route(self, message: Message) -> None:
         if self.test is not None:
             await self.test.enqueue(message)
+        if message.metadata.message_type == MessageTypes.READY:
+            return
         dto = HandlerInput(name=message.metadata.message_type)
         data = self.static_data.handler(dto)
         executable = self._executable(data.route)

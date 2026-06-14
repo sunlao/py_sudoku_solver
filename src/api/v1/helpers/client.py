@@ -6,5 +6,7 @@ from httpx import ASGITransport, AsyncClient
 async def client(app):
     transport = ASGITransport(app=app)
     base = "http://pss-api:80"
-    async with AsyncClient(transport=transport, base_url=base, timeout=10) as client:
-        yield client
+    async with AsyncClient(
+        transport=transport, base_url=base, timeout=10
+    ) as api_client:
+        yield api_client

@@ -78,6 +78,7 @@ class MessageTypes(StrEnum):
     """Constants for Supported Environments"""
 
     STARTUP = "start-up"
+    READY = "ready"
 
 
 # Starlette/Uvicorn insist on lower case
@@ -103,3 +104,7 @@ class StaticDataNames(StrEnum):
 class ProcessStatuses(StrEnum):
     STARTED = "started"
     IDLE = "idle"
+
+
+class StateKeys(StrEnum):
+    CONTROLLER_PROCESS_STATE = "controller_process_state"

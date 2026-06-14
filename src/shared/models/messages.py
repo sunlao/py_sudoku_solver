@@ -56,6 +56,11 @@ class Startup(BaseModel):
     model_config = DTO_CONFIG
     board: Board
 
+class Ready(BaseModel):
+    """Content DTO for ready probe messages"""
+
+    model_config = DTO_CONFIG
+
 
 class Message(BaseModel, Generic[INPUTTYPE]):
     """Generic message DTO composed of metadata and typed content"""

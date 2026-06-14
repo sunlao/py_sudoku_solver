@@ -53,6 +53,8 @@ class Startup:
             update={"actors": [a for a in dto.actors if a.rbc_flag is True]}
         )
 
-    def director(self, message: Message) -> None:
+    # pass when ready
+    # def director(self, message: Message) -> None:
+    def director(self) -> None:
         states = self._process_states()
         self._set_process_states(states)

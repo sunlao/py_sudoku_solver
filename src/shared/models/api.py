@@ -1,6 +1,6 @@
+from typing import Mapping
 from http import HTTPMethod, HTTPStatus
 from pydantic import BaseModel, Field
-from typing import Mapping
 from fastapi import Request, Response
 from shared.models.constants import ActorNames
 from shared.models.policy import DTO_CONFIG, DTO_EDGE_CONFIG
@@ -50,6 +50,8 @@ class ReadyResponse(BaseModel):
 
     model_config = DTO_CONFIG
     API: bool
+    Mailbox: bool
+    Handler: bool
 
 
 class RootResponse(BaseModel):
