@@ -1,16 +1,15 @@
 import asyncio
+import pytest
 from shared.models.constants import MessageTypes
 
 
+@pytest.mark.usefixtures("handler_solo")
 async def test_send_recieve(
-    handler_solo,
     mailbox,
     test_mailbox,
     startup_message,
     startup_board,
 ):
-    # handler_solo fixture lifespace exist with test
-    # handler_solo is not asserted
     await mailbox.enqueue(startup_message)
     message = await asyncio.wait_for(
         test_mailbox.dequeue(),

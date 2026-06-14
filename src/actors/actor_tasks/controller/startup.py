@@ -3,8 +3,7 @@ from actors.state import State
 from shared.models.constants import StaticDataNames
 from shared.models.constants import ActorNames, ProcessStatuses
 from shared.models.controller import ProcessState, ProcessStates
-
-# from shared.models.messages import Message
+from shared.models.messages import Message
 from shared.models.static_data import Actors, Actor
 
 
@@ -55,7 +54,8 @@ class Startup:
         )
 
     # pass when ready
-    # def director(self, message: Message) -> None:
-    def director(self) -> None:
+    def director(self, message: Message) -> None:
+        # def director(self) -> None:
         states = self._process_states()
         self._set_process_states(states)
+        print(message)

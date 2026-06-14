@@ -1,6 +1,6 @@
+from typing import AsyncGenerator
 import asyncio
 import pytest
-from typing import AsyncGenerator
 from actors.handler import Handler
 from actors.mailbox import Mailbox
 

@@ -39,6 +39,7 @@ class Board(BaseModel):
         Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell,
         Cell, Cell, Cell,
     ]
+
     @field_validator("cells")
     @classmethod
     def validate_unique_coordinates(cls, cells: tuple[Cell, ...]) -> tuple[Cell, ...]:
@@ -55,6 +56,7 @@ class Startup(BaseModel):
 
     model_config = DTO_CONFIG
     board: Board
+
 
 class Ready(BaseModel):
     """Content DTO for ready probe messages"""

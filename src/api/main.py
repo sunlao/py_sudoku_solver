@@ -6,7 +6,6 @@ from starlette.responses import PlainTextResponse
 from actors.handler import Handler
 from actors.mailbox import Mailbox
 from api.metadata import tags
-from api.v1.helpers import flush
 from api.v1.addresses import controller
 from api.v1.info import ready, version
 from api.v1.helpers.boards import Boards
@@ -122,11 +121,12 @@ def create_api() -> FastAPI:
     # routing
     _api.include_router(version.router, prefix="/api/v1/info", tags=["info"])
     _api.include_router(ready.router, prefix="/api/v1/info", tags=["info"])
-    _api.include_router(flush.router, prefix="/api/v1", tags=["flush"])
     _api.include_router(
         controller.router, prefix="/address/controller", tags=["actor", "controller"]
     )
-    _api.include_router(flush.router, prefix="/address/game", tags=["actor", "game"])
+    _api.include_router(
+        controller.router, prefix="/address/game", tags=["actor", "game"]
+    )
 
     return _api
 
