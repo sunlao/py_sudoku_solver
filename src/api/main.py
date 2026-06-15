@@ -24,11 +24,12 @@ from shared.models.api import ASGIEvent, RootResponse
 from shared.models.log import EventError
 from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
 from shared.models.constants import StaticDataNames
+from shared.models.messages import Message, Startup
 
 locker = Locker()
 config_log = locker.log()
 api_log = locker.api()
-start_up_message =  (Boards().start_up())
+start_up_message =  start_up(Boards().start_up())
 
 
 @asynccontextmanager
