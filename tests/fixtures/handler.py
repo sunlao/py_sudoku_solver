@@ -12,7 +12,7 @@ async def handler_solo(mailbox, test_mailbox):
     handler = Handler(
         HandlerSideEffects(
             mailbox=mailbox,
-            ready_mailbox=test_mailbox,
+            test_mailbox=test_mailbox,
             static_data=Read(StaticDataNames.HANDLER),
             create_task=asyncio.create_task,
             load_executable=load_executable,

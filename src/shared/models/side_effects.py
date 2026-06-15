@@ -21,7 +21,7 @@ class HandlerSideEffects(BaseModel):
     model_config = DTO_EDGE_CONFIG
 
     mailbox: Any
-    ready_mailbox: Any | None
+    test_mailbox: Any | None
     static_data: Read
     create_task: Callable[[Coroutine[Any, Any, None]], Task[None]]
     load_executable: Callable[[str], Callable]

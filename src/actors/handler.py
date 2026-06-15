@@ -8,7 +8,7 @@ class Handler:
 
     def __init__(self, dto: HandlerSideEffects) -> None:
         self.mailbox = dto.mailbox
-        self.ready_mailbox = dto.ready_mailbox
+        self.test_mailbox = dto.test_mailbox
         self.static_data = dto.static_data
         self.create_task = dto.create_task
         self.load_executable = dto.load_executable
@@ -22,8 +22,9 @@ class Handler:
             await self._route(message)
 
     async def _route(self, message: Message) -> None:
-        if self.ready_mailbox is not None:
-            await self.ready_mailbox.enqueue(message)
+        if self.test_mailbox is not None:
+            await self.test_mailbox.enqueue(message)
+        # support api info ready
         if message.metadata.message_type == MessageTypes.READY:
             return
         dto = HandlerInput(name=message.metadata.message_type)

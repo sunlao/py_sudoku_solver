@@ -46,10 +46,10 @@ async def lifespan(app: FastAPI):
     core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
     app.state.log.write_core(core)
     app.state.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
-    app.state.ready_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    app.state.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     handler_side_effects = HandlerSideEffects(
         mailbox=app.state.mailbox,
-        ready_mailbox=app.state.ready_mailbox,
+        test_mailbox=app.state.test_mailbox,
         static_data=Read(StaticDataNames.HANDLER),
         create_task=asyncio.create_task,
         load_executable=load_executable,
