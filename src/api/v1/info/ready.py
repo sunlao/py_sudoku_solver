@@ -1,6 +1,5 @@
 import asyncio
 from fastapi import APIRouter, Request, Response, status
-from api.v1.helpers.client import client
 from shared.models.api import ReadyResponse
 from shared.models.constants import MessageTypes
 from shared.models.messages import Message, Metadata, Ready

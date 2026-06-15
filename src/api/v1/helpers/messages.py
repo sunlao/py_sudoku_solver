@@ -1,4 +1,3 @@
-from api.v1.helpers.client import client
 from shared.models.messages import Board, Message, Metadata, Startup
 from shared.models.constants import MessageTypes
 

@@ -11,7 +11,7 @@ from api.metadata import tags
 from api.v1.addresses import controller
 from api.v1.info import ready, version
 from api.v1.helpers.boards import Boards
-from api.v1.helpers.client import client
+from api.v1.helpers.client import transport_client
 from api.v1.helpers.messages import start_up
 from api.v1.helpers.load_executable import load_executable
 from shared.log.helpers.api_log_serializer import LogSerializer
@@ -24,7 +24,6 @@ from shared.models.api import ASGIEvent, RootResponse
 from shared.models.log import EventError
 from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
 from shared.models.constants import StaticDataNames
-from shared.models.messages import Message, Startup
 
 locker = Locker()
 config_log = locker.log()
@@ -37,6 +36,7 @@ async def lifespan(app: FastAPI):
     app.state.log = Writer(config_log)
     app.state.log_error_helper = Error()
     app.state.format_log = LogSerializer()
+    app.state.async_client = AsyncClient
     app.state.config_log = config_log
     app.state.app_version = api_log.app_version
 
@@ -54,7 +54,7 @@ async def lifespan(app: FastAPI):
     )
     app.state.handler = Handler(handler_side_effects)
     app.state.handler_task = app.state.handler.start()
-    async with client(app, AsyncClient) as client_api:
+    async with transport_client(app) as client_api:
         await client_api.post(
             f"/address/{ActorNames.CONTROLLER}/start-up",
             json=start_up_message.model_dump(mode="json"),
