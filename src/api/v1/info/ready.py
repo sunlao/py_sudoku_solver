@@ -16,7 +16,9 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
     check_handler = not handler_task.done() and not handler_task.cancelled()
     handler_result = False
     if check_mailbox and check_ready_mailbox and check_handler:
-        probe = Message(metadata=Metadata(message_type=MessageTypes.READY), content=Ready())
+        probe = Message(
+            metadata=Metadata(message_type=MessageTypes.READY), content=Ready()
+        )
         await mailbox.enqueue(probe)
         try:
             ack = await request.app.state.wait(ready_mailbox.dequeue(), timeout=1)

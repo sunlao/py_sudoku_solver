@@ -7,13 +7,13 @@ from shared.models.messages import Message
 from shared.models.policy import DTO_EDGE_CONFIG
 
 
-
 class MailboxSideEffects(BaseModel):
     """DTO for mailbox construction"""
 
     model_config = DTO_EDGE_CONFIG
 
-    queue: Queue[Message ]
+    queue: Queue[Message]
+
 
 class HandlerSideEffects(BaseModel):
     """DTO for handler side-effect dependencies"""
