@@ -19,7 +19,7 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
         probe = Message(
             metadata=Metadata(message_type=MessageTypes.READY), content=Ready()
         )
-        # shared mailbox/handler at the FastAPI level for all actors 
+        # shared mailbox/handler at the FastAPI level for all actors
         await mailbox.enqueue(probe)
         try:
             # shared test mailox the shared handler uses to route tests ressponses

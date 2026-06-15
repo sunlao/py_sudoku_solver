@@ -2,28 +2,27 @@
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
-from starlette.responses import PlainTextResponse
 from httpx import AsyncClient
+from starlette.responses import PlainTextResponse
 from actors.handler import Handler
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read
 from api.metadata import tags
 from api.v1.addresses import controller
-from api.v1.info import ready, version
 from api.v1.helpers.boards import Boards
 from api.v1.helpers.client import transport_client
 from api.v1.helpers.messages import start_up
 from api.v1.helpers.load_executable import load_executable
+from api.v1.info import ready, version
+from shared.config.locker import Locker
 from shared.log.helpers.api_log_serializer import LogSerializer
 from shared.log.helpers.core import build as core_log
 from shared.log.helpers.error import Error
 from shared.log.writer import Writer
-from shared.config.locker import Locker
-from shared.models.constants import Events, LogLevel, ActorNames
 from shared.models.api import ASGIEvent, RootResponse
+from shared.models.constants import Events, LogLevel, ActorNames, StaticDataNames
 from shared.models.log import EventError
 from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
-from shared.models.constants import StaticDataNames
 
 locker = Locker()
 config_log = locker.log()
@@ -41,10 +40,6 @@ async def lifespan(app: FastAPI):
     app.state.async_client = AsyncClient
     app.state.config_log = config_log
     app.state.app_version = api_log.app_version
-
-    msg = "API Service Startup complete"
-    core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
-    app.state.log.write_core(core)
     app.state.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     app.state.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     handler_side_effects = HandlerSideEffects(
@@ -61,6 +56,9 @@ async def lifespan(app: FastAPI):
             f"/address/{ActorNames.CONTROLLER}/start-up",
             json=start_up_message.model_dump(mode="json"),
         )
+    msg = "API Service Startup complete"
+    core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
+    app.state.log.write_core(core)
     try:
         yield
     finally:
@@ -69,7 +67,6 @@ async def lifespan(app: FastAPI):
             await app.state.handler_task
         except asyncio.CancelledError:
             pass
-
         msg = "API Service Shutdown complete"
         core = core_log(config_log, LogLevel.INFO, Events.SHUTDOWN, msg)
         app.state.log.write_core(core)
