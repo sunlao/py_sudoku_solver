@@ -3,6 +3,7 @@ import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
 from starlette.responses import PlainTextResponse
+from httpx import AsyncClient
 from actors.handler import Handler
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read
@@ -52,7 +53,7 @@ async def lifespan(app: FastAPI):
     )
     app.state.handler = Handler(handler_side_effects)
     app.state.handler_task = app.state.handler.start()
-    async with client(app) as client_api:
+    async with client(app, AsyncClient) as client_api:
         await client_api.post(
             f"/address/{ActorNames.CONTROLLER}/start-up",
             json=start_up_message.model_dump(mode="json"),

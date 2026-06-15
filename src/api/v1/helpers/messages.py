@@ -1,9 +1,9 @@
 from api.v1.helpers.client import client
-from shared.models.messages import Board, MessageSend, Metadata, Startup
+from shared.models.messages import Board, Message, Metadata, Startup
 from shared.models.constants import MessageTypes
 
 
-def start_up(board: Board) -> MessageSend:
+def start_up(board: Board) -> Message:
     metadata = Metadata(message_type=MessageTypes.STARTUP)
     content = Startup(board=board)
-    return MessageSend(metadata=metadata, content=content)
+    return Message(metadata=metadata, content=content)

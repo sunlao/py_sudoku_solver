@@ -1,5 +1,5 @@
 from actors.static_data.read import HandlerInput
-from shared.models.messages import MessageReceive, MessageTypes
+from shared.models.messages import Message, MessageTypes
 from shared.models.side_effects import HandlerSideEffects
 
 
@@ -21,7 +21,7 @@ class Handler:
             message = await self.mailbox.dequeue()
             await self._route(message)
 
-    async def _route(self, message: MessageReceive) -> None:
+    async def _route(self, message: Message) -> None:
         if self.ready_mailbox is not None:
             await self.ready_mailbox.enqueue(message)
         if message.metadata.message_type == MessageTypes.READY:

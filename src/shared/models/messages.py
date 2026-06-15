@@ -65,16 +65,7 @@ class Ready(BaseModel):
     model_config = DTO_CONFIG
 
 
-class MessageReceive(BaseModel, Generic[INPUTTYPE]):
-    """Actor message DTO with async client and content composable by domain"""
-
-    model_config = DTO_EDGE_CONFIG
-    metadata: Metadata
-    client: AsyncClient
-    content: INPUTTYPE
-
-
-class MessageSend(BaseModel, Generic[INPUTTYPE]):
+class Message(BaseModel, Generic[INPUTTYPE]):
     """Actor message DTO with async client and content composable by domain"""
 
     model_config = DTO_CONFIG
