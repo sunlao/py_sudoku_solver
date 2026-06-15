@@ -1,10 +1,9 @@
 from datetime import datetime, UTC
-from typing import Generic
-from httpx import AsyncClient
 from uuid import UUID, uuid4
+from typing import Generic
 from pydantic import BaseModel, Field, field_validator
 from shared.models.constants import MessageTypes
-from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
+from shared.models.policy import DTO_CONFIG, INPUTTYPE
 
 
 class Metadata(BaseModel):
