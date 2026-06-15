@@ -1,9 +1,9 @@
 from fastapi import APIRouter, status
-from shared.models.messages import Message
+from shared.models.messages import MessageSend
 
 router = APIRouter()
 
 
 @router.post("/start-up", response_model=None, status_code=status.HTTP_202_ACCEPTED)
-async def ready(dto: Message) -> None:
+async def ready(dto: MessageSend) -> None:
     print(f"\ntype: {dto.metadata.message_type}\n")

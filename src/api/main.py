@@ -27,7 +27,7 @@ from shared.models.constants import StaticDataNames
 locker = Locker()
 config_log = locker.log()
 api_log = locker.api()
-start_up_message = start_up(Boards().start_up())
+start_up_message =  (Boards().start_up())
 
 
 @asynccontextmanager

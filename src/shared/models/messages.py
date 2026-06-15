@@ -1,9 +1,10 @@
 from datetime import datetime, UTC
 from typing import Generic
+from httpx import AsyncClient
 from uuid import UUID, uuid4
 from pydantic import BaseModel, Field, field_validator
 from shared.models.constants import MessageTypes
-from shared.models.policy import DTO_CONFIG, INPUTTYPE
+from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
 
 
 class Metadata(BaseModel):
@@ -64,8 +65,17 @@ class Ready(BaseModel):
     model_config = DTO_CONFIG
 
 
-class Message(BaseModel, Generic[INPUTTYPE]):
-    """Generic message DTO composed of metadata and typed content"""
+class MessageRecieve(BaseModel, Generic[INPUTTYPE]):
+    """Actor message DTO with async client and content composable by domain"""
+
+    model_config = DTO_EDGE_CONFIG
+    metadata: Metadata
+    client: AsyncClient
+    content: INPUTTYPE
+
+
+class MessageSend(BaseModel, Generic[INPUTTYPE]):
+    """Actor message DTO with async client and content composable by domain"""
 
     model_config = DTO_CONFIG
     metadata: Metadata
