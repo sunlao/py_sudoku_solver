@@ -65,7 +65,7 @@ class Ready(BaseModel):
     model_config = DTO_CONFIG
 
 
-class MessageRecieve(BaseModel, Generic[INPUTTYPE]):
+class MessageReceive(BaseModel, Generic[INPUTTYPE]):
     """Actor message DTO with async client and content composable by domain"""
 
     model_config = DTO_EDGE_CONFIG

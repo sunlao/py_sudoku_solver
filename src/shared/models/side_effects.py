@@ -3,7 +3,7 @@ from collections.abc import Callable, Coroutine
 from typing import Any
 from pydantic import BaseModel
 from actors.static_data.read import Read
-from shared.models.messages import MessageRecieve
+from shared.models.messages import MessageReceive
 from shared.models.policy import DTO_EDGE_CONFIG
 
 
@@ -13,7 +13,7 @@ class MailboxSideEffects(BaseModel):
 
     model_config = DTO_EDGE_CONFIG
 
-    queue: Queue[MessageRecieve ]
+    queue: Queue[MessageReceive ]
 
 class HandlerSideEffects(BaseModel):
     """DTO for handler side-effect dependencies"""

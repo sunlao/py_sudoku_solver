@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request, Response, status
 from api.v1.helpers.client import client
 from shared.models.api import ReadyResponse
 from shared.models.constants import MessageTypes
-from shared.models.messages import MessageRecieve, Metadata, Ready
+from shared.models.messages import MessageReceive, Metadata, Ready
 
 router = APIRouter()
 
@@ -18,7 +18,7 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
     check_handler = not handler_task.done() and not handler_task.cancelled()
     handler_result = False
     if check_mailbox and check_ready_mailbox and check_handler:
-        probe = MessageRecieve(
+        probe = MessageReceive(
             metadata=Metadata(message_type=MessageTypes.READY), client=client, content=Ready()
         )
         await mailbox.enqueue(probe)
