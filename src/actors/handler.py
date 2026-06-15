@@ -22,8 +22,8 @@ class Handler:
             await self._route(message)
 
     async def _route(self, message: Message) -> None:
-        if self.test is not None:
-            await self.test.enqueue(message)
+        if self.ready_mailbox is not None:
+            await self.ready_mailbox.enqueue(message)
         if message.metadata.message_type == MessageTypes.READY:
             return
         dto = HandlerInput(name=message.metadata.message_type)

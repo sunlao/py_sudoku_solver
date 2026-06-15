@@ -1,10 +1,6 @@
-from typing import AsyncGenerator
 import asyncio
-
 import pytest
-
 from actors.handler import Handler
-from actors.mailbox import Mailbox
 from actors.static_data.read import Read
 from api.v1.helpers.load_executable import load_executable
 from shared.models.constants import StaticDataNames
