@@ -36,6 +36,8 @@ async def lifespan(app: FastAPI):
     app.state.log = Writer(config_log)
     app.state.log_error_helper = Error()
     app.state.format_log = LogSerializer()
+    app.state.wait = asyncio.wait_for
+    app.state.time_out = asyncio.TimeoutError
     app.state.async_client = AsyncClient
     app.state.config_log = config_log
     app.state.app_version = api_log.app_version

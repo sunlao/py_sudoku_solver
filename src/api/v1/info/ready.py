@@ -1,4 +1,3 @@
-import asyncio
 from fastapi import APIRouter, Request, Response, status
 from shared.models.api import ReadyResponse
 from shared.models.constants import MessageTypes
@@ -20,9 +19,9 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
         probe = Message(metadata=Metadata(message_type=MessageTypes.READY), content=Ready())
         await mailbox.enqueue(probe)
         try:
-            ack = await asyncio.wait_for(ready_mailbox.dequeue(), timeout=1)
+            ack = await request.app.state.wait(ready_mailbox.dequeue(), timeout=1)
             handler_result = ack.metadata.message_id == probe.metadata.message_id
-        except asyncio.TimeoutError:
+        except request.app.state.time_out:
             handler_result = False
     api_ready = (
         check_mailbox and check_ready_mailbox and check_handler and handler_result
