@@ -74,7 +74,7 @@ class LogLevel(StrEnum):
     ERROR = "error"
 
 
-class MessageTypes(StrEnum):
+class Behavior(StrEnum):
     """Constants for Supported Environments"""
 
     STARTUP = "start-up"

@@ -1,5 +1,5 @@
 from actors.static_data.read import HandlerInput
-from shared.models.messages import Message, MessageTypes
+from shared.models.messages import Message, Behavior
 from shared.models.side_effects import HandlerSideEffects
 
 
@@ -25,7 +25,7 @@ class Handler:
         if self.test_mailbox is not None:
             await self.test_mailbox.enqueue(message)
         # support api info ready
-        if message.metadata.message_type == MessageTypes.READY:
+        if message.metadata.message_type == Behavior.READY:
             return
         dto = HandlerInput(name=message.metadata.message_type)
         data = self.static_data.handler(dto)
