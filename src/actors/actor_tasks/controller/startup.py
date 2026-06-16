@@ -1,7 +1,7 @@
 from actors.static_data.read import Read
 from actors.state import State
 from shared.models.constants import StaticDataNames
-from shared.models.constants import ActorNames, ProcessStatuses, ActorBehaviors
+from shared.models.constants import ActorNames, ProcessStatuses
 from shared.models.controller import ProcessState, ProcessStates
 from shared.models.messages import Message
 from shared.models.static_data import Actors, Actor
