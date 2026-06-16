@@ -1,6 +1,6 @@
 import asyncio
 import pytest
-from shared.models.constants import Behavior
+from shared.models.constants import MessageTypes
 
 
 @pytest.mark.usefixtures("handler_solo")
@@ -15,5 +15,5 @@ async def test_send_recieve(
         test_mailbox.dequeue(),
         timeout=5,
     )
-    assert message.metadata.message_type == Behavior.STARTUP
+    assert message.metadata.message_type == MessageTypes.STARTUP
     assert message.content.board == startup_board
