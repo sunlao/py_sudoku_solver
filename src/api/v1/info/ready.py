@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, Response, status
 from shared.models.api import ReadyResponse
-from shared.models.constants import MessageTypes
+from shared.models.constants import ActorBehaviors
 from shared.models.messages import Message, Metadata, Ready
 
 router = APIRouter()
@@ -17,7 +17,7 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
     handler_result = False
     if check_mailbox and check_test_mailbox and check_handler:
         probe = Message(
-            metadata=Metadata(message_type=MessageTypes.READY), content=Ready()
+            metadata=Metadata(actor_behavior=ActorBehaviors.READY_READY), content=Ready()
         )
         # shared mailbox/handler at the FastAPI level for all actors
         await mailbox.enqueue(probe)

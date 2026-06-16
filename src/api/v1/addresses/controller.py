@@ -6,4 +6,4 @@ router = APIRouter()
 
 @router.post("/start-up", response_model=None, status_code=status.HTTP_202_ACCEPTED)
 async def start_up(dto: Message) -> None:
-    print(f"\ntype: {dto.metadata.message_type}\n")
+    print(f"\na-b: {dto.metadata.actor_behavior}\n")

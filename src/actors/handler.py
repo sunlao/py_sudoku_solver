@@ -1,5 +1,5 @@
 from actors.static_data.read import HandlerInput
-from shared.models.messages import Message, MessageTypes
+from shared.models.messages import Message, ActorBehaviors
 from shared.models.side_effects import HandlerSideEffects
 
 
@@ -25,9 +25,9 @@ class Handler:
         if self.test_mailbox is not None:
             await self.test_mailbox.enqueue(message)
         # support api info ready
-        if message.metadata.message_type == MessageTypes.READY:
+        if message.metadata.actor_behavior == ActorBehaviors.READY_READY:
             return
-        dto = HandlerInput(name=message.metadata.message_type)
+        dto = HandlerInput(name=message.metadata.actor_behavior)
         data = self.static_data.handler(dto)
         executable = self._executable(data.route)
         executable(message)
