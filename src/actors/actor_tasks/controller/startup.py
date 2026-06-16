@@ -52,7 +52,8 @@ class Startup:
 
     # pass when ready
     def director(self, message: Message) -> None:
-        # def director(self) -> None:
+        print("**start director")
         states = self._process_states()
         self.state.set_controller_process(message.metadata.actor_behavior, states)
-        print(message)
+        print("**director end\n")
+        # print(f"content: {message.content.Board}")

@@ -8,7 +8,7 @@ from actors.handler import Handler
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read
 from api.metadata import tags
-from api.v1.addresses import controller
+from api.v1.addresses import controller, game
 from api.v1.helpers.boards import Boards
 from api.v1.helpers.client import transport_client
 from api.v1.helpers.messages import start_up
@@ -51,6 +51,7 @@ async def lifespan(app: FastAPI):
     )
     app.state.handler = Handler(handler_side_effects)
     app.state.handler_task = app.state.handler.start()
+    print(f"msg: {start_up_message.content.board.cells}")
     async with transport_client(app) as client_api:
         await client_api.post(
             f"/address/{ActorNames.CONTROLLER}/start-up",
@@ -137,7 +138,7 @@ def create_api() -> FastAPI:
         controller.router, prefix="/address/controller", tags=["actor", "controller"]
     )
     _api.include_router(
-        controller.router, prefix="/address/game", tags=["actor", "game"]
+        game.router, prefix="/address/game", tags=["actor", "game"]
     )
 
     return _api

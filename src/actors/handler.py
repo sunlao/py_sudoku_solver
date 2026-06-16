@@ -27,6 +27,7 @@ class Handler:
         # support api info ready
         if message.metadata.actor_behavior == ActorBehaviors.READY_READY:
             return
+        # print("**handler: {message.metadata.actor_behavior}]")
         dto = HandlerInput(name=message.metadata.actor_behavior)
         data = self.static_data.handler(dto)
         executable = self._executable(data.route)
