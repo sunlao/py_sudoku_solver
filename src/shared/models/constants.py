@@ -35,6 +35,13 @@ class ActorNames(StrEnum):
     COLUMN9 = "column9"
 
 
+class ActorBehaviors(StrEnum):
+    """Constants for supported actor behaviors."""
+
+    CONTROLLER_START_UP = "controller.start-up"
+    READY_READY = "ready.ready"
+
+
 class Audit(NamedTuple):
     last_hash: str | None
 
@@ -72,13 +79,6 @@ class LogLevel(StrEnum):
     INFO = "info"
     WARN = "warn"
     ERROR = "error"
-
-
-class MessageTypes(StrEnum):
-    """Constants for Supported Environments"""
-
-    STARTUP = "start-up"
-    READY = "ready"
 
 
 # Starlette/Uvicorn insist on lower case
