@@ -104,7 +104,3 @@ class StaticDataNames(StrEnum):
 class ProcessStatuses(StrEnum):
     STARTED = "started"
     IDLE = "idle"
-
-
-class StateKeys(StrEnum):
-    CONTROLLER_PROCESS_STATE = "controller_process_state"
