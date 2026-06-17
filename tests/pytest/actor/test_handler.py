@@ -15,5 +15,5 @@ async def test_send_recieve(
         test_mailbox.dequeue(),
         timeout=5,
     )
-    assert message.metadata.actor_behavior == ActorBehaviors.CONTROLLER_START_UP
+    assert message.metadata.actor_behavior == ActorBehaviors.TEST_SEND
     assert message.content.board == startup_board

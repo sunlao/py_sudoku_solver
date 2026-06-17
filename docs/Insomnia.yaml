@@ -1,0 +1,123 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: SudokuSolver
+meta:
+  id: wrk_932418e723af4f7fb3fae342d1df603a
+  created: 1780664534313
+  modified: 1780664534313
+  description: ""
+collection:
+  - name: ActorApi
+    meta:
+      id: fld_d8b1055b9b444958af67c1f2cab8cfb2
+      created: 1757856135407
+      modified: 1780664571198
+      sortKey: -1759081675646
+      description: ""
+    children:
+      - name: Core
+        meta:
+          id: fld_a1cfeb09e6ca4e61b723e4c51887970f
+          created: 1757856281803
+          modified: 1780664583562
+          sortKey: -1757856153460.5
+          description: ""
+        children:
+          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _.path }}"
+            name: root
+            meta:
+              id: req_4dc44b5a3b0940298eb8cd522f0be293
+              created: 1755287881706
+              modified: 1780664858049
+              isPrivate: false
+              description: ""
+              sortKey: -1757856285903
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.4.0
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: info
+        meta:
+          id: fld_9de82bf03f8d4f1681be41fa88fc39d1
+          created: 1768437971383
+          modified: 1771081282234
+          sortKey: -1757856153410.5
+          description: ""
+        children:
+          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _.path }}info/ready"
+            name: ready
+            meta:
+              id: req_cd4b84f67c874c0abad6f1b0d25bb1af
+              created: 1755228465178
+              modified: 1780664863382
+              isPrivate: false
+              description: ""
+              sortKey: -1768437983438
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.4.0
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _.path }}info/version"
+            name: version
+            meta:
+              id: req_82251536caa2415ca5a7e079d5bedd5e
+              created: 1755287863037
+              modified: 1780664851433
+              isPrivate: false
+              description: ""
+              sortKey: -1768437983488
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.4.0
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_a90cce8f8251486eaad21947c96cb8dc
+    created: 1755228406099
+    modified: 1771090921135
+environments:
+  name: Base Environment
+  meta:
+    id: env_a3d4884e7ec24ec5b3942a49c5cba248
+    created: 1755228406003
+    modified: 1780664695233
+    isPrivate: false
+  data:
+    path: /api/v1/
+  subEnvironments:
+    - name: local
+      meta:
+        id: env_fd812bcbac724af4923343d7fc77635f
+        created: 1756496087816
+        modified: 1781696119506
+        isPrivate: false
+        sortKey: 1756496087816
+      data:
+        http: http://
+        host: "localhost:"
+        port: "8080"

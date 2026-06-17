@@ -22,9 +22,11 @@ class Handler:
             await self._route(message)
 
     async def _route(self, message: Message) -> None:
-        if message.metadata.actor_behavior == ActorBehaviors.TEST_TEST:            
+        if message.metadata.actor_behavior == ActorBehaviors.TEST_READY:            
             await self.test_mailbox.enqueue(message)
             return
+        if message.metadata.actor_behavior == ActorBehaviors.TEST_SEND:            
+            await self.test_mailbox.enqueue(message)
         dto = HandlerInput(name=message.metadata.actor_behavior)
         data = self.static_data.handler(dto)
         executable = self._executable(data.route)

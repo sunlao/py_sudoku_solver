@@ -39,7 +39,8 @@ class ActorBehaviors(StrEnum):
     """Constants for supported actor behaviors."""
 
     CONTROLLER_START_UP = "controller.start-up"
-    TEST_TEST = "test.test"
+    TEST_READY = "test.ready"
+    TEST_SEND = "test.send"
 
 
 class Audit(NamedTuple):
