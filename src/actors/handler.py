@@ -7,7 +7,7 @@ class Handler:
     """Handler dequeues, routes and sends telemetry"""
 
     def __init__(self, dto: HandlerSideEffects) -> None:
-        """Intantiate side effects From FastAPI on startup"""
+        """Instantiate side effects from FastAPI on startup"""
         self.mailbox = dto.mailbox
         self.test_mailbox = dto.test_mailbox
         self.static_data = dto.static_data
@@ -24,9 +24,11 @@ class Handler:
 
     async def _route(self, message: Message) -> None:
         if message.metadata.actor_behavior == ActorBehaviors.TEST_READY:
+            """Intercept and reoute Ready Message in support of info.ready test api"""
             await self.test_mailbox.enqueue(message)
             return
         if message.metadata.actor_behavior == ActorBehaviors.TEST_SEND:
+            """Intercept and reoute test send Message in support of pytest"""
             await self.test_mailbox.enqueue(message)
             return
         route_name = RouteName(name=message.metadata.actor_behavior)
