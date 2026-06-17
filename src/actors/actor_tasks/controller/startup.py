@@ -3,7 +3,7 @@ from actors.state import State
 from shared.models.constants import StaticDataNames
 from shared.models.constants import ActorNames, ProcessStatuses
 from shared.models.controller import ProcessState, ProcessStates
-from shared.models.messages import Message, Startup
+from shared.models.messages import Message, ControllerStartup
 from shared.models.static_data import Actors, Actor
 
 
@@ -22,8 +22,8 @@ class Startup:
             )
         )
 
-    def _message_game_start():
-        pass 
+    def _message_game_start(self) -> None:
+        pass
 
     def _send_start_game(self) -> None:
         pass
@@ -54,7 +54,7 @@ class Startup:
         )
 
     # pass when ready
-    def director(self, dto: Message[Startup]) -> None:
+    def director(self, dto: Message[ControllerStartup]) -> None:
         print("**start director")
         states = self._process_states()
         self.state.set_controller_process(dto.metadata.actor_behavior, states)

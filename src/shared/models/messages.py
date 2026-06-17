@@ -51,7 +51,7 @@ class Board(BaseModel):
         return cells
 
 
-class Startup(BaseModel):
+class ControllerStartup(BaseModel):
     """Content DTO for startup messages"""
 
     model_config = DTO_CONFIG
