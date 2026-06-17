@@ -1,4 +1,4 @@
-from actors.static_data.read import HandlerInput
+from actors.static_data.read import RouteName
 from shared.models.messages import Message, ActorBehaviors
 from shared.models.side_effects import HandlerSideEffects
 
@@ -7,6 +7,7 @@ class Handler:
     """Handler dequeues, routes and sends telemetry"""
 
     def __init__(self, dto: HandlerSideEffects) -> None:
+        """Intantiate side effects From FastAPI on startup"""
         self.mailbox = dto.mailbox
         self.test_mailbox = dto.test_mailbox
         self.static_data = dto.static_data
@@ -28,8 +29,8 @@ class Handler:
         if message.metadata.actor_behavior == ActorBehaviors.TEST_SEND:
             await self.test_mailbox.enqueue(message)
             return
-        dto = HandlerInput(name=message.metadata.actor_behavior)
-        data = self.static_data.handler(dto)
+        route_name = RouteName(name=message.metadata.actor_behavior)
+        data = self.static_data.handler_routes(route_name)
         executable = self._executable(data.route)
         executable(message)
 

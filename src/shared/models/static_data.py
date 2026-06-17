@@ -16,13 +16,13 @@ class Actors(BaseModel):
     actors: tuple[Actor, ...]
 
 
-class Startup(BaseModel):
+class Route(BaseModel):
     model_config = DTO_CONFIG
     route: str
 
 
-class HandlerInput(BaseModel):
-    """Content DTO for startup messages"""
+class RouteName(BaseModel):
+    """DTO to get handler static data"""
 
     model_config = DTO_CONFIG
     name: str

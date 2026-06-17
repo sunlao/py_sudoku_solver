@@ -11,7 +11,7 @@ class Startup:
 
     def __init__(self) -> None:
         self.state = State()
-        actors = Read(StaticDataNames.CONTROLLER).controller()
+        actors = Read(StaticDataNames.CONTROLLER).controller_actors()
         self.game = self._transform_game(actors)
         self.rbc = self._transform_rbc(actors)
 

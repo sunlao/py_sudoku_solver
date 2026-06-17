@@ -1,3 +1,5 @@
 routes:
   - name: controller.start-up
     route: actors.actor_tasks.controller.startup.Startup.director
+  - name: test.start-up
+    route: actors.actor_tasks.controller.startup.Startup.director
