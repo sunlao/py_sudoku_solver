@@ -30,9 +30,7 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
             handler_result = ack.metadata.message_id == probe.metadata.message_id
         except request.app.state.time_out:
             handler_result = False
-    error = (
-        check_mailbox and check_test_mailbox and check_handler and handler_result
-    )
+    error = check_mailbox and check_test_mailbox and check_handler and handler_result
     if not error:
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     return ReadyResponse(
