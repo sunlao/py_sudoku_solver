@@ -23,8 +23,10 @@ class Handler:
 
     async def _route(self, message: Message) -> None:
         if self.test_mailbox is not None:
+            print("*****test")
             await self.test_mailbox.enqueue(message)
         # support api info ready
+        print(f"actor_behavior: {message.metadata.actor_behavior}")
         if message.metadata.actor_behavior == ActorBehaviors.READY_READY:
             return
         dto = HandlerInput(name=message.metadata.actor_behavior)
