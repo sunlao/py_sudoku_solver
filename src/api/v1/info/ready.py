@@ -15,13 +15,11 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
     check_test_mailbox = test_mailbox is not None
     check_handler = not handler_task.done() and not handler_task.cancelled()
     handler_result = False
-    print(f"**check_mailbox: {check_mailbox}")
-    print(f"**check_test_mailbox: {check_test_mailbox}")
-    print(f"**check_handler: {check_handler}")
+    api_ready = False
     if check_mailbox and check_test_mailbox and check_handler:
         api_ready = True
         probe = Message(
-            metadata=Metadata(actor_behavior=ActorBehaviors.READY_READY),
+            metadata=Metadata(actor_behavior=ActorBehaviors.TEST_TEST),
             content=Ready(),
         )
         # shared mailbox/handler at the FastAPI level for all actors
@@ -29,8 +27,6 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
         try:
             # shared test mailox the shared handler uses to route tests ressponses
             ack = await request.app.state.wait(test_mailbox.dequeue(), timeout=5)
-            print(ack.metadata.message_id)
-            print(probe.metadata.message_id)
             handler_result = ack.metadata.message_id == probe.metadata.message_id
         except request.app.state.time_out:
             handler_result = False

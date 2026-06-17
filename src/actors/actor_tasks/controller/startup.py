@@ -55,8 +55,5 @@ class Startup:
 
     # pass when ready
     def director(self, dto: Message[ControllerStartup]) -> None:
-        print("**start director")
         states = self._process_states()
         self.state.set_controller_process(dto.metadata.actor_behavior, states)
-        print(f"***board: {dto.content.board}")
-        print("**director end\n")
