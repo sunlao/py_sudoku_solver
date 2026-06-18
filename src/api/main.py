@@ -20,7 +20,7 @@ from shared.log.helpers.core import build as core_log
 from shared.log.helpers.error import Error
 from shared.log.writer import Writer
 from shared.models.api import ASGIEvent, RootResponse
-from shared.models.constants import Events, LogLevel, ActorNames, StaticDataNames
+from shared.models.constants import Events, LogLevel, ActorNames
 from shared.models.log import EventError
 from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
 
@@ -40,12 +40,13 @@ async def lifespan(app: FastAPI):
     app.state.async_client = AsyncClient
     app.state.config_log = config_log
     app.state.app_version = api_log.app_version
+    # Start mailboxes
     app.state.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     app.state.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     handler_side_effects = HandlerSideEffects(
         mailbox=app.state.mailbox,
         test_mailbox=app.state.test_mailbox,
-        static_data=Read(StaticDataNames.HANDLER),
+        static_data=Read,
         create_task=asyncio.create_task,
         load_executable=load_executable,
     )

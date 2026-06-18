@@ -1,7 +1,12 @@
 from pydantic import BaseModel
 from shared.models.policy import DTO_CONFIG
-from shared.models.constants import ActorNames
+from shared.models.constants import ActorNames, StaticDataNames, ActorBehaviors
 
+
+class StaticDataInit(BaseModel):
+    model_config = DTO_CONFIG
+
+    name: StaticDataNames
 
 class Actor(BaseModel):
     model_config = DTO_CONFIG
@@ -22,7 +27,7 @@ class Route(BaseModel):
 
 
 class RouteName(BaseModel):
-    """DTO to get handler static data"""
+    """DTO to get handler route static data by actor:behavior"""
 
     model_config = DTO_CONFIG
-    name: str
+    name: ActorBehaviors

@@ -39,6 +39,7 @@ class ActorBehaviors(StrEnum):
     """Constants for supported actor behaviors."""
 
     CONTROLLER_START_UP = "controller.start-up"
+    GAME_START = "game.start"
     TEST_READY = "test.ready"
     TEST_SEND = "test.send"
 

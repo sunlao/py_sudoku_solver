@@ -1,7 +1,6 @@
 from pathlib import Path
 from yaml import safe_load
-from shared.models.constants import StaticDataNames
-from shared.models.static_data import Actors, Actor, Route, RouteName
+from shared.models.static_data import StaticDataInit, Actors, Actor, Route, RouteName
 
 
 class Read:
@@ -9,8 +8,8 @@ class Read:
 
     DIR_PATH = Path(__file__).resolve().parent
 
-    def __init__(self, name: StaticDataNames) -> None:
-        self.yml_path = self.DIR_PATH / str(name + ".yml")
+    def __init__(self, dto: StaticDataInit) -> None:
+        self.yml_path = self.DIR_PATH / str(dto.name + ".yml")
 
     def _yml(self):
         with self.yml_path.open("r", encoding="utf-8") as file_obj:
@@ -25,7 +24,7 @@ class Read:
         )
 
     def handler_routes(self, dto: RouteName) -> Route:
-        """Route static data for shared handler"""
+        """Lookup route static data for shared handler by route name"""
         yml = self._yml()
         route = next(r["route"] for r in yml["routes"] if r["name"] == dto.name)
         return Route(route=route)

@@ -1,9 +1,12 @@
 from datetime import datetime, UTC
+from collections.abc import Callable
 from uuid import UUID, uuid4
 from typing import Generic
 from pydantic import BaseModel, Field, field_validator
+from actors.static_data.read import Read
+from shared.models.constants import StaticDataNames
 from shared.models.constants import ActorBehaviors
-from shared.models.policy import DTO_CONFIG, INPUTTYPE
+from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
 
 
 class Metadata(BaseModel):
@@ -58,6 +61,13 @@ class ControllerStartup(BaseModel):
     board: Board
 
 
+class GameStartup(BaseModel):
+    """Content DTO for startup messages"""
+
+    model_config = DTO_CONFIG
+    board: Board
+
+
 class Ready(BaseModel):
     """Content DTO for ready probe messages"""
 
@@ -67,6 +77,6 @@ class Ready(BaseModel):
 class Message(BaseModel, Generic[INPUTTYPE]):
     """Actor message DTO with async client and content composable by domain"""
 
-    model_config = DTO_CONFIG
+    model_config = DTO_EDGE_CONFIG
     metadata: Metadata
     content: INPUTTYPE

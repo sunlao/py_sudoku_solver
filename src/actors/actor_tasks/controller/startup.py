@@ -1,9 +1,15 @@
 from actors.static_data.read import Read
 from actors.state import State
 from shared.models.constants import StaticDataNames
-from shared.models.constants import ActorNames, ProcessStatuses
+from shared.models.constants import ActorNames, ProcessStatuses, ActorBehaviors
 from shared.models.controller import ProcessState, ProcessStates
-from shared.models.messages import Message, ControllerStartup
+from shared.models.messages import (
+    Message,
+    ControllerStartup,
+    GameStartup,
+    Board,
+    Metadata,
+)
 from shared.models.static_data import Actors, Actor
 
 
@@ -15,6 +21,10 @@ class Startup:
         self.game = self._transform_game(actors)
         self.rbc = self._transform_rbc(actors)
 
+    def _game_start(self, dto: Board) -> Message[GameStartup]:
+        m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
+        return Message(metadata=m, content=(GameStartup(board=dto)))
+
     def _process_states(self) -> ProcessStates:
         return ProcessStates(
             states=tuple(
@@ -22,7 +32,7 @@ class Startup:
             )
         )
 
-    def _message_game_start(self) -> None:
+    def _message_game_start(self, dto: Message[GameStartup]) -> None:
         pass
 
     def _send_start_game(self) -> None:
@@ -57,3 +67,4 @@ class Startup:
     def director(self, dto: Message[ControllerStartup]) -> None:
         states = self._process_states()
         self.state.set_controller_process(dto.metadata.actor_behavior, states)
+        print("**director end")

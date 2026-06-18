@@ -1,6 +1,6 @@
-from actors.static_data.read import RouteName
 from shared.models.messages import Message, ActorBehaviors
 from shared.models.side_effects import HandlerSideEffects
+from shared.models.static_data import StaticDataInit, RouteName
 
 
 class Handler:
@@ -10,8 +10,9 @@ class Handler:
         """Instantiate side effects from FastAPI on startup"""
         self.mailbox = dto.mailbox
         self.test_mailbox = dto.test_mailbox
-        self.static_data = dto.static_data
         self.create_task = dto.create_task
+        static_data_owner = type(self).__name__.lower()
+        self.static_data = dto.static_data(StaticDataInit(name=static_data_owner))
         self.load_executable = dto.load_executable
 
     def _executable(self, route: str):
