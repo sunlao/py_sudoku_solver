@@ -8,6 +8,7 @@ class StaticDataInit(BaseModel):
 
     name: StaticDataNames
 
+
 class Actor(BaseModel):
     model_config = DTO_CONFIG
 

@@ -6,6 +6,13 @@ from actors.static_data.read import Read
 from shared.models.constants import StaticDataNames
 from shared.models.messages import Message
 from shared.models.policy import DTO_EDGE_CONFIG
+from shared.models.static_data import StaticDataInit
+
+
+class ActorSideEffects(BaseModel):
+    model_config = DTO_EDGE_CONFIG
+
+    static_data: Callable[[StaticDataInit], Read]
 
 
 class MailboxSideEffects(BaseModel):

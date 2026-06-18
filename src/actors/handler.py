@@ -1,5 +1,5 @@
 from shared.models.messages import Message, ActorBehaviors
-from shared.models.side_effects import HandlerSideEffects
+from shared.models.side_effects import HandlerSideEffects, ActorSideEffects
 from shared.models.static_data import StaticDataInit, RouteName
 
 
@@ -14,6 +14,7 @@ class Handler:
         static_data_owner = type(self).__name__.lower()
         self.static_data = dto.static_data(StaticDataInit(name=static_data_owner))
         self.load_executable = dto.load_executable
+        self.actor_side_effects = ActorSideEffects(static_data=dto.static_data)
 
     def _executable(self, route: str):
         return self.load_executable(route)
@@ -35,7 +36,7 @@ class Handler:
         route_name = RouteName(name=message.metadata.actor_behavior)
         data = self.static_data.handler_routes(route_name)
         executable = self._executable(data.route)
-        executable(message)
+        executable(self.actor_side_effects, message)
 
     def start(self):
         return self.create_task(self._process_loop())

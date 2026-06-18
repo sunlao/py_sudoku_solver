@@ -1,4 +1,3 @@
-from actors.static_data.read import Read
 from actors.state import State
 from shared.models.constants import StaticDataNames
 from shared.models.constants import ActorNames, ProcessStatuses, ActorBehaviors
@@ -10,6 +9,7 @@ from shared.models.messages import (
     Board,
     Metadata,
 )
+from shared.models.side_effects import ActorSideEffects
 from shared.models.static_data import Actors, Actor
 
 
@@ -17,9 +17,9 @@ class Startup:
 
     def __init__(self) -> None:
         self.state = State()
-        actors = Read(StaticDataNames.CONTROLLER).controller_actors()
-        self.game = self._transform_game(actors)
-        self.rbc = self._transform_rbc(actors)
+
+    def _actors(self, side_effects: ActorSideEffects) -> Actors:
+        return side_effects.static_data(StaticDataNames.CONTROLLER).controller_actors()
 
     def _game_start(self, dto: Board) -> Message[GameStartup]:
         m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
@@ -63,8 +63,16 @@ class Startup:
             update={"actors": [a for a in dto.actors if a.rbc_flag is True]}
         )
 
-    # pass when ready
-    def director(self, dto: Message[ControllerStartup]) -> None:
+    def director(
+        self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
+    ) -> None:
+        print("**start")
         states = self._process_states()
         self.state.set_controller_process(dto.metadata.actor_behavior, states)
+        print("**set_controller_process")
+        actors = self._actors(side_effects)
+        game = self._transform_game(actors)
+        rbc = self._transform_rbc(actors)
+
+        print(f"**game: {game}")
         print("**director end")
