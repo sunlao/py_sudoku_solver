@@ -66,13 +66,10 @@ class Startup:
     def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
     ) -> None:
-        print("**start")
         states = self._process_states()
         self.state.set_controller_process(dto.metadata.actor_behavior, states)
-        print("**set_controller_process")
         actors = self._actors(side_effects)
         game = self._transform_game(actors)
         rbc = self._transform_rbc(actors)
-
-        print(f"**game: {game}")
+        
         print("**director end")

@@ -75,7 +75,7 @@ class Ready(BaseModel):
 
 
 class Message(BaseModel, Generic[INPUTTYPE]):
-    """Actor message DTO with async client and content composable by domain"""
+    """Actor message DTO with metadata and content composable by domain"""
 
     model_config = DTO_EDGE_CONFIG
     metadata: Metadata

@@ -52,7 +52,8 @@ async def lifespan(app: FastAPI):
     )
     app.state.handler = Handler(handler_side_effects)
     app.state.handler_task = app.state.handler.start()
-    async with transport_client(app) as client_api:
+    app.state.transport_client = transport_client(app)
+    async with app.state.transport_client(app) as client_api:
         await client_api.post(
             f"/address/{ActorNames.CONTROLLER}/start-up",
             json=start_up_message.model_dump(mode="json"),

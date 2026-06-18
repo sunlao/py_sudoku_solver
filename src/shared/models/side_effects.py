@@ -10,13 +10,18 @@ from shared.models.static_data import StaticDataInit
 
 
 class ActorSideEffects(BaseModel):
+    """DTO for actor side-effect dependencies
+    - Read yml configs as static data 
+    """
+
     model_config = DTO_EDGE_CONFIG
 
     static_data: Callable[[StaticDataInit], Read]
 
 
 class MailboxSideEffects(BaseModel):
-    """DTO for mailbox construction"""
+    """DTO for mailbox construction
+    - asyncio queue"""
 
     model_config = DTO_EDGE_CONFIG
 
@@ -24,7 +29,12 @@ class MailboxSideEffects(BaseModel):
 
 
 class HandlerSideEffects(BaseModel):
-    """DTO for handler side-effect dependencies"""
+    """DTO for handler side-effect dependencies
+    - mail box
+    - test mail box
+    - execute async tasks
+    - read yml configs as static data 
+    """
 
     model_config = DTO_EDGE_CONFIG
 
