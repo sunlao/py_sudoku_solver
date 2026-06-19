@@ -11,12 +11,13 @@ from shared.models.static_data import StaticDataInit
 
 class ActorSideEffects(BaseModel):
     """DTO for actor side-effect dependencies
-    - Read yml configs as static data 
+    - Read yml configs as static data
     """
 
     model_config = DTO_EDGE_CONFIG
 
     static_data: Callable[[StaticDataInit], Read]
+    transport_client: Callable
 
 
 class MailboxSideEffects(BaseModel):
@@ -33,7 +34,8 @@ class HandlerSideEffects(BaseModel):
     - mail box
     - test mail box
     - execute async tasks
-    - read yml configs as static data 
+    - read yml configs as static data
+    - transportclient to send messages
     """
 
     model_config = DTO_EDGE_CONFIG
@@ -43,3 +45,4 @@ class HandlerSideEffects(BaseModel):
     static_data: Callable[[StaticDataNames], Read]
     create_task: Callable[[Coroutine[Any, Any, None]], Task[None]]
     load_executable: Callable[[str], Callable]
+    transport_client: Callable

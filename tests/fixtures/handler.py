@@ -3,7 +3,7 @@ import pytest
 from actors.handler import Handler
 from actors.static_data.read import Read
 from api.v1.helpers.load_executable import load_executable
-from shared.models.constants import StaticDataNames
+from api.v1.helpers.client import transport_client
 from shared.models.side_effects import HandlerSideEffects
 
 
@@ -16,6 +16,7 @@ async def handler_solo(mailbox, test_mailbox):
             static_data=Read,
             create_task=asyncio.create_task,
             load_executable=load_executable,
+            transport_client=transport_client,
         )
     )
 

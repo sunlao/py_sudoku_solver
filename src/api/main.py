@@ -43,16 +43,17 @@ async def lifespan(app: FastAPI):
     # Start mailboxes
     app.state.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     app.state.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    app.state.transport_client = transport_client
     handler_side_effects = HandlerSideEffects(
         mailbox=app.state.mailbox,
         test_mailbox=app.state.test_mailbox,
         static_data=Read,
         create_task=asyncio.create_task,
         load_executable=load_executable,
+        transport_client=app.state.transport_client,
     )
     app.state.handler = Handler(handler_side_effects)
     app.state.handler_task = app.state.handler.start()
-    app.state.transport_client = transport_client(app)
     async with app.state.transport_client(app) as client_api:
         await client_api.post(
             f"/address/{ActorNames.CONTROLLER}/start-up",

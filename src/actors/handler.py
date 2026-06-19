@@ -14,7 +14,9 @@ class Handler:
         static_data_owner = type(self).__name__.lower()
         self.static_data = dto.static_data(StaticDataInit(name=static_data_owner))
         self.load_executable = dto.load_executable
-        self.actor_side_effects = ActorSideEffects(static_data=dto.static_data)
+        self.actor_side_effects = ActorSideEffects(
+            static_data=dto.static_data, transport_client=dto.transport_client
+        )
 
     def _executable(self, route: str):
         return self.load_executable(route)
@@ -26,11 +28,11 @@ class Handler:
 
     async def _route(self, message: Message) -> None:
         if message.metadata.actor_behavior == ActorBehaviors.TEST_READY:
-            """Intercept and reoute Ready Message in support of info.ready test api"""
+            # Intercept and reoute Ready Message in support of info.ready test api
             await self.test_mailbox.enqueue(message)
             return
         if message.metadata.actor_behavior == ActorBehaviors.TEST_SEND:
-            """Intercept and reoute test send Message in support of pytest"""
+            # Intercept and reoute test send Message in support of pytest.
             await self.test_mailbox.enqueue(message)
             return
         route_name = RouteName(name=message.metadata.actor_behavior)

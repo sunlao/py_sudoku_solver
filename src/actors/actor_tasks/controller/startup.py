@@ -23,7 +23,7 @@ class Startup:
 
     def _game_start(self, dto: Board) -> Message[GameStartup]:
         m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
-        return Message(metadata=m, content=(GameStartup(board=dto)))
+        return Message(metadata=m, content=[GameStartup(board=dto)])
 
     def _process_states(self) -> ProcessStates:
         return ProcessStates(
@@ -32,7 +32,9 @@ class Startup:
             )
         )
 
-    def _message_game_start(self, dto: Message[GameStartup]) -> None:
+    def _message_game_start(
+        self, side_effects: ActorSideEffects, dto: Message[GameStartup]
+    ) -> None:
         pass
 
     def _send_start_game(self) -> None:
@@ -71,5 +73,6 @@ class Startup:
         actors = self._actors(side_effects)
         game = self._transform_game(actors)
         rbc = self._transform_rbc(actors)
-        
+        print(f"**game: {game}")
+        print(f"**rbc {rbc}")
         print("**director end")
