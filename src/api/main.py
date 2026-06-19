@@ -51,6 +51,7 @@ async def lifespan(app: FastAPI):
         create_task=asyncio.create_task,
         load_executable=load_executable,
         transport_client=app.state.transport_client,
+        fastapi_app=app
     )
     app.state.handler = Handler(handler_side_effects)
     app.state.handler_task = app.state.handler.start()
