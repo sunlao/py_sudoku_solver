@@ -6,7 +6,7 @@ from shared.models.messages import Message, Metadata, Ready
 router = APIRouter()
 
 
-@router.get("/ready", response_model=ReadyResponse)
+@router.get("/ready", response_model=ReadyResponse, status_code=status.HTTP_200_OK)
 async def ready(request: Request, response: Response) -> ReadyResponse:
     mailbox = request.app.state.mailbox
     test_mailbox = request.app.state.test_mailbox

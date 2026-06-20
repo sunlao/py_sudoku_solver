@@ -3,6 +3,8 @@ from typing import NamedTuple
 
 
 class ActorNames(StrEnum):
+    """Constants for supported actors"""
+
     CONTROLLER = "controller"
     GAME = "game"
     BOARD = "board"
@@ -33,6 +35,20 @@ class ActorNames(StrEnum):
     COLUMN7 = "column7"
     COLUMN8 = "column8"
     COLUMN9 = "column9"
+
+
+class BehaviorNames(StrEnum):
+    """Constants for supported behaviors"""
+
+    START_UP = "start-up"
+    RBC_STATUS = "rbc-status"
+    UPDATE_PROCESS = "update-process"
+    START = "start"
+    CELL_UPDATE = "cell-update"
+    INITIALIZE = "initialize"
+    # API Info and Test Behaviors
+    READY = "ready"
+    SEND = "send"
 
 
 class ActorBehaviors(StrEnum):
@@ -96,11 +112,7 @@ class Services(StrEnum):
     """Pythonic Sudoku Solver Services"""
 
     API = "pss-api"
-
-
-class StaticDataNames(StrEnum):
-    CONTROLLER = "controller"
-    HANDLER = "handler"
+    TEST = "pss-test"
 
 
 class ProcessStatuses(StrEnum):

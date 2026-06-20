@@ -1,12 +1,9 @@
-from pydantic import BaseModel
+from re import compile
+from pydantic import BaseModel, field_validator
 from shared.models.policy import DTO_CONFIG
-from shared.models.constants import ActorNames, StaticDataNames, ActorBehaviors
+from shared.models.constants import ActorNames, BehaviorNames
 
-
-class StaticDataInit(BaseModel):
-    model_config = DTO_CONFIG
-
-    name: StaticDataNames
+NAME_FORMAT = compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
 class Actor(BaseModel):
@@ -14,21 +11,29 @@ class Actor(BaseModel):
 
     name: ActorNames
     rbc_flag: bool
-    addresses: tuple[str, ...]
+    behaviors: tuple[BehaviorNames, ...]
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> ActorNames:
+        if not NAME_FORMAT.fullmatch(value):
+            raise ValueError(f"Invalid actor name: {value}")
+        return value
+
+
+class Behavior(BaseModel):
+    model_config = DTO_CONFIG
+
+    name: BehaviorNames
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> BehaviorNames:
+        if not NAME_FORMAT.fullmatch(value):
+            raise ValueError(f"Invalid behavior name: {value}")
+        return value
 
 
 class Actors(BaseModel):
     model_config = DTO_CONFIG
     actors: tuple[Actor, ...]
-
-
-class Route(BaseModel):
-    model_config = DTO_CONFIG
-    route: str
-
-
-class RouteName(BaseModel):
-    """DTO to get handler route static data by actor:behavior"""
-
-    model_config = DTO_CONFIG
-    name: ActorBehaviors

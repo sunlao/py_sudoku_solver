@@ -1,50 +1,62 @@
 # pylint: disable=duplicate-code
+# from os import environ
 import asyncio
 from contextlib import asynccontextmanager
 from pytest import fixture
 from fastapi import FastAPI, Request
+from httpx import AsyncClient
 from actors.handler import Handler
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read
+from api.v1.helpers.client import transport_client
 from api.v1.helpers.load_executable import load_executable
 from shared.log.helpers.api_log_serializer import LogSerializer
-from shared.log.writer import Writer
 from shared.log.helpers.error import Error
 from shared.log.helpers.core import build as core_log
+from shared.log.writer import Writer
 from shared.models.constants import Events, LogLevel
 from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
-from shared.models.constants import StaticDataNames
 
 
 @asynccontextmanager
 async def _app_state(config_log, config_api):
+    # if environ("ENV") == "dev":
+    #     from dotenv import load_dotenv
+
+    #     load_dotenv()
     app = FastAPI()
     s = app.state
     s.log = Writer(config_log)
     s.log_error_helper = Error()
     s.format_log = LogSerializer()
+    s.wait = asyncio.wait_for
+    s.time_out = asyncio.TimeoutError
+    s.async_client = AsyncClient
     s.config_log = config_log
-    s.app_version = config_api.AppVersion
+    s.app_version = config_api.app_version
     s.log.write_core(
         core_log(config_log, LogLevel.INFO, Events.STARTUP, "Startup complete")
     )
-    app.state.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
-    app.state.ready_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    s.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    s.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    s.transport_client = transport_client
     handler_side_effects = HandlerSideEffects(
-        mailbox=app.state.mailbox,
-        ready_mailbox=app.state.ready_mailbox,
-        static_data=Read(StaticDataNames.HANDLER),
+        mailbox=s.mailbox,
+        test_mailbox=s.test_mailbox,
+        static_data=Read,
         create_task=asyncio.create_task,
         load_executable=load_executable,
+        transport_client=s.transport_client,
+        fastapi_app=app,
     )
-    app.state.handler = Handler(handler_side_effects)
-    app.state.handler_task = app.state.handler.start()
+    s.handler = Handler(handler_side_effects)
+    s.handler_task = s.handler.start()
     try:
         yield
     finally:
-        app.state.handler_task.cancel()
+        s.handler_task.cancel()
         try:
-            await app.state.handler_task
+            await s.handler_task
         except asyncio.CancelledError:
             pass
 

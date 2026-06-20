@@ -58,7 +58,7 @@ class ControllerStartup(BaseModel):
     board: Board
 
 
-class GameStartup(BaseModel):
+class GameStart(BaseModel):
     """Content DTO for startup messages"""
 
     model_config = DTO_CONFIG

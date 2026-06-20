@@ -8,7 +8,7 @@ from shared.models.side_effects import HandlerSideEffects
 
 
 @pytest.fixture
-async def handler_solo(mailbox, test_mailbox):
+async def handler_solo(mailbox, test_mailbox, api_with_state):
     handler = Handler(
         HandlerSideEffects(
             mailbox=mailbox,
@@ -17,6 +17,7 @@ async def handler_solo(mailbox, test_mailbox):
             create_task=asyncio.create_task,
             load_executable=load_executable,
             transport_client=transport_client,
+            fastapi_app=api_with_state,
         )
     )
 

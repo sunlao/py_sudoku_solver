@@ -20,7 +20,7 @@ from shared.log.helpers.core import build as core_log
 from shared.log.helpers.error import Error
 from shared.log.writer import Writer
 from shared.models.api import ASGIEvent, RootResponse
-from shared.models.constants import Events, LogLevel, ActorNames
+from shared.models.constants import Events, LogLevel
 from shared.models.log import EventError
 from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
 
@@ -32,48 +32,46 @@ start_up_message = start_up(Boards().start_up())
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    s = app.state
     app.state.log = Writer(config_log)
-    app.state.log_error_helper = Error()
-    app.state.format_log = LogSerializer()
-    app.state.wait = asyncio.wait_for
-    app.state.time_out = asyncio.TimeoutError
-    app.state.async_client = AsyncClient
-    app.state.config_log = config_log
-    app.state.app_version = api_log.app_version
+    s.log_error_helper = Error()
+    s.format_log = LogSerializer()
+    s.wait = asyncio.wait_for
+    s.time_out = asyncio.TimeoutError
+    s.async_client = AsyncClient
+    s.config_log = config_log
+    s.app_version = api_log.app_version
     # Start mailboxes
-    app.state.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
-    app.state.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
-    app.state.transport_client = transport_client
+    s.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    s.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
+    s.transport_client = transport_client
     handler_side_effects = HandlerSideEffects(
-        mailbox=app.state.mailbox,
-        test_mailbox=app.state.test_mailbox,
+        mailbox=s.mailbox,
+        test_mailbox=s.test_mailbox,
         static_data=Read,
         create_task=asyncio.create_task,
         load_executable=load_executable,
-        transport_client=app.state.transport_client,
-        fastapi_app=app
+        transport_client=s.transport_client,
+        fastapi_app=app,
     )
-    app.state.handler = Handler(handler_side_effects)
-    app.state.handler_task = app.state.handler.start()
-    async with app.state.transport_client(app) as client_api:
-        await client_api.post(
-            f"/address/{ActorNames.CONTROLLER}/start-up",
-            json=start_up_message.model_dump(mode="json"),
-        )
+    s.handler = Handler(handler_side_effects)
+    s.handler_task = s.handler.start()
+    async with s.transport_client(app, start_up_message) as client_api:
+        await client_api.post("/", json=start_up_message.model_dump(mode="json"))
     msg = "API Service Startup complete"
     core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
-    app.state.log.write_core(core)
+    s.log.write_core(core)
     try:
         yield
     finally:
-        app.state.handler_task.cancel()
+        s.handler_task.cancel()
         try:
-            await app.state.handler_task
+            await s.handler_task
         except asyncio.CancelledError:
             pass
         msg = "API Service Shutdown complete"
         core = core_log(config_log, LogLevel.INFO, Events.SHUTDOWN, msg)
-        app.state.log.write_core(core)
+        s.log.write_core(core)
 
 
 def create_api() -> FastAPI:
