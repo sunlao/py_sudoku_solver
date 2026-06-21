@@ -23,6 +23,8 @@ test-build:
 	docker compose -f docker-compose.yml build test
 test:
 	docker compose -f docker-compose.yml run --no-deps --remove-orphans test tox
+test-po:
+	docker compose -f docker-compose.yml run --no-deps --remove-orphans test tox -e po
 test-ci-local:
 	python -m scripts.reset
 	docker compose -f docker-compose.yml -f docker-compose-ci-local.yml up --build --remove-orphans --detach api
