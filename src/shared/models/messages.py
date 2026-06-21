@@ -2,7 +2,7 @@ from datetime import datetime, UTC
 from uuid import UUID, uuid4
 from typing import Generic
 from pydantic import BaseModel, Field, field_validator
-from shared.models.constants import ActorBehaviors
+from shared.models.constants import ActorBehaviors, MessageType
 from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
 
 
@@ -11,6 +11,7 @@ class Metadata(BaseModel):
 
     model_config = DTO_CONFIG
     message_id: UUID = Field(default_factory=uuid4)
+    type: MessageType = Field(default=MessageType.DOMAIN)
     times: datetime = Field(default_factory=lambda: datetime.now(UTC))
     actor_behavior: ActorBehaviors
 

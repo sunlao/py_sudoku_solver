@@ -9,7 +9,7 @@ from shared.models.messages import (
     Metadata,
 )
 from shared.models.side_effects import ActorSideEffects
-from shared.models.static_data import Actors
+from shared.models.static_data import Actors, Actor
 
 
 class StartUp:
@@ -21,10 +21,11 @@ class StartUp:
         m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
         return Message(metadata=m, content=GameStart(board=dto))
 
-    def _process_states(self) -> ProcessStates:
+    def _process_states(self, dto: Actors) -> ProcessStates:
         return ProcessStates(
             states=tuple(
-                ProcessState(actor=a, status=self._status(a)) for a in ActorNames
+                ProcessState(actor=a.name, status=self._status(a)) 
+                for a in dto.actors if a.process_flag is True
             )
         )
 
@@ -46,8 +47,8 @@ class StartUp:
         pass
 
     @staticmethod
-    def _status(name: str):
-        if name is ActorNames.BOARD:
+    def _status(actor: Actor):
+        if actor.name == ActorNames.BOARD:
             return ProcessStatuses.IDLE
         return ProcessStatuses.STARTED
 
@@ -60,11 +61,13 @@ class StartUp:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
     ) -> None:
-        states = self._process_states()
-        State(dto).set_controller_process(states)
         actors = self._actors(side_effects, dto)
+        states = self._process_states(actors)
+        for s in states.states:
+            print(f"state: {s}")
+        State(dto).set_controller_process(states)
         game = self._game_start(dto.content.board)
         await self._send_start_game(side_effects, game)
-        rbc = self._transform_rbc(actors)
+        # rbc = self._transform_rbc(actors)
         # print(f"**rbc {rbc}")
         print("**director end")

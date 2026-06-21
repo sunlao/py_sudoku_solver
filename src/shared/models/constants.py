@@ -99,6 +99,14 @@ class LogLevel(StrEnum):
     ERROR = "error"
 
 
+class MessageType(StrEnum):
+    """Type defining messages"""
+
+    DOMAIN = "domain"
+    ADMIN = "admin"
+    TEST = "test"
+
+
 # Starlette/Uvicorn insist on lower case
 class PathParts(StrEnum):
     """DTO to Support Tracing Errors. Trace Event paths are filtered and trimmed by
