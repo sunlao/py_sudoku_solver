@@ -7,11 +7,11 @@ meta:
   modified: 1780664534313
   description: ""
 collection:
-  - name: ActorApi
+  - name: Api
     meta:
       id: fld_d8b1055b9b444958af67c1f2cab8cfb2
       created: 1757856135407
-      modified: 1780664571198
+      modified: 1782075333754
       sortKey: -1759081675646
       description: ""
     children:
@@ -23,12 +23,12 @@ collection:
           sortKey: -1757856153460.5
           description: ""
         children:
-          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _.path }}"
+          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _['path-api'] }}"
             name: root
             meta:
               id: req_4dc44b5a3b0940298eb8cd522f0be293
               created: 1755287881706
-              modified: 1780664858049
+              modified: 1782076446804
               isPrivate: false
               description: ""
               sortKey: -1757856285903
@@ -52,12 +52,12 @@ collection:
           sortKey: -1757856153410.5
           description: ""
         children:
-          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _.path }}info/ready"
+          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _['path-api'] }}info/ready"
             name: ready
             meta:
               id: req_cd4b84f67c874c0abad6f1b0d25bb1af
               created: 1755228465178
-              modified: 1780664863382
+              modified: 1782076461772
               isPrivate: false
               description: ""
               sortKey: -1768437983438
@@ -73,17 +73,155 @@ collection:
                 send: true
                 store: true
               rebuildPath: true
-          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _.path }}info/version"
+          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _['path-api'] }}info/version"
             name: version
             meta:
               id: req_82251536caa2415ca5a7e079d5bedd5e
               created: 1755287863037
-              modified: 1780664851433
+              modified: 1782076454004
               isPrivate: false
               description: ""
               sortKey: -1768437983488
             method: GET
             headers:
+              - name: User-Agent
+                value: insomnia/11.4.0
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: Address
+    meta:
+      id: fld_5baecb0ea8394a3d9f800ada7635b920
+      created: 1782075119370
+      modified: 1782075320962
+      sortKey: -1759081675746
+      description: ""
+    children:
+      - name: Controller
+        meta:
+          id: fld_979d15c2d9d14c669d084a157e02662a
+          created: 1782075188847
+          modified: 1782075188847
+          sortKey: -1782075188847
+          description: ""
+        children:
+          - url: "{{ _.http }}{{ _.host }}{{ _['port'] }}{{ _.path-address
+              }}controller/start-up/"
+            name: start-up
+            meta:
+              id: req_81a8188ceff14d3eb7fa43e8504e0d07
+              created: 1782075198279
+              modified: 1782080601789
+              isPrivate: false
+              description: ""
+              sortKey: -1782075200906
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                   "metadata": {
+                      "message_id": "ba6db313-5dfe-433c-9aac-55fd0cb480c7",
+                      "type": "domain",
+                      "times": "2026-06-21T21:35:20.611686Z",
+                      "actor_behavior": "controller.start-up"
+                   },
+                   "content": {
+                      "board": {
+                         "cells": [
+                            {"row": 1, "column": 1, "box": 1, "value": 5},
+                            {"row": 1, "column": 2, "box": 1, "value": 3},
+                            {"row": 1, "column": 3, "box": 1, "value": null},
+                            {"row": 1, "column": 4, "box": 2, "value": null},
+                            {"row": 1, "column": 5, "box": 2, "value": 7},
+                            {"row": 1, "column": 6, "box": 2, "value": null},
+                            {"row": 1, "column": 7, "box": 3, "value": null},
+                            {"row": 1, "column": 8, "box": 3, "value": null},
+                            {"row": 1, "column": 9, "box": 3, "value": null},
+                            {"row": 2, "column": 1, "box": 1, "value": 6},
+                            {"row": 2, "column": 2, "box": 1, "value": null},
+                            {"row": 2, "column": 3, "box": 1, "value": null},
+                            {"row": 2, "column": 4, "box": 2, "value": 1},
+                            {"row": 2, "column": 5, "box": 2, "value": 9},
+                            {"row": 2, "column": 6, "box": 2, "value": 5},
+                            {"row": 2, "column": 7, "box": 3, "value": null},
+                            {"row": 2, "column": 8, "box": 3, "value": null},
+                            {"row": 2, "column": 9, "box": 3, "value": null},
+                            {"row": 3, "column": 1, "box": 1, "value": null},
+                            {"row": 3, "column": 2, "box": 1, "value": 9},
+                            {"row": 3, "column": 3, "box": 1, "value": 8},
+                            {"row": 3, "column": 4, "box": 2, "value": null},
+                            {"row": 3, "column": 5, "box": 2, "value": null},
+                            {"row": 3, "column": 6, "box": 2, "value": null},
+                            {"row": 3, "column": 7, "box": 3, "value": null},
+                            {"row": 3, "column": 8, "box": 3, "value": 6},
+                            {"row": 3, "column": 9, "box": 3, "value": null},
+                            {"row": 4, "column": 1, "box": 4, "value": 8},
+                            {"row": 4, "column": 2, "box": 4, "value": null},
+                            {"row": 4, "column": 3, "box": 4, "value": null},
+                            {"row": 4, "column": 4, "box": 5, "value": null},
+                            {"row": 4, "column": 5, "box": 5, "value": 6},
+                            {"row": 4, "column": 6, "box": 5, "value": null},
+                            {"row": 4, "column": 7, "box": 6, "value": null},
+                            {"row": 4, "column": 8, "box": 6, "value": null},
+                            {"row": 4, "column": 9, "box": 6, "value": 3},
+                            {"row": 5, "column": 1, "box": 4, "value": 4},
+                            {"row": 5, "column": 2, "box": 4, "value": null},
+                            {"row": 5, "column": 3, "box": 4, "value": null},
+                            {"row": 5, "column": 4, "box": 5, "value": 8},
+                            {"row": 5, "column": 5, "box": 5, "value": null},
+                            {"row": 5, "column": 6, "box": 5, "value": 3},
+                            {"row": 5, "column": 7, "box": 6, "value": null},
+                            {"row": 5, "column": 8, "box": 6, "value": null},
+                            {"row": 5, "column": 9, "box": 6, "value": 1},
+                            {"row": 6, "column": 1, "box": 4, "value": 7},
+                            {"row": 6, "column": 2, "box": 4, "value": null},
+                            {"row": 6, "column": 3, "box": 4, "value": null},
+                            {"row": 6, "column": 4, "box": 5, "value": null},
+                            {"row": 6, "column": 5, "box": 5, "value": 2},
+                            {"row": 6, "column": 6, "box": 5, "value": null},
+                            {"row": 6, "column": 7, "box": 6, "value": null},
+                            {"row": 6, "column": 8, "box": 6, "value": null},
+                            {"row": 6, "column": 9, "box": 6, "value": 6},
+                            {"row": 7, "column": 1, "box": 7, "value": null},
+                            {"row": 7, "column": 2, "box": 7, "value": 6},
+                            {"row": 7, "column": 3, "box": 7, "value": null},
+                            {"row": 7, "column": 4, "box": 8, "value": null},
+                            {"row": 7, "column": 5, "box": 8, "value": null},
+                            {"row": 7, "column": 6, "box": 8, "value": null},
+                            {"row": 7, "column": 7, "box": 9, "value": 2},
+                            {"row": 7, "column": 8, "box": 9, "value": 8},
+                            {"row": 7, "column": 9, "box": 9, "value": null},
+                            {"row": 8, "column": 1, "box": 7, "value": null},
+                            {"row": 8, "column": 2, "box": 7, "value": null},
+                            {"row": 8, "column": 3, "box": 7, "value": null},
+                            {"row": 8, "column": 4, "box": 8, "value": 4},
+                            {"row": 8, "column": 5, "box": 8, "value": 1},
+                            {"row": 8, "column": 6, "box": 8, "value": 9},
+                            {"row": 8, "column": 7, "box": 9, "value": null},
+                            {"row": 8, "column": 8, "box": 9, "value": null},
+                            {"row": 8, "column": 9, "box": 9, "value": 5},
+                            {"row": 9, "column": 1, "box": 7, "value": null},
+                            {"row": 9, "column": 2, "box": 7, "value": null},
+                            {"row": 9, "column": 3, "box": 7, "value": null},
+                            {"row": 9, "column": 4, "box": 8, "value": null},
+                            {"row": 9, "column": 5, "box": 8, "value": 8},
+                            {"row": 9, "column": 6, "box": 8, "value": null},
+                            {"row": 9, "column": 7, "box": 9, "value": null},
+                            {"row": 9, "column": 8, "box": 9, "value": 7},
+                            {"row": 9, "column": 9, "box": 9, "value": 9}
+                         ]
+                      }
+                   }
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
               - name: User-Agent
                 value: insomnia/11.4.0
             settings:
@@ -105,16 +243,17 @@ environments:
   meta:
     id: env_a3d4884e7ec24ec5b3942a49c5cba248
     created: 1755228406003
-    modified: 1780664695233
+    modified: 1782078388415
     isPrivate: false
   data:
-    path: /api/v1/
+    path-api: /api/v1/
+    path-address: /address/v1/
   subEnvironments:
     - name: local
       meta:
         id: env_fd812bcbac724af4923343d7fc77635f
         created: 1756496087816
-        modified: 1781696119506
+        modified: 1782078248813
         isPrivate: false
         sortKey: 1756496087816
       data:

@@ -56,8 +56,9 @@ async def lifespan(app: FastAPI):
     )
     s.handler = Handler(handler_side_effects)
     s.handler_task = s.handler.start()
+    msg_json = start_up_message.model_dump(mode="json")
     async with s.transport_client(app, start_up_message) as client_api:
-        await client_api.post("/", json=start_up_message.model_dump(mode="json"))
+        await client_api.post("/", json=msg_json)
     msg = "API Service Startup complete"
     core = core_log(config_log, LogLevel.INFO, Events.STARTUP, msg)
     s.log.write_core(core)
@@ -141,6 +142,5 @@ def create_api() -> FastAPI:
     _api.include_router(game.router, prefix="/address/v1/game", tags=["actor", "game"])
 
     return _api
-
 
 api = create_api()
