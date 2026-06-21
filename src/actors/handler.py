@@ -1,3 +1,4 @@
+from shared.models.constants import MessageType
 from shared.models.messages import Message, ActorBehaviors
 from shared.models.side_effects import HandlerSideEffects, ActorSideEffects
 
@@ -34,8 +35,7 @@ class Handler:
             await self._route(message)
 
     async def _route(self, dto: Message) -> None:
-        if dto.metadata.actor_behavior == ActorBehaviors.TEST_READY:
-            # Intercept and route Ready Message in support of info.ready test api
+        if dto.metadata.type == MessageType.TEST:
             await self.test_mailbox.enqueue(dto)
             return
         if dto.metadata.actor_behavior == ActorBehaviors.TEST_SEND:
