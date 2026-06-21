@@ -136,9 +136,9 @@ def create_api() -> FastAPI:
     _api.include_router(version.router, prefix="/api/v1/info", tags=["info"])
     _api.include_router(ready.router, prefix="/api/v1/info", tags=["info"])
     _api.include_router(
-        controller.router, prefix="/address/controller", tags=["actor", "controller"]
+        controller.router, prefix="/address/v1/controller", tags=["actor", "controller"]
     )
-    _api.include_router(game.router, prefix="/address/game", tags=["actor", "game"])
+    _api.include_router(game.router, prefix="/address/v1/game", tags=["actor", "game"])
 
     return _api
 

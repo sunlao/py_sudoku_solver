@@ -1,3 +1,4 @@
+from fastapi import status
 from actors.state import State
 from shared.models.constants import ActorNames, ProcessStatuses, ActorBehaviors
 from shared.models.controller import ProcessState, ProcessStates
@@ -36,7 +37,12 @@ class StartUp:
         async with side_effects.transport_client(
             side_effects.fastapi_app, dto
         ) as client_api:
-            await client_api.post("/", json=dto.model_dump(mode="json"))
+            response = await client_api.post("/", json=dto.model_dump(mode="json"))
+            if response.status_code != status.HTTP_202_ACCEPTED:
+                raise RuntimeError(
+                    f"{dto.metadata.actor_behavior} failed to send "
+                    f"MessageID: {dto.metadata.message_id}"
+                )
 
     def _send_start_rbc(self) -> None:
         pass
@@ -64,8 +70,6 @@ class StartUp:
     ) -> None:
         actors = self._actors(side_effects, dto)
         states = self._process_states(actors)
-        for s in states.states:
-            print(f"state: {s}")
         State(dto).set_controller_process(states)
         game = self._game_start(dto.content.board)
         await self._send_start_game(side_effects, game)
