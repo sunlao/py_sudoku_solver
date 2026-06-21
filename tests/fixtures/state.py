@@ -6,7 +6,7 @@ from shared.models.controller import ProcessStates, ProcessState
 
 @pytest.fixture
 def state():
-    return State()
+    return State
 
 
 @pytest.fixture

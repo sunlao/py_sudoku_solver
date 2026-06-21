@@ -19,7 +19,9 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
     if check_mailbox and check_test_mailbox and check_handler:
         api_ready = True
         probe = Message(
-            metadata=Metadata(actor_behavior=ActorBehaviors.TEST_READY, type=MessageType.TEST),
+            metadata=Metadata(
+                actor_behavior=ActorBehaviors.TEST_READY, type=MessageType.TEST
+            ),
             content=Ready(),
         )
         # shared mailbox/handler at the FastAPI level for all actors

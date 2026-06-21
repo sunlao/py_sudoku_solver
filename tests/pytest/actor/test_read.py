@@ -21,18 +21,18 @@ async def test_controller(controller):
 
     for actor in rbc:
         assert actor.rbc_flag is True
-        assert len(actor.addresses) == 2
-        for address in actor.addresses:
-            assert address.startswith("/address/" + actor.name)
-    assert len(game[0].addresses) == 2
+        assert len(actor.behaviors) == 2
+        for behavior in actor.behaviors:
+            assert behavior in ("start", "cell-update")
+    assert len(game[0].behaviors) == 2
     assert game[0].rbc_flag is False
-    for address in game[0].addresses:
-        assert address.startswith("/address/" + game[0].name)
-    assert len(board[0].addresses) == 1
+    for behavior in game[0].behaviors:
+        assert behavior in ("start", "cell-update")
+    assert len(board[0].behaviors) == 1
     assert board[0].rbc_flag is False
-    for address in board[0].addresses:
-        assert address.startswith("/address/" + board[0].name)
-    assert len(contrlr[0].addresses) == 3
+    for behavior in board[0].behaviors:
+        assert behavior == "initialize"
+    assert len(contrlr[0].behaviors) == 3
     assert contrlr[0].rbc_flag is False
-    for address in contrlr[0].addresses:
-        assert address.startswith("/address/" + contrlr[0].name)
+    for behavior in contrlr[0].behaviors:
+        assert behavior in ("start-up", "rbc-status", "update-process")

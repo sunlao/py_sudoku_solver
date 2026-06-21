@@ -24,8 +24,9 @@ class StartUp:
     def _process_states(self, dto: Actors) -> ProcessStates:
         return ProcessStates(
             states=tuple(
-                ProcessState(actor=a.name, status=self._status(a)) 
-                for a in dto.actors if a.process_flag is True
+                ProcessState(actor=a.name, status=self._status(a))
+                for a in dto.actors
+                if a.process_flag is True
             )
         )
 

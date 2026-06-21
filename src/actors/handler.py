@@ -15,7 +15,6 @@ class Handler:
         self.actor_side_effects = ActorSideEffects(
             static_data=dto.static_data,
             transport_client=dto.transport_client,
-            fastapi_app=dto.fastapi_app,
         )
 
     def _executable(self, route: str):
@@ -36,10 +35,6 @@ class Handler:
 
     async def _route(self, dto: Message) -> None:
         if dto.metadata.type == MessageType.TEST:
-            await self.test_mailbox.enqueue(dto)
-            return
-        if dto.metadata.actor_behavior == ActorBehaviors.TEST_SEND:
-            # Intercept and route Test Handler Message in support of pytest.
             await self.test_mailbox.enqueue(dto)
             return
         route_name = self._route_name(dto.metadata.actor_behavior)

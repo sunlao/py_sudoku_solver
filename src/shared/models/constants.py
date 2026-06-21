@@ -56,8 +56,8 @@ class ActorBehaviors(StrEnum):
 
     CONTROLLER_START_UP = "controller.start-up"
     GAME_START = "game.start"
+    TEST_BAD = "test.bad"
     TEST_READY = "test.ready"
-    TEST_SEND = "test.send"
 
 
 class Audit(NamedTuple):

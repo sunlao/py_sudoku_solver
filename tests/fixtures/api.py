@@ -1,5 +1,4 @@
 # pylint: disable=duplicate-code
-# from os import environ
 import asyncio
 from contextlib import asynccontextmanager
 from pytest import fixture
@@ -20,10 +19,6 @@ from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
 
 @asynccontextmanager
 async def _app_state(config_log, config_api):
-    # if environ("ENV") == "dev":
-    #     from dotenv import load_dotenv
-
-    #     load_dotenv()
     app = FastAPI()
     s = app.state
     s.log = Writer(config_log)

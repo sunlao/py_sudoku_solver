@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Request, status
+from fastapi import APIRouter, status
+
+# , Request
 from shared.models.messages import Message
 
 router = APIRouter()
