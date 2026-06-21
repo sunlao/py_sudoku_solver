@@ -47,7 +47,7 @@ async def _app_state(config_log, config_api):
     s.handler = Handler(handler_side_effects)
     s.handler_task = s.handler.start()
     try:
-        yield
+        yield app
     finally:
         s.handler_task.cancel()
         try:
