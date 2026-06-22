@@ -143,4 +143,5 @@ def create_api() -> FastAPI:
 
     return _api
 
+
 api = create_api()
