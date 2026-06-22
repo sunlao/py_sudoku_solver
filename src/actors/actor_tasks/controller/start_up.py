@@ -1,7 +1,7 @@
 from fastapi import status
 from actors.state import State
-from shared.models.constants import ActorNames, ProcessStatuses, ActorBehaviors
-from shared.models.controller import ProcessState, ProcessStates
+from shared.models.constants import ActorNames, ActorDomainStatus, ActorBehaviors
+from shared.models.state import ActorDomainState, ActorDomainStates
 from shared.models.messages import (
     Message,
     ControllerStartup,
@@ -22,10 +22,10 @@ class StartUp:
         m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
         return Message(metadata=m, content=GameStart(board=dto))
 
-    def _process_states(self, dto: Actors) -> ProcessStates:
-        return ProcessStates(
+    def _process_states(self, dto: Actors) -> ActorDomainStates:
+        return ActorDomainStates(
             states=tuple(
-                ProcessState(actor=a.name, status=self._status(a))
+                ActorDomainState(actor=a.name, status=self._status(a))
                 for a in dto.actors
                 if a.process_flag is True
             )
@@ -56,8 +56,8 @@ class StartUp:
     @staticmethod
     def _status(actor: Actor):
         if actor.name == ActorNames.BOARD:
-            return ProcessStatuses.IDLE
-        return ProcessStatuses.STARTED
+            return ActorDomainStatus.IDLE
+        return ActorDomainStatus.STARTED
 
     @staticmethod
     def _transform_rbc(dto: Actors) -> Actors:

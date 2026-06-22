@@ -123,6 +123,6 @@ class Services(StrEnum):
     TEST = "pss-test"
 
 
-class ProcessStatuses(StrEnum):
+class ActorDomainStatus(StrEnum):
     STARTED = "started"
     IDLE = "idle"

@@ -1,22 +1,21 @@
 from datetime import datetime, UTC
 from pydantic import BaseModel, Field
-from shared.models.constants import ActorNames, ProcessStatuses
+from shared.models.constants import ActorNames, ActorDomainStatus
 from shared.models.policy import DTO_CONFIG
 
-
-class ProcessState(BaseModel):
+class ActorDomainState(BaseModel):
     """Controller process state for an actor"""
 
     model_config = DTO_CONFIG
 
     actor: ActorNames
-    status: ProcessStatuses
+    status: ActorDomainStatus
     time: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 
-class ProcessStates(BaseModel):
+class ActorDomainStates(BaseModel):
     """Controller process state for all actors"""
 
     model_config = DTO_CONFIG
 
-    states: tuple[ProcessState, ...]
+    states: tuple[ActorDomainState, ...]
