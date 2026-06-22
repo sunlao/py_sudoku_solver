@@ -14,7 +14,7 @@ actors:
   - name: row1
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c1
       - r1c2
       - r1c3
@@ -28,7 +28,7 @@ actors:
   - name: row2
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r2c1
       - r2c2
       - r2c3
@@ -42,7 +42,7 @@ actors:
   - name: row3
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r3c1
       - r3c2
       - r3c3
@@ -56,7 +56,7 @@ actors:
   - name: row4
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r4c1
       - r4c2
       - r4c3
@@ -70,7 +70,7 @@ actors:
   - name: row5
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r5c1
       - r5c2
       - r5c3
@@ -84,7 +84,7 @@ actors:
   - name: row6
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r6c1
       - r6c2
       - r6c3
@@ -98,7 +98,7 @@ actors:
   - name: row7
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r7c1
       - r7c2
       - r7c3
@@ -112,7 +112,7 @@ actors:
   - name: row8
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r8c1
       - r8c2
       - r8c3
@@ -126,7 +126,7 @@ actors:
   - name: row9
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r9c1
       - r9c2
       - r9c3
@@ -140,7 +140,7 @@ actors:
   - name: box1
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c1
       - r1c2
       - r1c3
@@ -154,7 +154,7 @@ actors:
   - name: box2
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c4
       - r1c5
       - r1c6
@@ -168,7 +168,7 @@ actors:
   - name: box3
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c7
       - r1c8
       - r1c9
@@ -182,7 +182,7 @@ actors:
   - name: box4
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r4c1
       - r4c2
       - r4c3
@@ -196,7 +196,7 @@ actors:
   - name: box5
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r4c4
       - r4c5
       - r4c6
@@ -210,7 +210,7 @@ actors:
   - name: box6
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r4c7
       - r4c8
       - r4c9
@@ -224,7 +224,7 @@ actors:
   - name: box7
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r7c1
       - r7c2
       - r7c3
@@ -238,7 +238,7 @@ actors:
   - name: box8
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r7c4
       - r7c5
       - r7c6
@@ -252,7 +252,7 @@ actors:
   - name: box9
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r7c7
       - r7c8
       - r7c9
@@ -266,7 +266,7 @@ actors:
   - name: column1
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c1
       - r2c1
       - r3c1
@@ -280,7 +280,7 @@ actors:
   - name: column2
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c2
       - r2c2
       - r3c2
@@ -294,7 +294,7 @@ actors:
   - name: column3
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c3
       - r2c3
       - r3c3
@@ -308,7 +308,7 @@ actors:
   - name: column4
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c4
       - r2c4
       - r3c4
@@ -322,7 +322,7 @@ actors:
   - name: column5
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c5
       - r2c5
       - r3c5
@@ -336,7 +336,7 @@ actors:
   - name: column6
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c6
       - r2c6
       - r3c6
@@ -350,7 +350,7 @@ actors:
   - name: column7
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c7
       - r2c7
       - r3c7
@@ -364,7 +364,7 @@ actors:
   - name: column8
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c8
       - r2c8
       - r3c8
@@ -378,7 +378,7 @@ actors:
   - name: column9
     rbc_flag: true
     domain_flag: true
-    cells:
+    cell_ids:
       - r1c9
       - r2c9
       - r3c9

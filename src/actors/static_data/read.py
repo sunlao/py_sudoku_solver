@@ -21,6 +21,4 @@ class Read:
     def controller_actors(self) -> Actors:
         """Controller Actor static data"""
         yml = self._yml()
-        return Actors(
-            actors=tuple(Actor.model_validate(a) for a in yml["actors"])
-        )
+        return Actors(actors=tuple(Actor.model_validate(a) for a in yml["actors"]))

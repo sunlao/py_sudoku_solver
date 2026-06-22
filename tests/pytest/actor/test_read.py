@@ -1,7 +1,7 @@
 from shared.models.constants import ActorNames
 
 
-# Assert the controller static data 
+# Assert the controller static data
 async def test_controller(controller):
     actors = controller.actors
 
@@ -17,16 +17,16 @@ async def test_controller(controller):
     assert len(rbc) == 27
 
     for actor in rbc:
-        assert actor.name.startswith(('row', 'box', 'column'))
+        assert actor.name.startswith(("row", "box", "column"))
         assert actor.rbc_flag is True
         assert actor.domain_flag is True
-        assert len(actor.cells) == 9
+        assert len(actor.cell_ids) == 9
     assert game[0].rbc_flag is False
     assert game[0].domain_flag is True
-    assert game[0].cells is None
+    assert game[0].cell_ids is None
     assert board[0].rbc_flag is False
-    assert board[0].domain_flag is True    
-    assert board[0].cells is None
+    assert board[0].domain_flag is True
+    assert board[0].cell_ids is None
     assert contrlr[0].rbc_flag is False
-    assert contrlr[0].domain_flag is False    
-    assert contrlr[0].cells is None
+    assert contrlr[0].domain_flag is False
+    assert contrlr[0].cell_ids is None

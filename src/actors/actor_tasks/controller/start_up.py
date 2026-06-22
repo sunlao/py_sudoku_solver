@@ -3,11 +3,12 @@ from actors.state import State
 from shared.models.constants import ActorNames, ActorDomainStatus, ActorBehaviors
 from shared.models.state import ActorDomainState, ActorDomainStates
 from shared.models.messages import (
-    Message,
+    Board,
     ControllerStartup,
     GameStart,
-    Board,
+    Message,
     Metadata,
+    RBCStart,
 )
 from shared.models.side_effects import ActorSideEffects
 from shared.models.static_data import Actors, Actor
@@ -60,6 +61,12 @@ class StartUp:
     def _xform_game_start(self, dto: Board) -> Message[GameStart]:
         m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
         return Message(metadata=m, content=GameStart(board=dto))
+    
+    def _xform_rbc_start(self, dto: Board, actor: Actor) -> Message[RBCStart]:
+        m = Metadata(actor_behavior=ActorBehaviors(f"{actor.name}.start"))
+        actor_cell_ids = set(c for c in actor.cell_ids)
+        cells = tuple([c for c in dto.cells if c.id in actor_cell_ids])
+        return Message(metadata=m, content=RBCStart(name=actor.name, cells=cells))
 
     @staticmethod
     def _xform_rbc(dto: ActorDomainStates) -> ActorDomainState:

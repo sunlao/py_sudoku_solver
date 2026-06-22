@@ -11,13 +11,7 @@ def create_board(board_input: BoardInput) -> Board:
             box = ((row_num - 1) // 3) * 3 + ((col - 1) // 3) + 1
             cell_id = CellIds(f"r{row_num}c{col}")
             cells.append(
-                Cell(
-                    id=cell_id,
-                    row=row_num,
-                    column=col,
-                    box=box,
-                    value=value
-                )
+                Cell(id=cell_id, row=row_num, column=col, box=box, value=value)
             )
     return Board(cells=tuple(cells))
 

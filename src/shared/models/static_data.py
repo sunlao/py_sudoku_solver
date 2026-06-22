@@ -14,7 +14,7 @@ class Actor(BaseModel):
     name: ActorNames
     rbc_flag: bool
     domain_flag: bool
-    cells: tuple[CellIds, ...] | None = None
+    cell_ids: tuple[CellIds, ...] | None = None
 
 
 class Actors(BaseModel):
