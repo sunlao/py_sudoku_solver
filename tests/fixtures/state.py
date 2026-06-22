@@ -12,5 +12,9 @@ def state():
 @pytest.fixture
 def test_process_states() -> ActorDomainStates:
     return ActorDomainStates(
-        states=(ActorDomainState(actor=ActorNames.BOARD, status=ActorDomainStatus.IDLE),)
+        states=(
+            ActorDomainState(
+                actor=ActorNames.BOARD, rbc_flag=False, status=ActorDomainStatus.IDLE
+            ),
+        )
     )

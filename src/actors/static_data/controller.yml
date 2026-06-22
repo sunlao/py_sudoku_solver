@@ -1,7 +1,7 @@
 actors:
   - name: controller
     rbc_flag: false
-    process_flag: false
+    domain_flag: false
     behaviors:
       - start-up
       - rbc-status
@@ -9,202 +9,202 @@ actors:
 
   - name: game
     rbc_flag: false
-    process_flag: false
+    domain_flag: false
     behaviors:
       - start
       - cell-update
 
   - name: board
     rbc_flag: false
-    process_flag: true
+    domain_flag: true
     behaviors:
       - initialize
 
   - name: row1
     rbc_flag: true  
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: row2
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: row3
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: row4
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: row5
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: row6
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: row7
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: row8
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: row9
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box1
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box2
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box3
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box4
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box5
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box6
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box7
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box8
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: box9
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column1
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column2
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column3
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column4
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column5
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column6
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column7
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column8
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update
 
   - name: column9
     rbc_flag: true
-    process_flag: true
+    domain_flag: true
     behaviors:
       - start
       - cell-update

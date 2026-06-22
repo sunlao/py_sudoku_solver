@@ -21,9 +21,11 @@ class StartUp:
     def _get_actor_domain_states(self, dto: Actors) -> ActorDomainStates:
         return ActorDomainStates(
             states=tuple(
-                ActorDomainState(actor=a.name, status=self._status(a))
+                ActorDomainState(
+                    actor=a.name, rbc_flag=a.rbc_flag, status=self._status(a)
+                )
                 for a in dto.actors
-                if a.process_flag is True
+                if a.domain_flag is True
             )
         )
 

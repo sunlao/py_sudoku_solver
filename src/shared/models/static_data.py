@@ -13,7 +13,7 @@ class Actor(BaseModel):
 
     name: ActorNames
     rbc_flag: bool
-    process_flag: bool
+    domain_flag: bool
     behaviors: tuple[BehaviorNames, ...]
 
     # @field_validator("name")
