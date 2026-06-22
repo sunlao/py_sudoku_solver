@@ -43,6 +43,7 @@ async def _app_state(config_log, config_api):
         load_executable=load_executable,
         transport_client=s.transport_client,
         fastapi_app=app,
+        gather=asyncio.gather
     )
     s.handler = Handler(handler_side_effects)
     s.handler_task = s.handler.start()

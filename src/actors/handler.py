@@ -16,6 +16,7 @@ class Handler:
             static_data=dto.static_data,
             transport_client=dto.transport_client,
             fastapi_app=dto.fastapi_app,
+            gather=dto.gather,
         )
 
     def _executable(self, route: str):

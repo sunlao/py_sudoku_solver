@@ -18,6 +18,7 @@ async def handler_solo(mailbox, test_mailbox, api_with_state):
             load_executable=load_executable,
             transport_client=transport_client,
             fastapi_app=api_with_state,
+            gather=asyncio.gather
         )
     )
 

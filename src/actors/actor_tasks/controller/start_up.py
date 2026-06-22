@@ -41,6 +41,15 @@ class StartUp:
     def _send_observer(self) -> None:
         pass
 
+    async def _send_xform_rbc_start(
+        self, side_effects: ActorSideEffects, dto: Board, actors: Actors
+    ):
+        msgs = tuple(
+            self._xform_rbc_start(dto, a) for a in actors.actors if a.rbc_flag is True
+        )
+        print(len(msgs))
+        # await side_effects.gather(*(side_effects.transport_client(m) for m in msgs))
+
     @staticmethod
     def _status(actor: Actor):
         if actor.name == ActorNames.BOARD:
@@ -61,18 +70,12 @@ class StartUp:
     def _xform_game_start(self, dto: Board) -> Message[GameStart]:
         m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
         return Message(metadata=m, content=GameStart(board=dto))
-    
+
     def _xform_rbc_start(self, dto: Board, actor: Actor) -> Message[RBCStart]:
         m = Metadata(actor_behavior=ActorBehaviors(f"{actor.name}.start"))
         actor_cell_ids = set(c for c in actor.cell_ids)
-        cells = tuple([c for c in dto.cells if c.id in actor_cell_ids])
-        return Message(metadata=m, content=RBCStart(name=actor.name, cells=cells))
-
-    @staticmethod
-    def _xform_rbc(dto: ActorDomainStates) -> ActorDomainState:
-        return dto.model_copy(
-            update={"states": [a for a in dto.states if a.rbc_flag is True]}
-        )
+        c = tuple([c for c in dto.cells if c.id in actor_cell_ids])
+        return Message(metadata=m, content=RBCStart(actor=actor.name, cells=c))
 
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
@@ -82,6 +85,5 @@ class StartUp:
         State(dto).set_actor_domain_states(states)
         game = self._xform_game_start(dto.content.board)
         await self._send_start_game(side_effects, game)
-        # rbc = self._xform_rbc(states)
-        # print(f"**rbc {rbc}")
+        await self._send_xform_rbc_start(side_effects, dto.content.board, actors)
         print("**director end")

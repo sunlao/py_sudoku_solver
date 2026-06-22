@@ -1,5 +1,5 @@
 from asyncio import Queue, Task
-from collections.abc import Callable, Coroutine
+from collections.abc import Awaitable, Callable, Coroutine
 from typing import Any
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -18,6 +18,7 @@ class ActorSideEffects(BaseModel):
     static_data: Callable[[Message], Read]
     transport_client: Callable
     fastapi_app: FastAPI
+    gather: Callable[..., Awaitable[tuple[Any, ...]]]
 
 
 class MailboxSideEffects(BaseModel):
@@ -48,3 +49,4 @@ class HandlerSideEffects(BaseModel):
     load_executable: Callable[[str], Callable]
     transport_client: Callable
     fastapi_app: FastAPI
+    gather: Callable[..., Awaitable[tuple[Any, ...]]]
