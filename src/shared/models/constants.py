@@ -37,20 +37,6 @@ class ActorNames(StrEnum):
     COLUMN9 = "column9"
 
 
-class BehaviorNames(StrEnum):
-    """Constants for supported behaviors"""
-
-    START_UP = "start-up"
-    RBC_STATUS = "rbc-status"
-    UPDATE_PROCESS = "update-process"
-    START = "start"
-    CELL_UPDATE = "cell-update"
-    INITIALIZE = "initialize"
-    # API Info and Test Behaviors
-    READY = "ready"
-    SEND = "send"
-
-
 class ActorBehaviors(StrEnum):
     """Constants for supported actor behaviors."""
 
