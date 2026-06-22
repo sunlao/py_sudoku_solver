@@ -1,6 +1,7 @@
 import pytest
-from shared.models.messages import Board, Cell
 from shared.models.board import BoardInput, RowInput
+from shared.models.constants import CellIds
+from shared.models.messages import Board, Cell
 
 
 def create_board(board_input: BoardInput) -> Board:
@@ -8,7 +9,16 @@ def create_board(board_input: BoardInput) -> Board:
     for row_num, row_input in enumerate(board_input.rows, start=1):
         for col, value in enumerate(row_input.values, start=1):
             box = ((row_num - 1) // 3) * 3 + ((col - 1) // 3) + 1
-            cells.append(Cell(row=row_num, column=col, box=box, value=value))
+            cell_id = CellIds(f"r{row_num}c{col}")
+            cells.append(
+                Cell(
+                    id=cell_id,
+                    row=row_num,
+                    column=col,
+                    box=box,
+                    value=value
+                )
+            )
     return Board(cells=tuple(cells))
 
 

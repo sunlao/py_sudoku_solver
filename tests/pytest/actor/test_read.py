@@ -21,18 +21,10 @@ async def test_controller(controller):
 
     for actor in rbc:
         assert actor.rbc_flag is True
-        assert len(actor.behaviors) == 2
-        for behavior in actor.behaviors:
-            assert behavior in ("start", "cell-update")
-    assert len(game[0].behaviors) == 2
+        assert len(actor.cells) == 9
     assert game[0].rbc_flag is False
-    for behavior in game[0].behaviors:
-        assert behavior in ("start", "cell-update")
-    assert len(board[0].behaviors) == 1
+    assert game[0].cells is None
     assert board[0].rbc_flag is False
-    for behavior in board[0].behaviors:
-        assert behavior == "initialize"
-    assert len(contrlr[0].behaviors) == 3
+    assert board[0].cells is None
     assert contrlr[0].rbc_flag is False
-    for behavior in contrlr[0].behaviors:
-        assert behavior in ("start-up", "rbc-status", "update-process")
+    assert contrlr[0].cells is None

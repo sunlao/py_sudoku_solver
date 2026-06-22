@@ -2,7 +2,7 @@ from datetime import datetime, UTC
 from uuid import UUID, uuid4
 from typing import Generic
 from pydantic import BaseModel, Field, field_validator
-from shared.models.constants import ActorBehaviors, MessageType
+from shared.models.constants import ActorBehaviors, CellIds, MessageType
 from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
 
 
@@ -20,6 +20,7 @@ class Cell(BaseModel):
     """Single cell in sudoku board"""
 
     model_config = DTO_CONFIG
+    id: CellIds
     row: int = Field(ge=1, le=9)
     column: int = Field(ge=1, le=9)
     box: int = Field(ge=1, le=9)
