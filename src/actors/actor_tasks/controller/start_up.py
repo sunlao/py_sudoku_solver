@@ -15,14 +15,10 @@ from shared.models.static_data import Actors, Actor
 
 class StartUp:
 
-    def _actors(self, side_effects: ActorSideEffects, dto: Message) -> Actors:
+    def _get_actors(self, side_effects: ActorSideEffects, dto: Message) -> Actors:
         return side_effects.static_data(dto).controller_actors()
 
-    def _game_start(self, dto: Board) -> Message[GameStart]:
-        m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
-        return Message(metadata=m, content=GameStart(board=dto))
-
-    def _process_states(self, dto: Actors) -> ActorDomainStates:
+    def _get_actor_domain_states(self, dto: Actors) -> ActorDomainStates:
         return ActorDomainStates(
             states=tuple(
                 ActorDomainState(actor=a.name, status=self._status(a))
@@ -30,6 +26,10 @@ class StartUp:
                 if a.process_flag is True
             )
         )
+
+    def _get_game_start(self, dto: Board) -> Message[GameStart]:
+        m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
+        return Message(metadata=m, content=GameStart(board=dto))
 
     async def _send_start_game(
         self, side_effects: ActorSideEffects, dto: Message[GameStart]
@@ -68,10 +68,10 @@ class StartUp:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
     ) -> None:
-        actors = self._actors(side_effects, dto)
-        states = self._process_states(actors)
-        State(dto).set_controller_process(states)
-        game = self._game_start(dto.content.board)
+        actors = self._get_actors(side_effects, dto)
+        states = self._get_actor_domain_states(actors)
+        State(dto).set_actor_domain_states(states)
+        game = self._get_game_start(dto.content.board)
         await self._send_start_game(side_effects, game)
         # rbc = self._transform_rbc(actors)
         # print(f"**rbc {rbc}")

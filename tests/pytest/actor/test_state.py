@@ -8,7 +8,7 @@ def test_controller_process(state, startup_message, bad_message, test_process_st
     state_bad = state(bad_message)
     result = state_obj.get_cache()
     assert result is None
-    state_obj.set_controller_process(test_process_states)
+    state_obj.set_actor_domain_states(test_process_states)
     result = state_obj.get_cache()
     result_bad = state_bad.get_cache()
     assert result == test_process_states

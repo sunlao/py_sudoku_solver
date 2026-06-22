@@ -19,7 +19,7 @@ class State:
     def get_cache(self) -> object | None:
         return self._cache.get(self.key)
 
-    def set_controller_process(self, dto: ActorDomainStates) -> None:
+    def set_actor_domain_states(self, dto: ActorDomainStates) -> None:
         """Set the process state for every eligible actor behavior for the controller
         actor"""
 
