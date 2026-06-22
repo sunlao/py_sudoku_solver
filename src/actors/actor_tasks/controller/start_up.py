@@ -18,21 +18,6 @@ class StartUp:
     def _get_actors(self, side_effects: ActorSideEffects, dto: Message) -> Actors:
         return side_effects.static_data(dto).controller_actors()
 
-    def _get_actor_domain_states(self, dto: Actors) -> ActorDomainStates:
-        return ActorDomainStates(
-            states=tuple(
-                ActorDomainState(
-                    actor=a.name, rbc_flag=a.rbc_flag, status=self._status(a)
-                )
-                for a in dto.actors
-                if a.domain_flag is True
-            )
-        )
-
-    def _get_game_start(self, dto: Board) -> Message[GameStart]:
-        m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
-        return Message(metadata=m, content=GameStart(board=dto))
-
     async def _send_start_game(
         self, side_effects: ActorSideEffects, dto: Message[GameStart]
     ) -> None:
@@ -61,20 +46,35 @@ class StartUp:
             return ActorDomainStatus.IDLE
         return ActorDomainStatus.STARTED
 
+    def _xform_actor_domain_states(self, dto: Actors) -> ActorDomainStates:
+        return ActorDomainStates(
+            states=tuple(
+                ActorDomainState(
+                    actor=a.name, rbc_flag=a.rbc_flag, status=self._status(a)
+                )
+                for a in dto.actors
+                if a.domain_flag is True
+            )
+        )
+
+    def _xform_game_start(self, dto: Board) -> Message[GameStart]:
+        m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
+        return Message(metadata=m, content=GameStart(board=dto))
+
     @staticmethod
-    def _transform_rbc(dto: Actors) -> Actors:
+    def _xform_rbc(dto: ActorDomainStates) -> ActorDomainState:
         return dto.model_copy(
-            update={"actors": [a for a in dto.actors if a.rbc_flag is True]}
+            update={"states": [a for a in dto.states if a.rbc_flag is True]}
         )
 
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
     ) -> None:
         actors = self._get_actors(side_effects, dto)
-        states = self._get_actor_domain_states(actors)
+        states = self._xform_actor_domain_states(actors)
         State(dto).set_actor_domain_states(states)
-        game = self._get_game_start(dto.content.board)
+        game = self._xform_game_start(dto.content.board)
         await self._send_start_game(side_effects, game)
-        # rbc = self._transform_rbc(actors)
+        # rbc = self._xform_rbc(states)
         # print(f"**rbc {rbc}")
         print("**director end")
