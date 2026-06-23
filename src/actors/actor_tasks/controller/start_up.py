@@ -41,14 +41,28 @@ class StartUp:
     def _send_observer(self) -> None:
         pass
 
-    async def _send_xform_rbc_start(
+    async def _send_rbc_start(
+        self, side_effects: ActorSideEffects, dto: Message[RBCStart]
+    ) -> None:
+        async with side_effects.transport_client(
+            side_effects.fastapi_app, dto
+        ) as client_api:
+            response = await client_api.post("/", json=dto.model_dump(mode="json"))
+            if response.status_code != status.HTTP_202_ACCEPTED:
+                raise RuntimeError(
+                    f"{dto.metadata.actor_behavior} failed to send "
+                    f"MessageID: {dto.metadata.message_id}"
+                )
+
+    async def _gather_xform_rbc_start(
         self, side_effects: ActorSideEffects, dto: Board, actors: Actors
-    ):
+    ) -> None:
         msgs = tuple(
             self._xform_rbc_start(dto, a) for a in actors.actors if a.rbc_flag is True
         )
-        print(len(msgs))
-        # await side_effects.gather(*(side_effects.transport_client(m) for m in msgs))
+        await side_effects.gather(
+            *(self._send_rbc_start(side_effects, msg) for msg in msgs)
+        )
 
     @staticmethod
     def _status(actor: Actor):
@@ -85,5 +99,5 @@ class StartUp:
         State(dto).set_actor_domain_states(states)
         game = self._xform_game_start(dto.content.board)
         await self._send_start_game(side_effects, game)
-        await self._send_xform_rbc_start(side_effects, dto.content.board, actors)
+        await self._gather_xform_rbc_start(side_effects, dto.content.board, actors)
         print("**director end")

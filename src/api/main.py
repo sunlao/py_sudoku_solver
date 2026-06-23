@@ -138,39 +138,97 @@ def create_api() -> FastAPI:
     _api.include_router(version.router, prefix="/api/v1/info", tags=["info"])
     _api.include_router(ready.router, prefix="/api/v1/info", tags=["info"])
 
-    _api.include_router(controller.router, prefix="/address/v1/controller", tags=["actor", "controller"])
+    _api.include_router(
+        controller.router, prefix="/address/v1/controller", tags=["actor", "controller"]
+    )
     _api.include_router(game.router, prefix="/address/v1/game", tags=["actor", "game"])
-    _api.include_router(board.router, prefix="/address/v1/board", tags=["actor", "board"])
+    _api.include_router(
+        board.router, prefix="/address/v1/board", tags=["actor", "board"]
+    )
 
-    _api.include_router(rbc.router, prefix="/address/v1/row1", tags=["actor", "rbc", "row"])
-    _api.include_router(rbc.router, prefix="/address/v1/row2", tags=["actor", "rbc", "row"])
-    _api.include_router(rbc.router, prefix="/address/v1/row3", tags=["actor", "rbc", "row"])
-    _api.include_router(rbc.router, prefix="/address/v1/row4", tags=["actor", "rbc", "row"])
-    _api.include_router(rbc.router, prefix="/address/v1/row5", tags=["actor", "rbc", "row"])
-    _api.include_router(rbc.router, prefix="/address/v1/row6", tags=["actor", "rbc", "row"])
-    _api.include_router(rbc.router, prefix="/address/v1/row7", tags=["actor", "rbc", "row"])
-    _api.include_router(rbc.router, prefix="/address/v1/row8", tags=["actor", "rbc", "row"])
-    _api.include_router(rbc.router, prefix="/address/v1/row9", tags=["actor", "rbc", "row"])
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row1", tags=["actor", "rbc", "row"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row2", tags=["actor", "rbc", "row"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row3", tags=["actor", "rbc", "row"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row4", tags=["actor", "rbc", "row"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row5", tags=["actor", "rbc", "row"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row6", tags=["actor", "rbc", "row"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row7", tags=["actor", "rbc", "row"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row8", tags=["actor", "rbc", "row"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/row9", tags=["actor", "rbc", "row"]
+    )
 
-    _api.include_router(rbc.router, prefix="/address/v1/box1", tags=["actor", "rbc", "box"])
-    _api.include_router(rbc.router, prefix="/address/v1/box2", tags=["actor", "rbc", "box"])
-    _api.include_router(rbc.router, prefix="/address/v1/box3", tags=["actor", "rbc", "box"])
-    _api.include_router(rbc.router, prefix="/address/v1/box4", tags=["actor", "rbc", "box"])
-    _api.include_router(rbc.router, prefix="/address/v1/box5", tags=["actor", "rbc", "box"])
-    _api.include_router(rbc.router, prefix="/address/v1/box6", tags=["actor", "rbc", "box"])
-    _api.include_router(rbc.router, prefix="/address/v1/box7", tags=["actor", "rbc", "box"])
-    _api.include_router(rbc.router, prefix="/address/v1/box8", tags=["actor", "rbc", "box"])
-    _api.include_router(rbc.router, prefix="/address/v1/box9", tags=["actor", "rbc", "box"])
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box1", tags=["actor", "rbc", "box"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box2", tags=["actor", "rbc", "box"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box3", tags=["actor", "rbc", "box"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box4", tags=["actor", "rbc", "box"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box5", tags=["actor", "rbc", "box"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box6", tags=["actor", "rbc", "box"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box7", tags=["actor", "rbc", "box"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box8", tags=["actor", "rbc", "box"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/box9", tags=["actor", "rbc", "box"]
+    )
 
-    _api.include_router(rbc.router, prefix="/address/v1/column1", tags=["actor", "rbc", "column"])
-    _api.include_router(rbc.router, prefix="/address/v1/column2", tags=["actor", "rbc", "column"])
-    _api.include_router(rbc.router, prefix="/address/v1/column3", tags=["actor", "rbc", "column"])
-    _api.include_router(rbc.router, prefix="/address/v1/column4", tags=["actor", "rbc", "column"])
-    _api.include_router(rbc.router, prefix="/address/v1/column5", tags=["actor", "rbc", "column"])
-    _api.include_router(rbc.router, prefix="/address/v1/column6", tags=["actor", "rbc", "column"])
-    _api.include_router(rbc.router, prefix="/address/v1/column7", tags=["actor", "rbc", "column"])
-    _api.include_router(rbc.router, prefix="/address/v1/column8", tags=["actor", "rbc", "column"])
-    _api.include_router(rbc.router, prefix="/address/v1/column9", tags=["actor", "rbc", "column"])
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column1", tags=["actor", "rbc", "column"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column2", tags=["actor", "rbc", "column"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column3", tags=["actor", "rbc", "column"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column4", tags=["actor", "rbc", "column"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column5", tags=["actor", "rbc", "column"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column6", tags=["actor", "rbc", "column"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column7", tags=["actor", "rbc", "column"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column8", tags=["actor", "rbc", "column"]
+    )
+    _api.include_router(
+        rbc.router, prefix="/address/v1/column9", tags=["actor", "rbc", "column"]
+    )
 
     return _api
 
