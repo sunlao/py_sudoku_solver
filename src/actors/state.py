@@ -1,6 +1,6 @@
 from shared.models.constants import ActorNames
 from shared.models.state import ActorDomainStates
-from shared.models.messages import Message
+from shared.models.messages import Message, Board
 
 
 class State:
@@ -19,8 +19,13 @@ class State:
     def get_cache(self) -> object | None:
         return self._cache.get(self.key)
 
+    def set_game_board(self, dto: Board) -> None:
+        """Set the board state for the game actor"""
+
+        self._set_cache(dto)
+
     def set_actor_domain_states(self, dto: ActorDomainStates) -> None:
-        """Set the process state for every eligible actor behavior for the controller
-        actor"""
+        """Set the process state for every eligible domain actor behavior for the 
+        controller actor"""
 
         self._set_cache(dto)

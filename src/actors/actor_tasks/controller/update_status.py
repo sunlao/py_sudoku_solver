@@ -1,4 +1,4 @@
-class RBCStatus:
+class UpdateStatus:
 
     def __init__(self) -> None:
         pass
