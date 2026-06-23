@@ -32,15 +32,6 @@ class StartUp:
                     f"MessageID: {dto.metadata.message_id}"
                 )
 
-    def _send_start_rbc(self) -> None:
-        pass
-
-    def _set_rbc_status(self) -> None:
-        pass
-
-    def _send_observer(self) -> None:
-        pass
-
     async def _send_rbc_start(
         self, side_effects: ActorSideEffects, dto: Message[RBCStart]
     ) -> None:
@@ -98,6 +89,8 @@ class StartUp:
         states = self._xform_actor_domain_states(actors)
         State(dto).set_actor_domain_states(states)
         game = self._xform_game_start(dto.content.board)
-        await self._send_start_game(side_effects, game)
-        await self._gather_xform_rbc_start(side_effects, dto.content.board, actors)
+        await side_effects.gather(
+            self._send_start_game(side_effects, game),
+            self._gather_xform_rbc_start(side_effects, dto.content.board, actors),
+        )
         print("**director end")
