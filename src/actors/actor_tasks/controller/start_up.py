@@ -48,7 +48,7 @@ class StartUp:
             self._xform_rbc_start(dto, a) for a in actors.actors if a.rbc_flag is True
         )
         print(len(msgs))
-        await side_effects.gather(*(side_effects.transport_client(m) for m in msgs))
+        # await side_effects.gather(*(side_effects.transport_client(m) for m in msgs))
 
     @staticmethod
     def _status(actor: Actor):
