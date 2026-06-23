@@ -1,4 +1,4 @@
-# pylint: disable=duplicate-code
+# pylint: disable=duplicate-code, too-many-statements
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
