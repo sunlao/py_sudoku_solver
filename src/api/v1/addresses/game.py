@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Request, status, HTTPException
-from shared.models.messages import Message
+from shared.models.messages import Message, ControllerStartup
 
 router = APIRouter()
 
 
 @router.post("/start/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
-async def start_up(request: Request, dto: Message) -> None:
+async def start_up(request: Request, dto: Message[ControllerStartup]) -> None:
     mailbox = request.app.state.mailbox
     try:
         await mailbox.enqueue(dto)
