@@ -92,4 +92,4 @@ class StartUp:
             self._send_start_game(side_effects, game),
             self._gather_xform_rbc_start(side_effects, dto.content.board, actors),
         )
-        print("**director controller end")
+        print("**director controller: start-up end ")

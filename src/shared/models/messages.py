@@ -85,3 +85,11 @@ class Message(BaseModel, Generic[INPUTTYPE]):
     model_config = DTO_EDGE_CONFIG
     metadata: Metadata
     content: INPUTTYPE
+
+
+class ActorDomainUpdate(BaseModel, Generic[INPUTTYPE]):
+    """Actor message DTO with metadata and content composable by domain"""
+
+    model_config = DTO_EDGE_CONFIG
+    start_metadata: Metadata
+    start_content: INPUTTYPE

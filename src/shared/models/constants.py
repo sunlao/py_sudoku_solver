@@ -41,8 +41,7 @@ class ActorBehaviors(StrEnum):
     """Constants for supported actor behaviors."""
 
     CONTROLLER_START_UP = "controller.start-up"
-    CONTROLLER_RBC_STATUS = "controller.rbc-status"
-    CONTROLLER_UPDATE_PROCESS = "controller.update-process"
+    CONTROLLER_UPDATE_STATUS = "controller.update-status"
 
     GAME_START = "game.start"
     GAME_CELL_UPDATE = "game.cell-update"
