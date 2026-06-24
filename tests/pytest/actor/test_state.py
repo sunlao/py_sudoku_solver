@@ -1,15 +1,18 @@
-def test_controller_process(state, startup_message, bad_message, test_process_states):
+from pytest import raises
+def test_controller_process(state, startup_message, bad_message, test_actor_domain_state):
     """Assert shared actor state class
     - returns none when empty
     - returns value that was set
     - messages with different actor:behaviors cant share state
     """
-    state_obj = state(startup_message)
-    state_bad = state(bad_message)
-    result = state_obj.get_cache()
+    result = state.get_cache(startup_message)
     assert result is None
-    state_obj.set_actor_domain_states(test_process_states)
-    result = state_obj.get_cache()
-    result_bad = state_bad.get_cache()
-    assert result == test_process_states
-    assert result_bad is None
+    state.set_actor_domain_states(startup_message, test_actor_domain_state)
+    result = state.get_cache(startup_message)
+    assert result == test_actor_domain_state
+    with raises(ValueError):
+        state.set_actor_domain_states(bad_message, test_actor_domain_state)
+    with raises(ValueError):
+        _ = state.get_cache(bad_message)
+
+    

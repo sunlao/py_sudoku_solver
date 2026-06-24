@@ -4,6 +4,7 @@ from typing import Any
 from fastapi import FastAPI
 from pydantic import BaseModel
 from actors.static_data.read import Read
+from actors.state import State
 from shared.models.messages import Message
 from shared.models.policy import DTO_EDGE_CONFIG
 
@@ -19,6 +20,7 @@ class ActorSideEffects(BaseModel):
     transport_client: Callable
     fastapi_app: FastAPI
     gather: Callable[..., Awaitable[tuple[Any, ...]]]
+    state: State
 
 
 class MailboxSideEffects(BaseModel):
@@ -38,6 +40,8 @@ class HandlerSideEffects(BaseModel):
     - read yml configs as static data
     - transportclient to send messages
     - fast api app
+    - asyncio gather
+    - actor state
     """
 
     model_config = DTO_EDGE_CONFIG
@@ -50,3 +54,4 @@ class HandlerSideEffects(BaseModel):
     transport_client: Callable
     fastapi_app: FastAPI
     gather: Callable[..., Awaitable[tuple[Any, ...]]]
+    state: State

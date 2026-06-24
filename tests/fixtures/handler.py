@@ -2,6 +2,7 @@ import asyncio
 import pytest
 from actors.handler import Handler
 from actors.static_data.read import Read
+from actors.state import State
 from api.v1.helpers.load_executable import load_executable
 from api.v1.helpers.client import transport_client
 from shared.models.side_effects import HandlerSideEffects
@@ -19,6 +20,7 @@ async def handler_solo(mailbox, test_mailbox, api_with_state):
             transport_client=transport_client,
             fastapi_app=api_with_state,
             gather=asyncio.gather,
+            state=State()
         )
     )
 

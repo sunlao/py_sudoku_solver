@@ -7,6 +7,7 @@ from starlette.responses import PlainTextResponse
 from actors.handler import Handler
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read
+from actors.state import State
 from api.metadata import tags
 from api.v1.addresses import controller, game, board, rbc
 from api.v1.helpers.boards import Boards
@@ -41,6 +42,8 @@ async def lifespan(app: FastAPI):
     s.async_client = AsyncClient
     s.config_log = config_log
     s.app_version = api_log.app_version
+    # instantiate state for actors
+    s.actor_state = State()
     # Start mailboxes
     s.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     s.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
@@ -54,6 +57,7 @@ async def lifespan(app: FastAPI):
         transport_client=s.transport_client,
         fastapi_app=app,
         gather=asyncio.gather,
+        state=s.actor_state
     )
     s.handler = Handler(handler_side_effects)
     s.handler_task = s.handler.start()

@@ -87,7 +87,7 @@ class StartUp:
     ) -> None:
         actors = self._get_actors(side_effects, dto)
         states = self._xform_actor_domain_states(actors)
-        State(dto).set_actor_domain_states(states)
+        side_effects.state.set_actor_domain_states(dto, states)
         game = self._xform_game_start(dto.content.board)
         await side_effects.gather(
             self._send_start_game(side_effects, game),

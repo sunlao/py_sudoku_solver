@@ -6,11 +6,11 @@ from shared.models.state import ActorDomainStates, ActorDomainState
 
 @pytest.fixture
 def state():
-    return State
+    return State()
 
 
 @pytest.fixture
-def test_process_states() -> ActorDomainStates:
+def test_actor_domain_state() -> ActorDomainStates:
     return ActorDomainStates(
         states=(
             ActorDomainState(

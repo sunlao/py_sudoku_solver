@@ -7,6 +7,7 @@ from httpx import AsyncClient
 from actors.handler import Handler
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read
+from actors.state import State
 from api.v1.helpers.client import transport_client
 from api.v1.helpers.load_executable import load_executable
 from shared.log.helpers.api_log_serializer import LogSerializer
@@ -32,6 +33,7 @@ async def _app_state(config_log, config_api):
     s.log.write_core(
         core_log(config_log, LogLevel.INFO, Events.STARTUP, "Startup complete")
     )
+    s.actor_state = State()
     s.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     s.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     s.transport_client = transport_client
@@ -44,6 +46,7 @@ async def _app_state(config_log, config_api):
         transport_client=s.transport_client,
         fastapi_app=app,
         gather=asyncio.gather,
+        state=s.actor_state
     )
     s.handler = Handler(handler_side_effects)
     s.handler_task = s.handler.start()

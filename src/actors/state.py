@@ -8,24 +8,22 @@ class State:
     actor run time container
       - logically partitioned by actor key associated with message"""
 
-    def __init__(self, message: Message) -> None:
-        a, _ = message.metadata.actor_behavior.split(".", maxsplit=1)
-        self.key = a
+    def __init__(self) -> None:
         self._cache: dict[ActorNames, object] = {}
 
-    def _set_cache(self, dto: object) -> None:
-        self._cache[self.key] = dto
+    def _key(self, message: Message) -> ActorNames:
+        a, _ = message.metadata.actor_behavior.split(".", maxsplit=1)
+        return ActorNames(a)
 
-    def get_cache(self) -> object | None:
-        return self._cache.get(self.key)
+    def get_cache(self, message: Message) -> object | None:
+        return self._cache.get(self._key(message))
 
-    def set_game_board(self, dto: Board) -> None:
+    def set_game_board(self, message: Message, dto: Board) -> None:
         """Set the board state for the game actor"""
 
-        self._set_cache(dto)
+        self._cache[self._key(message)] = dto
 
-    def set_actor_domain_states(self, dto: ActorDomainStates) -> None:
+    def set_actor_domain_states(self, message: Message, dto: ActorDomainStates) -> None:
         """Set the process state for every eligible domain actor behavior for the 
         controller actor"""
-
-        self._set_cache(dto)
+        self._cache[self._key(message)] = dto

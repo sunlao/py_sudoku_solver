@@ -16,6 +16,6 @@ class Start:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
     ) -> None:
-        State(dto).set_game_board(dto.content.board)
+        side_effects.state.set_game_board(dto, dto.content.board)
         print("**game controller end")
 
