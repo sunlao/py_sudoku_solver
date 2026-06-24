@@ -1,5 +1,4 @@
 from fastapi import status
-from actors.state import State
 from shared.models.constants import ActorNames, ActorDomainStatus, ActorBehaviors
 from shared.models.state import ActorDomainState, ActorDomainStates
 from shared.models.messages import (

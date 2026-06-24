@@ -1,4 +1,3 @@
-from actors.state import State
 from shared.models.messages import ControllerStartup, Message
 from shared.models.side_effects import ActorSideEffects
 
