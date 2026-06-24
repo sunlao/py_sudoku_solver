@@ -24,6 +24,6 @@ class State:
         self._cache[self._key(message)] = dto
 
     def set_actor_domain_states(self, message: Message, dto: ActorDomainStates) -> None:
-        """Set the process state for every eligible domain actor behavior for the 
+        """Set the process state for every eligible domain actor behavior for the
         controller actor"""
         self._cache[self._key(message)] = dto

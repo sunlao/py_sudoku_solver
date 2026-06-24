@@ -1,5 +1,9 @@
 from pytest import raises
-def test_controller_process(state, startup_message, bad_message, test_actor_domain_state):
+
+
+def test_controller_process(
+    state, startup_message, bad_message, test_actor_domain_state
+):
     """Assert shared actor state class
     - returns none when empty
     - returns value that was set
@@ -14,5 +18,3 @@ def test_controller_process(state, startup_message, bad_message, test_actor_doma
         state.set_actor_domain_states(bad_message, test_actor_domain_state)
     with raises(ValueError):
         _ = state.get_cache(bad_message)
-
-    

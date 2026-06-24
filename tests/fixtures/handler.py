@@ -20,7 +20,7 @@ async def handler_solo(mailbox, test_mailbox, api_with_state):
             transport_client=transport_client,
             fastapi_app=api_with_state,
             gather=asyncio.gather,
-            state=State()
+            state=State(),
         )
     )
 

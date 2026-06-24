@@ -2,6 +2,7 @@ from actors.state import State
 from shared.models.messages import ControllerStartup, Message
 from shared.models.side_effects import ActorSideEffects
 
+
 class Start:
 
     def __init__(self) -> None:
@@ -17,5 +18,4 @@ class Start:
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
     ) -> None:
         side_effects.state.set_game_board(dto, dto.content.board)
-        print("**game controller end")
-
+        print("**game controller end ")
