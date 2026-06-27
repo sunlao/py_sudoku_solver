@@ -22,9 +22,10 @@ class UpdateStatus:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ActorDomainUpdate]
     ) -> None:
-        print("**director controler:update-status end")
+        print("**director controler:update-status start")
         print(f"end id: {dto.metadata.message_id}")
         print(f"end ab: {dto.metadata.actor_behavior}")
 
         print(f"start id: {dto.content.start_metadata.message_id}")
         print(f"start ab: {dto.content.start_metadata.actor_behavior}")
+        print("**director controler:update-status end")

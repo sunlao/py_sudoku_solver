@@ -3,9 +3,6 @@ class CellUpdate:
     def __init__(self) -> None:
         pass
 
-    def director(self) -> None:
-        pass
-
     def update_cell(self) -> None:
         pass
 
@@ -13,4 +10,7 @@ class CellUpdate:
         pass
 
     def send_update_process(self) -> None:
+        pass
+
+    def director(self) -> None:
         pass

@@ -44,7 +44,7 @@ class StartUp:
                     f"MessageID: {dto.metadata.message_id}"
                 )
 
-    async def _gather_xform_rbc_start(
+    async def _settup_gather_xform_rbc_start(
         self, side_effects: ActorSideEffects, dto: Board, actors: Actors
     ) -> None:
         msgs = tuple(
@@ -90,6 +90,6 @@ class StartUp:
         game = self._xform_game_start(dto.content.board)
         await side_effects.gather(
             self._send_start_game(side_effects, game),
-            self._gather_xform_rbc_start(side_effects, dto.content.board, actors),
+            self._settup_gather_xform_rbc_start(side_effects, dto.content.board, actors),
         )
         print("**director controller: start-up end ")
