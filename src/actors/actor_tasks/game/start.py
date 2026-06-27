@@ -19,10 +19,14 @@ class Start:
                     f"MessageID: {dto.metadata.message_id}"
                 )
 
-    def _xform_actor_domain_update(self, dto: Message[GameStart]) -> Message[ActorDomainUpdate]:
+    def _xform_actor_domain_update(
+        self, dto: Message[GameStart]
+    ) -> Message[ActorDomainUpdate]:
         return Message(
             metadata=Metadata(actor_behavior=ActorBehaviors.CONTROLLER_UPDATE_STATUS),
-            content=ActorDomainUpdate(start_metadata=dto.metadata, start_content=dto.content),
+            content=ActorDomainUpdate(
+                start_metadata=dto.metadata, start_content=dto.content
+            ),
         )
 
     async def director(

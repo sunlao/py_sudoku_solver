@@ -15,7 +15,10 @@ async def start_up(request: Request, dto: Message[ControllerStartup]) -> None:
             detail="Message not accepted",
         ) from exc
 
-@router.post("/update-status/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
+
+@router.post(
+    "/update-status/", response_model=None, status_code=status.HTTP_202_ACCEPTED
+)
 async def update_status(request: Request, dto: Message[ActorDomainUpdate]) -> None:
     mailbox = request.app.state.mailbox
     try:
