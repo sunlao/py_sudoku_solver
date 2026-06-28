@@ -1,3 +1,4 @@
+from datetime import datetime, UTC
 import pytest
 from actors.state import State
 from shared.models.constants import ActorNames, ActorDomainStatus
@@ -14,7 +15,10 @@ def test_actor_domain_state() -> ActorDomainStates:
     return ActorDomainStates(
         states=(
             ActorDomainState(
-                actor=ActorNames.BOARD, rbc_flag=False, status=ActorDomainStatus.IDLE
+                actor=ActorNames.BOARD,
+                rbc_flag=False,
+                status=ActorDomainStatus.IDLE,
+                last_director_timestamp=datetime.now(UTC),
             ),
         )
     )

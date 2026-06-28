@@ -1,4 +1,5 @@
 # pylint: disable=duplicate-code
+from datetime import datetime, UTC
 import asyncio
 from contextlib import asynccontextmanager
 from pytest import fixture
@@ -37,6 +38,7 @@ async def _app_state(config_log, config_api):
     s.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     s.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     s.transport_client = transport_client
+    s.now = lambda: datetime.now(UTC)
     handler_side_effects = HandlerSideEffects(
         mailbox=s.mailbox,
         test_mailbox=s.test_mailbox,
@@ -47,6 +49,7 @@ async def _app_state(config_log, config_api):
         fastapi_app=app,
         gather=asyncio.gather,
         state=s.actor_state,
+        now=s.now,
     )
     s.handler = Handler(handler_side_effects)
     s.handler_task = s.handler.start()

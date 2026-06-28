@@ -1,3 +1,4 @@
+from datetime import datetime, UTC
 import asyncio
 import pytest
 from actors.handler import Handler
@@ -21,6 +22,7 @@ async def handler_solo(mailbox, test_mailbox, api_with_state):
             fastapi_app=api_with_state,
             gather=asyncio.gather,
             state=State(),
+            now=lambda: datetime.now(UTC),
         )
     )
 
