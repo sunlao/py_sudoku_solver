@@ -1,44 +1,28 @@
-from shared.models.controller import DomainActorStatus
 from shared.models.messages import Message
 from shared.models.side_effects import ActorSideEffects
-from shared.models.state import ActorDomainState
+from shared.models.state import ActorDomainState, ActorDomainStates
 
 
 class UpdateStatus:
 
-    def __init__(self) -> None:
-        pass
+    @staticmethod
+    def _pick_state(
+        new: ActorDomainState, current: ActorDomainState
+    ) -> ActorDomainState:
+        if new.actor == current.actor:
+            return new
+        return current
 
-    def set_process(self) -> None:
-        pass
-
-    def check_solved(self) -> None:
-        pass
-
-    def send_side_effect(self) -> None:
-        pass
-
-    def message_actor_status(self, dto: Message) -> None:
-        return DomainActorStatus(
-            message_id=dto.content.start_metadata.message_id,
-            type=dto.content.start_metadata.type,
-            start_time=dto.content.start_metadata.times,
-            end_time=dto.metadata.timestamp,
-            actor_behavior=dto.content.start_metadata.actor_behavior,
+    def _xform_actor_domain_states(
+        self, ads: ActorDomainStates, new: ActorDomainState
+    ) -> ActorDomainStates:
+        return ActorDomainStates(
+            states=tuple(self._pick_state(new, s) for s in ads.states)
         )
 
-    async def director(self, side_effects: ActorSideEffects, dto: Message[ActorDomainState]) -> None:
-        print("**director controler:update-status start")
-        director_now = side_effects.now()
-        print(f"director_now: {director_now}")
-        cache = side_effects.state.get_cache(dto)
-
-        print(f"dto md-ts: {dto.metadata.timestamp}")
-        print(f"dto md-ts: {dto.content.actor}")
-
-            # if s.actor == dto.content:
-            #     print(f"new state: {s}")
-        # domain_actor_status = self.message_actor_status(dto)
-        # cache = side_effects.state.get_cache(dto)
-        # side_effects.state.set_actor_domain_states(dto, domain_actor_status)
-        print("**director controler:update-status end")
+    async def director(
+        self, side_effects: ActorSideEffects, dto: Message[ActorDomainState]
+    ) -> None:
+        ads = side_effects.state.get_cache(dto)
+        new_ads = self._xform_actor_domain_states(ads, dto.content)
+        side_effects.state.set_actor_domain_states(dto, new_ads)

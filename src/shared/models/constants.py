@@ -266,6 +266,11 @@ class Services(StrEnum):
 
 
 class ActorDomainStatus(StrEnum):
+    """State for the Domain Actors Reported to the Controller"""
+    
+    DONE = "done"
+    ERROR = "error"
     IDLE = "idle"
+    INIT = "init"
     STARTED = "started"
     WORKING = "working"

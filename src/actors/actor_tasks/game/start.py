@@ -21,14 +21,14 @@ class Start:
                     f"MessageID: {dto.metadata.message_id}"
                 )
 
-    def _xform_update_state_msg(self, ts: datetime ) -> Message[ActorDomainState]:
-        return Message(
+    def _xform_update_state_msg(self, ts: datetime) -> Message[ActorDomainState]:
+        return Message[ActorDomainState](
             metadata=Metadata(actor_behavior=ActorBehaviors.CONTROLLER_UPDATE_STATUS),
             content=ActorDomainState(
                 actor=ActorNames.GAME,
                 status=ActorDomainStatus.STARTED,
                 last_director_timestamp=ts,
-                rbc_flag=False
+                rbc_flag=False,
             ),
         )
 

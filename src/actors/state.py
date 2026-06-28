@@ -15,12 +15,11 @@ class State:
         a, _ = message.metadata.actor_behavior.split(".", maxsplit=1)
         return ActorNames(a)
 
-    def get_cache(self, message: Message) -> object | None:
+    def get_cache(self, message: Message) -> object:
         return self._cache.get(self._key(message))
 
     def set_game_board(self, message: Message, dto: Board) -> None:
         """Set the board state for the game actor"""
-
         self._cache[self._key(message)] = dto
 
     def set_actor_domain_states(self, message: Message, dto: ActorDomainStates) -> None:

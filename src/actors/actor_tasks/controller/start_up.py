@@ -59,7 +59,7 @@ class StartUp:
     def _status(actor: Actor):
         if actor.name == ActorNames.BOARD:
             return ActorDomainStatus.IDLE
-        return ActorDomainStatus.STARTED
+        return ActorDomainStatus.INIT
 
     def _xform_actor_domain_states(
         self, dto: Actors, ts: datetime
@@ -97,6 +97,8 @@ class StartUp:
         game = self._xform_game_start(dto.content.board)
         await side_effects.gather(
             self._send_start_game(side_effects, game),
-            self._settup_gather_xform_rbc_start(side_effects, dto.content.board, actors),
+            self._settup_gather_xform_rbc_start(
+                side_effects, dto.content.board, actors
+            ),
         )
         print("**director controller: start-up end ")

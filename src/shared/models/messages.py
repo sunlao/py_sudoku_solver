@@ -85,4 +85,3 @@ class Message(BaseModel, Generic[INPUTTYPE]):
     model_config = DTO_EDGE_CONFIG
     metadata: Metadata
     content: INPUTTYPE
-
