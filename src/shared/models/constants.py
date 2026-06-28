@@ -266,5 +266,6 @@ class Services(StrEnum):
 
 
 class ActorDomainStatus(StrEnum):
-    STARTED = "started"
     IDLE = "idle"
+    STARTED = "started"
+    WORKING = "working"

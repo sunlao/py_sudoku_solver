@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import status
 from shared.models.constants import ActorNames, ActorDomainStatus, ActorBehaviors
 from shared.models.state import ActorDomainState, ActorDomainStates
@@ -60,11 +61,16 @@ class StartUp:
             return ActorDomainStatus.IDLE
         return ActorDomainStatus.STARTED
 
-    def _xform_actor_domain_states(self, dto: Actors) -> ActorDomainStates:
+    def _xform_actor_domain_states(
+        self, dto: Actors, ts: datetime
+    ) -> ActorDomainStates:
         return ActorDomainStates(
             states=tuple(
                 ActorDomainState(
-                    actor=a.name, rbc_flag=a.rbc_flag, status=self._status(a)
+                    actor=a.name,
+                    status=self._status(a),
+                    last_director_timestamp=ts,
+                    rbc_flag=a.rbc_flag,
                 )
                 for a in dto.actors
                 if a.domain_flag is True
@@ -84,9 +90,10 @@ class StartUp:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
     ) -> None:
+        director_now = side_effects.now()
         actors = self._get_actors(side_effects, dto)
-        states = self._xform_actor_domain_states(actors)
-        side_effects.state.set_actor_domain_states(dto, states)
+        ads = self._xform_actor_domain_states(actors, director_now)
+        side_effects.state.set_actor_domain_states(dto, ads)
         game = self._xform_game_start(dto.content.board)
         await side_effects.gather(
             self._send_start_game(side_effects, game),

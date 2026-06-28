@@ -1,4 +1,5 @@
 # pylint: disable=duplicate-code, too-many-statements
+from datetime import datetime, UTC
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
@@ -48,6 +49,7 @@ async def lifespan(app: FastAPI):
     s.mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     s.test_mailbox = Mailbox(MailboxSideEffects(queue=asyncio.Queue()))
     s.transport_client = transport_client
+    s.now = lambda: datetime.now(UTC)
     handler_side_effects = HandlerSideEffects(
         mailbox=s.mailbox,
         test_mailbox=s.test_mailbox,
@@ -58,6 +60,7 @@ async def lifespan(app: FastAPI):
         fastapi_app=app,
         gather=asyncio.gather,
         state=s.actor_state,
+        now=s.now,
     )
     s.handler = Handler(handler_side_effects)
     s.handler_task = s.handler.start()

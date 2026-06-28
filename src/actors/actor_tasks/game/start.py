@@ -1,13 +1,15 @@
+from datetime import datetime
 from fastapi import status
-from shared.models.constants import ActorBehaviors
-from shared.models.messages import GameStart, Message, ActorDomainUpdate, Metadata
+from shared.models.constants import ActorBehaviors, ActorNames, ActorDomainStatus
+from shared.models.messages import GameStart, Message, Metadata
 from shared.models.side_effects import ActorSideEffects
+from shared.models.state import ActorDomainState
 
 
 class Start:
 
-    async def _send_update_process(
-        self, side_effects: ActorSideEffects, dto: Message[ActorDomainUpdate]
+    async def _send_update_msg(
+        self, side_effects: ActorSideEffects, dto: Message[ActorDomainState]
     ) -> None:
         async with side_effects.transport_client(
             side_effects.fastapi_app, dto
@@ -19,20 +21,23 @@ class Start:
                     f"MessageID: {dto.metadata.message_id}"
                 )
 
-    def _xform_actor_domain_update(
-        self, dto: Message[GameStart]
-    ) -> Message[ActorDomainUpdate]:
+    def _xform_update_state_msg(self, ts: datetime ) -> Message[ActorDomainState]:
         return Message(
             metadata=Metadata(actor_behavior=ActorBehaviors.CONTROLLER_UPDATE_STATUS),
-            content=ActorDomainUpdate(
-                start_metadata=dto.metadata, start_content=dto.content
+            content=ActorDomainState(
+                actor=ActorNames.GAME,
+                status=ActorDomainStatus.STARTED,
+                last_director_timestamp=ts,
+                rbc_flag=False
             ),
         )
 
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[GameStart]
     ) -> None:
+        director_now = side_effects.now()
         side_effects.state.set_game_board(dto, dto.content.board)
-        actor_domain_update = self._xform_actor_domain_update(dto)
-        await self._send_update_process(side_effects, actor_domain_update)
+        msg = self._xform_update_state_msg(director_now)
+        print(f"msg content actor: {msg.content.actor}")
+        await self._send_update_msg(side_effects, msg)
         print("**director game:start end")

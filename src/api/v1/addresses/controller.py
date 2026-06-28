@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, status, HTTPException
-from shared.models.messages import Message, ControllerStartup, ActorDomainUpdate
+from shared.models.messages import Message, ControllerStartup
 
 router = APIRouter()
 
@@ -19,7 +19,7 @@ async def start_up(request: Request, dto: Message[ControllerStartup]) -> None:
 @router.post(
     "/update-status/", response_model=None, status_code=status.HTTP_202_ACCEPTED
 )
-async def update_status(request: Request, dto: Message[ActorDomainUpdate]) -> None:
+async def update_status(request: Request, dto: Message) -> None:
     mailbox = request.app.state.mailbox
     try:
         await mailbox.enqueue(dto)

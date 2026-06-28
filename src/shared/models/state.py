@@ -1,5 +1,5 @@
-from datetime import datetime, UTC
-from pydantic import BaseModel, Field
+from datetime import datetime
+from pydantic import BaseModel
 from shared.models.constants import ActorNames, ActorDomainStatus
 from shared.models.policy import DTO_CONFIG
 
@@ -10,9 +10,9 @@ class ActorDomainState(BaseModel):
     model_config = DTO_CONFIG
 
     actor: ActorNames
-    rbc_flag: bool
     status: ActorDomainStatus
-    time: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    last_director_timestamp: datetime
+    rbc_flag: bool
 
 
 class ActorDomainStates(BaseModel):

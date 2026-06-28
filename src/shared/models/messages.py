@@ -12,7 +12,7 @@ class Metadata(BaseModel):
     model_config = DTO_CONFIG
     message_id: UUID = Field(default_factory=uuid4)
     type: MessageType = Field(default=MessageType.DOMAIN)
-    times: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
     actor_behavior: ActorBehaviors
 
 
@@ -86,10 +86,3 @@ class Message(BaseModel, Generic[INPUTTYPE]):
     metadata: Metadata
     content: INPUTTYPE
 
-
-class ActorDomainUpdate(BaseModel, Generic[INPUTTYPE]):
-    """Actor message DTO with metadata and content composable by domain"""
-
-    model_config = DTO_EDGE_CONFIG
-    start_metadata: Metadata
-    start_content: INPUTTYPE

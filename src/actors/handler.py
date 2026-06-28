@@ -18,6 +18,7 @@ class Handler:
             fastapi_app=dto.fastapi_app,
             gather=dto.gather,
             state=dto.state,
+            now=dto.now,
         )
 
     def _executable(self, route: str):

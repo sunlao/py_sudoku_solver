@@ -1,3 +1,4 @@
+from datetime import datetime
 from asyncio import Queue, Task
 from collections.abc import Awaitable, Callable, Coroutine
 from typing import Any
@@ -21,6 +22,7 @@ class ActorSideEffects(BaseModel):
     fastapi_app: FastAPI
     gather: Callable[..., Awaitable[tuple[Any, ...]]]
     state: State
+    now: Callable[[], datetime]
 
 
 class MailboxSideEffects(BaseModel):
@@ -42,6 +44,7 @@ class HandlerSideEffects(BaseModel):
     - fast api app
     - asyncio gather
     - actor state
+    - now
     """
 
     model_config = DTO_EDGE_CONFIG
@@ -55,3 +58,4 @@ class HandlerSideEffects(BaseModel):
     fastapi_app: FastAPI
     gather: Callable[..., Awaitable[tuple[Any, ...]]]
     state: State
+    now: Callable[[], datetime]
