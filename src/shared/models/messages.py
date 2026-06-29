@@ -14,6 +14,7 @@ class Metadata(BaseModel):
     type: MessageType = Field(default=MessageType.DOMAIN)
     timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
     actor_behavior: ActorBehaviors
+    rbc_flag: bool = Field(default=False)
 
 
 class Cell(BaseModel):

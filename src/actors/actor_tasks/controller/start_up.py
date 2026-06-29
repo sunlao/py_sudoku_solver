@@ -15,7 +15,6 @@ from shared.models.static_data import Actors, Actor
 
 
 class StartUp:
-
     def _get_actors(self, side_effects: ActorSideEffects, dto: Message) -> Actors:
         return side_effects.static_data(dto).controller_actors()
 
@@ -82,7 +81,9 @@ class StartUp:
         return Message(metadata=m, content=GameStart(board=dto))
 
     def _xform_rbc_start(self, dto: Board, actor: Actor) -> Message[RBCStart]:
-        m = Metadata(actor_behavior=ActorBehaviors(f"{actor.name}.start"))
+        m = Metadata(
+            actor_behavior=ActorBehaviors(f"{actor.name}.start"), rbc_flag=True
+        )
         ids = set(actor.cell_ids)
         c = tuple(c for c in dto.cells if c.id in ids)
         return Message(metadata=m, content=RBCStart(actor=actor.name, cells=c))

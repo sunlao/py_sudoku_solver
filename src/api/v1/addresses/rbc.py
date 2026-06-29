@@ -1,14 +1,14 @@
-from fastapi import APIRouter, status, HTTPException
-from shared.models.messages import Message
+from fastapi import APIRouter, Request, status, HTTPException
+from shared.models.messages import Message, RBCStart
 
 router = APIRouter()
 
 
 @router.post("/start/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
-async def start_up(dto: Message) -> None:
+async def start_up(request: Request, dto: Message[RBCStart]) -> None:
+    mailbox = request.app.state.mailbox
     try:
-        # print(f"start: {dto.metadata.actor_behavior}")
-        pass
+        await mailbox.enqueue(dto)
     except Exception as exc:  # pylint: disable=broad-except
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,

@@ -1,5 +1,4 @@
 class Startup:
-
     def __init__(self) -> None:
         pass
 

@@ -25,11 +25,15 @@ class Handler:
         return self.load_executable(route)
 
     @staticmethod
-    def _route_name(actor_behavior: ActorBehaviors) -> str:
+    def _route_name(actor_behavior: ActorBehaviors, rbc_flag: bool) -> str:
         a, b = actor_behavior.split(".", maxsplit=1)
         actor = a.replace("-", "_")
         behavior = b.replace("-", "_")
         behavior_title = behavior.title().replace("_", "")
+        if rbc_flag is True:
+            # All RBC actor tasks behave the same with different data and state
+            # RBC can share code but like all actors do not share data / state
+            return f"actors.actor_tasks.rbc.{behavior}.{behavior_title}.director"
         return f"actors.actor_tasks.{actor}.{behavior}.{behavior_title}.director"
 
     async def _process_loop(self) -> None:
@@ -41,7 +45,9 @@ class Handler:
         if dto.metadata.type == MessageType.TEST:
             await self.test_mailbox.enqueue(dto)
             return
-        route_name = self._route_name(dto.metadata.actor_behavior)
+        route_name = self._route_name(
+            dto.metadata.actor_behavior, dto.metadata.rbc_flag
+        )
         executable = self._executable(route_name)
         await executable(self.actor_side_effects, dto)
 

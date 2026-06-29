@@ -4,7 +4,6 @@ from shared.models.messages import Board, Cell
 
 
 class Boards:
-
     @staticmethod
     def _create(board_input: BoardInput) -> Board:
         cells: list[Cell] = []

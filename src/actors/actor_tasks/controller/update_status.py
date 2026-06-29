@@ -4,7 +4,6 @@ from shared.models.state import ActorDomainState, ActorDomainStates
 
 
 class UpdateStatus:
-
     @staticmethod
     def _pick_state(
         new: ActorDomainState, current: ActorDomainState
