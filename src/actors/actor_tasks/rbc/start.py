@@ -12,7 +12,7 @@ class Start:
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
         side_effects.state.set_rbc_cell(dto, dto.content.cells)
-        
+
         msg = xform_update_state_msg(
             sending_actor=actor,
             status=ActorDomainStatus.WORKING,

@@ -6,9 +6,7 @@ from pydantic import BaseModel, Field, field_validator
 from shared.models.constants import ActorBehaviors, ActorNames, CellIds, MessageType
 from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
 
-
 Candidate = Annotated[int, Field(ge=1, le=9)]
-
 
 
 class Metadata(BaseModel):
@@ -32,7 +30,6 @@ class Cell(BaseModel):
     box: int = Field(ge=1, le=9)
     value: int | None = Field(default=None, ge=1, le=9)
     candidates: tuple[Candidate, ...] | None = Field(default=None)
-
 
 
 # fmt: off
