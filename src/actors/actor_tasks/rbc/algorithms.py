@@ -7,7 +7,9 @@ class Algorithms:
         return set().union(*(c.candidates for c in cells))
 
     def _unsolved_cells(self, cells: RBCCells) -> tuple[Cell, ...]:
-        return tuple(c for c in cells.cells if c.value is None and c.candidates is not None)
+        return tuple(
+            c for c in cells.cells if c.value is None and c.candidates is not None
+        )
 
     def _updated_rbc(self, cells: RBCCells, updates: dict[object, Cell]) -> RBCCells:
         if updates == {}:
@@ -21,7 +23,9 @@ class Algorithms:
         unsolved = self._unsolved_cells(cells)
         for candidates in combinations(range(1, 10), size):
             affected = tuple(
-                cell for cell in unsolved if any(c in cell.candidates for c in candidates)
+                cell
+                for cell in unsolved
+                if any(c in cell.candidates for c in candidates)
             )
             if len(affected) != size:
                 continue
