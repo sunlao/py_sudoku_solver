@@ -72,7 +72,7 @@ class RBCCells(BaseModel):
     @classmethod
     def validate_unique_coordinates(cls, cells: tuple[Cell, ...]) -> tuple[Cell, ...]:
         results = {(c.row, c.column) for c in cells}
-        if len(results) != 81:
+        if len(results) != 9:
             raise ValueError(
                 "Board must contain exactly one cell for every row/column coordinate"
             )
