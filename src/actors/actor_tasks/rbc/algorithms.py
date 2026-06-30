@@ -1,20 +1,20 @@
-from shared.models.messages import RBCCells, Cell
+from shared.models.messages import RBCCells
 
 class Algorithms:
-    def naked_single(self, cells: RBCCells) -> Cell | None:
+    def naked_single(self, cells: RBCCells) -> RBCCells | None:
         pass
 
-    def hidden_single(self, cells: RBCCells) -> Cell | None:
+    def hidden_single(self, cells: RBCCells) -> RBCCells | None:
         pass
 
-    def naked_pair(self, cells: RBCCells) -> Cell | None:
+    def naked_pair(self, cells: RBCCells) -> RBCCells | None:
         pass
 
-    def hidden_pair(self, cells: RBCCells) -> Cell | None:
+    def hidden_pair(self, cells: RBCCells) -> RBCCells | None:
         pass
 
-    def naked_triple(self, cells: RBCCells) -> Cell | None:
+    def naked_triple(self, cells: RBCCells) -> RBCCells | None:
         pass
 
-    def hidden_triple(self, cells: RBCCells) -> Cell | None:
+    def hidden_triple(self, cells: RBCCells) -> RBCCells | None:
         pass

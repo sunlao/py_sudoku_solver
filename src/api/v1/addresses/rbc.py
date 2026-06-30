@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Request, status, HTTPException
-from shared.models.messages import Message, RBCStart
+from shared.models.messages import Message, RBCCells
 
 router = APIRouter()
 
 
 @router.post("/start/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
-async def start_up(request: Request, dto: Message[RBCStart]) -> None:
+async def start_up(request: Request, dto: Message[RBCCells]) -> None:
     mailbox = request.app.state.mailbox
     try:
         await mailbox.enqueue(dto)

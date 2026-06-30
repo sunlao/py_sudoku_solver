@@ -1,13 +1,13 @@
 from actors.actor_tasks.shared import send_update_msg, xform_update_state_msg
 from shared.models.constants import ActorDomainStatus
-from shared.models.messages import Message, RBCStart
+from shared.models.messages import Message, RBCCells
 from shared.models.side_effects import ActorSideEffects
 
 
 class Start:
 
     async def director(
-        self, side_effects: ActorSideEffects, dto: Message[RBCStart]
+        self, side_effects: ActorSideEffects, dto: Message[RBCCells]
     ) -> None:
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)

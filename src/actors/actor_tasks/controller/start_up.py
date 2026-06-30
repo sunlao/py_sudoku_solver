@@ -8,7 +8,7 @@ from shared.models.messages import (
     GameStart,
     Message,
     Metadata,
-    RBCStart,
+    RBCCells,
 )
 from shared.models.side_effects import ActorSideEffects
 from shared.models.static_data import Actors, Actor
@@ -32,7 +32,7 @@ class StartUp:
                 )
 
     async def _send_rbc_start(
-        self, side_effects: ActorSideEffects, dto: Message[RBCStart]
+        self, side_effects: ActorSideEffects, dto: Message[RBCCells]
     ) -> None:
         async with side_effects.transport_client(
             side_effects.fastapi_app, dto
@@ -80,13 +80,13 @@ class StartUp:
         m = Metadata(actor_behavior=ActorBehaviors.GAME_START)
         return Message(metadata=m, content=GameStart(board=dto))
 
-    def _xform_rbc_start(self, dto: Board, actor: Actor) -> Message[RBCStart]:
+    def _xform_rbc_start(self, dto: Board, actor: Actor) -> Message[RBCCells]:
         m = Metadata(
             actor_behavior=ActorBehaviors(f"{actor.name}.start"), rbc_flag=True
         )
         ids = set(actor.cell_ids)
         c = tuple(c for c in dto.cells if c.id in ids)
-        return Message(metadata=m, content=RBCStart(actor=actor.name, cells=c))
+        return Message(metadata=m, content=RBCCells(actor=actor.name, cells=c))
 
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]

@@ -1,9 +1,14 @@
 from datetime import datetime, UTC
 from uuid import UUID, uuid4
+from typing import Annotated
 from typing import Generic
 from pydantic import BaseModel, Field, field_validator
 from shared.models.constants import ActorBehaviors, ActorNames, CellIds, MessageType
 from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
+
+
+Candidate = Annotated[int, Field(ge=1, le=9)]
+
 
 
 class Metadata(BaseModel):
@@ -26,6 +31,8 @@ class Cell(BaseModel):
     column: int = Field(ge=1, le=9)
     box: int = Field(ge=1, le=9)
     value: int | None = Field(default=None, ge=1, le=9)
+    candidates: tuple[Candidate, ...] | None = Field(default=None)
+
 
 
 # fmt: off
@@ -61,13 +68,10 @@ class ControllerStartup(BaseModel):
     board: Board
 
 
-# fmt: off
 class RBCCells(BaseModel):
-    """Sudoku board containing exactly 81 cells"""
-
     model_config = DTO_CONFIG
+    actor: ActorNames
     cells: tuple[Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
-
     @field_validator("cells")
     @classmethod
     def validate_unique_coordinates(cls, cells: tuple[Cell, ...]) -> tuple[Cell, ...]:
@@ -77,12 +81,6 @@ class RBCCells(BaseModel):
                 "Board must contain exactly one cell for every row/column coordinate"
             )
         return cells
-
-
-class RBCStart(BaseModel):
-    model_config = DTO_CONFIG
-    actor: ActorNames
-    cells: tuple[Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
 
 
 class GameStart(BaseModel):
