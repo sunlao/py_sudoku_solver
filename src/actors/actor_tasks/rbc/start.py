@@ -11,12 +11,13 @@ class Start:
     ) -> None:
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
-        side_effects.state.set_game_board(dto, dto.content.cells)
+        side_effects.state.set_rbc_cell(dto, dto.content.cells)
+        
         msg = xform_update_state_msg(
             sending_actor=actor,
             status=ActorDomainStatus.WORKING,
             last_director_timestamp=director_now,
             rbc_flag=True,
         )
-        await send_update_msg(side_effects, msg)        
+        await send_update_msg(side_effects, msg)
         print(f"**director rbc:start end {dto.metadata.actor_behavior}")

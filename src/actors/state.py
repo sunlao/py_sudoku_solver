@@ -1,6 +1,6 @@
 from shared.models.constants import ActorNames
 from shared.models.state import ActorDomainStates
-from shared.models.messages import Message, Board
+from shared.models.messages import Message, Board, RBCCells
 
 
 class State:
@@ -18,11 +18,15 @@ class State:
     def get_cache(self, message: Message) -> object:
         return self._cache.get(self._key(message))
 
+    def set_actor_domain_states(self, message: Message, dto: ActorDomainStates) -> None:
+        """Set the process state for every eligible domain actor behavior for the
+        controller actor"""
+        self._cache[self._key(message)] = dto
+
     def set_game_board(self, message: Message, dto: Board) -> None:
         """Set the board state for the game actor"""
         self._cache[self._key(message)] = dto
 
-    def set_actor_domain_states(self, message: Message, dto: ActorDomainStates) -> None:
-        """Set the process state for every eligible domain actor behavior for the
-        controller actor"""
+    def set_rbc_cell(self, message: Message, dto: RBCCells) -> None:
+        """Set the state for the one of the rbc actors"""
         self._cache[self._key(message)] = dto

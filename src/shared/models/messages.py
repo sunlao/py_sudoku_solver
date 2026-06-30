@@ -61,6 +61,24 @@ class ControllerStartup(BaseModel):
     board: Board
 
 
+# fmt: off
+class RBCCells(BaseModel):
+    """Sudoku board containing exactly 81 cells"""
+
+    model_config = DTO_CONFIG
+    cells: tuple[Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
+
+    @field_validator("cells")
+    @classmethod
+    def validate_unique_coordinates(cls, cells: tuple[Cell, ...]) -> tuple[Cell, ...]:
+        results = {(c.row, c.column) for c in cells}
+        if len(results) != 81:
+            raise ValueError(
+                "Board must contain exactly one cell for every row/column coordinate"
+            )
+        return cells
+
+
 class RBCStart(BaseModel):
     model_config = DTO_CONFIG
     actor: ActorNames
