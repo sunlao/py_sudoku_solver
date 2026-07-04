@@ -6,11 +6,15 @@ This provides a working reference implementation demonstrating FIFO queue-based 
 
 ## Wiki
 
-[Welcome Page](https://github.com/sunlao/py_sudoku_solver/wiki/Home) to understand Why Actor Models matter with additional infomration about implementation
+[Welcome Page](https://github.com/sunlao/py_sudoku_solver/wiki/Home) to understand Why Actor Models matter with additional information about implementation and points of view
 
 ## Prerequisites
 
 Review the [Getting Started](https://github.com/sunlao/py_sudoku_solver/wiki/Getting-Started) for more info for Mac setup and virtual environment details.
+
+## Projct status
+
+See the Github [Project Page](https://github.com/users/sunlao/projects/1) for implemenation status and work breakdowon
 
 ## API docs
 
@@ -18,3 +22,4 @@ Review the [Getting Started](https://github.com/sunlao/py_sudoku_solver/wiki/Get
 - During local development use:
   - `http://localhost:8080/redoc`  new version for API spec
   - `http://localhost:8080/docs`  "classic" version for API spec
+  
