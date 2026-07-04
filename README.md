@@ -6,20 +6,34 @@ This provides a working reference implementation demonstrating FIFO queue-based 
 
 ## Wiki
 
-[Welcome Page](https://github.com/sunlao/py_sudoku_solver/wiki/Home) to understand Why Actor Models matter with additional information about implementation and points of view
-
-## Prerequisites
-
-Review the [Getting Started](https://github.com/sunlao/py_sudoku_solver/wiki/Getting-Started) for more info for Mac setup and virtual environment details.
+Vist the [Welcome Page](https://github.com/sunlao/py_sudoku_solver/wiki/Home) to understand Why Actor Models matter with additional information about implementation and project points of view
 
 ## Projct status
 
-See the Github [Project Page](https://github.com/users/sunlao/projects/1) for implemenation status and work breakdowon
+See the Github [Project Page](https://github.com/users/sunlao/projects/1) for implemenation status and work break down summaries
 
-## API docs
+## Prerequisites
 
-- FastAPI dynamically generate docs using [OpenAPI Specifications](https://swagger.io/specification/)
-- During local development use:
-  - `http://localhost:8080/redoc`  new version for API spec
-  - `http://localhost:8080/docs`  "classic" version for API spec
-  
+Review the [Getting Started](https://github.com/sunlao/py_sudoku_solver/wiki/Getting-Started) for more info for Mac setup and virtual environment details on how to use this repo.
+
+## Local Development
+
+After following prerequisites:
+
+set local .env file with
+
+```text
+APP_CODE=pss
+ENV=dev
+API_PORT=80
+API_PUB_PORT=8080
+API_STATIC_DIR=/app/src/api/static
+START_UP=true
+```
+
+- start with `make up`
+- end with `make down`
+
+## Testing
+
+Visit [Testing Page](https://github.com/sunlao/py_sudoku_solver/wiki/Testing) for information on how this repo impelements testing
