@@ -18,7 +18,7 @@ class Algorithms:
             return cell
         return cell.model_copy(update={"candidates": update})
 
-    def _hidden_candidates_all(self, cells: RBCCells, size: int) -> dict[object, Cell]:
+    def _hidden_candidates_all(self, cells: RBCCells, size: int) -> RBCCells:
         unsolved_ids = self._unsolved_ids(cells)
         candidates = self._unsolved_candidates(cells, unsolved_ids)
         if len(candidates) != size:
@@ -91,8 +91,7 @@ class Algorithms:
     def hidden(self, cells: RBCCells, size: int) -> RBCCells:
         c_cells = self._update_all_candidates(cells)
         h_cells = self._hidden_candidates_all(c_cells, size)
-        u_cells = self._update_rbc(c_cells, h_cells)
-        return self._update_candidate_is_one_all(u_cells)
+        return self._update_candidate_is_one_all(h_cells)
 
     def naked(self, cells: RBCCells, size: int) -> RBCCells:
         c_cells = self._update_all_candidates(cells)
