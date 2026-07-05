@@ -3,28 +3,17 @@ from shared.models.messages import Cell, RBCCells
 
 
 class Algorithms:
-    def _candidates(self, cells: RBCCells) -> tuple[int, ...]:
+    def _candidates_new(self, cells: RBCCells) -> tuple[int, ...]:
         values = {c.value for c in cells.cells if c.value is not None}
         return tuple(v for v in range(1, 10) if v not in values)
 
-    def _candidate_options(self, cells: tuple[Cell, ...]) -> tuple[int, ...]:
-        return tuple(sorted(set().union(*(c.candidates for c in cells))))
-
-    def _candidate_single(self, cells: RBCCells) -> RBCCells:
-        updates = {
-            c.id: c.model_copy(update={"value": c.candidates[0]})
-            for c in cells.cells
-            if c.value is None and c.candidates is not None and len(c.candidates) == 1
-        }
-        return self._update_rbc(cells, updates)
-
-    def _candidate_union(self, cells: tuple[Cell, ...]) -> set[int]:
+    def _candidates_union(self, cells: tuple[Cell, ...]) -> set[int]:
         return set().union(*(c.candidates for c in cells))
 
     def _hidden_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
         updates: dict[object, Cell] = {}
         unsolved = self._unsolved(cells)
-        options = self._candidate_options(unsolved)
+        options = self._candidates_union(unsolved)
         for candidates in combinations(options, size):
             affected = tuple(
                 cell
@@ -44,7 +33,7 @@ class Algorithms:
         updates: dict[object, Cell] = {}
         unsolved = self._unsolved(cells)
         for candidates in combinations(unsolved, size):
-            candidate_set = self._candidate_union(candidates)
+            candidate_set = self._candidates_union(candidates)
             if len(candidate_set) != size:
                 continue
             candidate_ids = {c.id for c in candidates}
@@ -59,6 +48,15 @@ class Algorithms:
     def _unsolved(self, cells: RBCCells) -> tuple[Cell, ...]:
         return tuple(c for c in cells.cells if c.value is None)
 
+    def _update_candidate_is_one(self, cell: Cell) -> Cell:
+        if cell.candidates is not None and len(cell.candidates) == 1:
+            return cell.model_copy(update={"value": cell.candidates[0]})
+        return cell
+
+    def _update_candidate_is_one_all(self, cells: RBCCells) -> RBCCells:
+        update = tuple(self._update_candidate_is_one(c) for c in cells.cells)
+        return self._update_rbc_cells(cells, update)
+
     def _update_cell_candidates(self, cell: Cell, candidates: tuple[int, ...]) -> Cell:
         if cell.value is not None:
             return cell.model_copy(update={"candidates": None})
@@ -68,10 +66,10 @@ class Algorithms:
         return cell.model_copy(update={"candidates": update})
 
     def _update_all_candidates(self, cells: RBCCells) -> RBCCells:
-        candidates = self._candidates(cells)
+        candidates = self._candidates_new(cells)
         update = tuple(self._update_cell_candidates(c, candidates) for c in cells.cells)
         return self._update_rbc_cells(cells, update)
-    
+
     def _update_rbc_cells(self, cells: RBCCells, update: tuple[Cell, ...]) -> RBCCells:
         return cells.model_copy(update={"cells": update})
 
@@ -85,9 +83,9 @@ class Algorithms:
     def hidden(self, cells: RBCCells, size: int) -> RBCCells:
         c_cells = self._update_all_candidates(cells)
         u_cells = self._update_rbc(c_cells, self._hidden_updates(c_cells, size))
-        return self._candidate_single(u_cells)
+        return self._update_candidate_is_one_all(u_cells)
 
     def naked(self, cells: RBCCells, size: int) -> RBCCells:
         c_cells = self._update_all_candidates(cells)
         u_cells = self._update_rbc(c_cells, self._naked_updates(c_cells, size))
-        return self._candidate_single(u_cells)
+        return self._update_candidate_is_one_all(u_cells)
