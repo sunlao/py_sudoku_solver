@@ -7,7 +7,7 @@ class Algorithms:
         values = {c.value for c in cells.cells if c.value is not None}
         return {v for v in range(1, 10) if v not in values}
 
-    def _candidates_union(self, cells: set[Cell]) -> set[int]:
+    def _candidates_union(self, cells: tuple[Cell, ...]) -> set[int]:
         return set().union(*(c.candidates for c in cells))
 
     def _hidden_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
@@ -45,8 +45,8 @@ class Algorithms:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
         return updates
 
-    def _unsolved(self, cells: RBCCells) -> set[Cell]:
-        return {c for c in cells.cells if c.value is None}
+    def _unsolved(self, cells: RBCCells) -> tuple[Cell, ...]:
+        return tuple(c for c in cells.cells if c.value is None)
 
     def _update_candidate_is_one(self, cell: Cell) -> Cell:
         if cell.candidates is not None and len(cell.candidates) == 1:
