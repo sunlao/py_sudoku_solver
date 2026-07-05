@@ -20,11 +20,17 @@ class Algorithms:
 
     def _candidate_update(self, cells: RBCCells) -> RBCCells:
         candidates = self._candidate_values(cells)
-        updates = {
-            c.id: c.model_copy(update={"candidates": candidates})
-            for c in cells.cells
-            if c.value is None and c.candidates is None
-        }
+        candidate_set = set(candidates)
+        updates: dict[object, Cell] = {}
+        for c in cells.cells:
+            if c.value is not None:
+                continue
+            if c.candidates is None:
+                updates[c.id] = c.model_copy(update={"candidates": candidates})
+                continue
+            reduced = tuple(v for v in c.candidates if v in candidate_set)
+            if reduced != c.candidates:
+                updates[c.id] = c.model_copy(update={"candidates": reduced})
         return self._updated_rbc(cells, updates)
 
     def _candidate_values(self, cells: RBCCells) -> tuple[int, ...]:
