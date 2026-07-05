@@ -18,7 +18,7 @@ class Algorithms:
                 "cell": cell.model_copy(update={"candidates": update}),
                 "update": True,
             }
-        return {"cell": cell, "flag": False}
+        return {"cell": cell, "update": False}
 
     def _hidden_candidates_all(self, cells: RBCCells, size: int) -> RBCCells:
         unsolved_ids = self._unsolved_ids(cells)
@@ -52,7 +52,7 @@ class Algorithms:
         return {c.id for c in cells.cells if c.value is None}
 
     def _unsolved_candidates(self, cells: RBCCells, ids: set[CellIds]) -> set[int]:
-        return set().union(*(c.candidates for c in cells if c.id in ids))
+        return set().union(*(c.candidates for c in cells.cells if c.id in ids))
 
     def _update_candidate_is_one(self, cell: Cell) -> Cell:
         if cell.candidates is not None and len(cell.candidates) == 1:
