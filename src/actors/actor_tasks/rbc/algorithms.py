@@ -13,20 +13,22 @@ class Algorithms:
     def _hidden_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
         updates: dict[object, Cell] = {}
         unsolved = self._unsolved(cells)
-        options = self._candidates_union(unsolved)
-        for candidates in combinations(options, size):
+        candidates = self._candidates_union(unsolved)
+        for combo in combinations(candidates, size):
             affected = tuple(
                 cell
                 for cell in unsolved
-                if any(c in cell.candidates for c in candidates)
+                if any(c in cell.candidates for c in combo)
             )
+            # print(f"\naffected1: {affected}")
             if len(affected) != size:
                 continue
-            candidate_set = set(candidates)
             for cell in affected:
-                reduced = tuple(c for c in cell.candidates if c in candidate_set)
+                print(f"cell: {cell}")
+                reduced = tuple(c for c in cell.candidates if c in combo)
                 if reduced != cell.candidates:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
+        print(f"updates:{updates}")        
         return updates
 
     def _naked_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
