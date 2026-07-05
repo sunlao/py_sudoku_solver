@@ -4,15 +4,30 @@ from shared.models.messages import Cell, RBCCells
 
 
 class Algorithms:
+    
     def _candidates(self, cells: tuple[Cell, ...]) -> set[int]:
         values = {c.value for c in cells if c.value is not None}
         return {v for v in range(1, 10) if v not in values}
+
+    def _hidden_affected_ids(
+        self, cells: RBCCells, candidates: set[int], size: int
+    ) -> set[CellIds]:
+        affected = {
+            cell.id
+            for cell in cells.cells
+            if cell.value is None and any(c in cell.candidates for c in candidates)
+        }
+        if len(affected) != size:
+            return set()
+        return affected
 
     def _hidden_candidates(
         self, cell: Cell, unsolved_ids: set[CellIds], candidates: set[int]
     ):
         if cell.id in unsolved_ids:
             update = tuple(c for c in cell.candidates if c in candidates)
+        if update is None:
+            return {"cell": cell, "update": False}
         if cell.candidates != update:
             return {
                 "cell": cell.model_copy(update={"candidates": update}),
@@ -22,14 +37,17 @@ class Algorithms:
 
     def _hidden_candidates_all(self, cells: RBCCells, size: int) -> RBCCells:
         unsolved_ids = self._unsolved_ids(cells)
-        candidates = self._unsolved_candidates(cells, unsolved_ids)
-        hidden_candidates = [
-            self._hidden_candidates(cell, unsolved_ids, candidates)
-            for cell in cells.cells
-        ]
-        if len([hc for hc in hidden_candidates if hc["update"] == True]) == size:
-            update = tuple(hc["cell"] for hc in hidden_candidates)
-            return cells.model_copy(update={"cells": update})
+        unsolved_candidates = self._unsolved_candidates(cells, unsolved_ids)
+        for candidates in combinations(unsolved_candidates, size):
+            affected_ids = self._hidden_affected_ids(cells, set(candidates), size)
+            if affected_ids == set():
+                continue
+            hidden_candidates = tuple(
+                self._hidden_candidates(cell, affected_ids, candidates)["cell"]
+                for cell in cells.cells
+            )
+            if cells.cells != hidden_candidates:
+                return cells.model_copy(update={"cells": hidden_candidates})
         return cells
 
     def _naked_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
