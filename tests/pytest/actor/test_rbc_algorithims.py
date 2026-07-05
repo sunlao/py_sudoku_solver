@@ -17,6 +17,8 @@ def test_hidden_1(rbc_algorithms):
     )
     result1 = rbc_algorithms.naked_subset(test1, 1)
     result2 = rbc_algorithms.hidden_subset(test1, 1)
-    print(f"\nresult: {result1.cells}")
-    print(f"\nresult: {result2.cells}")
+    res_cell1 = next(c for c in result1.cells if c.id == CellIds.R1C9)
+    res_cell2 = next(c for c in result2.cells if c.id == CellIds.R1C9)
+    print(f"res_cell1: {res_cell1}")
+    print(f"res_cell2: {res_cell2}")
     # assert result
