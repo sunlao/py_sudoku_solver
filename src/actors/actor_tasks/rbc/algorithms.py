@@ -1,40 +1,41 @@
 from itertools import combinations
+from shared.models.constants import CellIds
 from shared.models.messages import Cell, RBCCells
 
 
 class Algorithms:
-    def _candidates_new(self, cells: tuple[Cell, ...]) -> set[int]:
+    def _candidates(self, cells: tuple[Cell, ...]) -> set[int]:
         values = {c.value for c in cells if c.value is not None}
         return {v for v in range(1, 10) if v not in values}
 
-    def _candidates_union(self, cells: tuple[Cell, ...]) -> set[int]:
-        return set().union(*(c.candidates for c in cells))
+    def _hidden_candidates(
+        self, cell: Cell, unsolved_ids: set[CellIds], candidates: set[int]
+    ):
+        if cell.id not in unsolved_ids:
+            return cell
+        update = tuple(c for c in cell.candidates if c not in candidates)
+        if cell.candidates == update:
+            return cell
+        return cell.model_copy(update={"candidates": update})
 
-    def _hidden_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
-        updates: dict[object, Cell] = {}
-        unsolved = self._unsolved(cells)
-        candidates = self._candidates_new(unsolved)
-        for combo in combinations(candidates, size):
-            affected = tuple(
-                cell
-                for cell in unsolved
-                if any(c in cell.candidates for c in combo)
-            )
-            if len(affected) != size:
-                continue
-            for cell in affected:
-                # print(f"\ncell: {cell}")
-                reduced = tuple(c for c in cell.candidates if c in combo)
-                if reduced != cell.candidates:
-                    updates[cell.id] = cell.model_copy(update={"candidates": reduced})
-        return updates
+    def _hidden_candidates_all(self, cells: RBCCells, size: int) -> dict[object, Cell]:
+        unsolved_ids = self._unsolved_ids(cells)
+        candidates = self._unsolved_candidates(cells, unsolved_ids)
+        if len(candidates) != size:
+            return cells
+        update = [
+            self._hidden_candidates_all(cell, unsolved_ids, candidates)
+            for cell in cells
+        ]
+        if cells.cells == update:
+            return cells
+        return cells.model_copy(update={"cells": update})
 
     def _naked_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
         updates: dict[object, Cell] = {}
-        unsolved = self._unsolved(cells)
+        unsolved = self._unsolved_ids(cells)
         for combo in combinations(unsolved, size):
-            print(f"combo: {combo}")
-            candidates = self._candidates_new(combo)
+            candidates = set().union(*(cell.candidates for cell in combo))
             if len(candidates) != size:
                 continue
             candidate_ids = {c.id for c in combo}
@@ -46,8 +47,11 @@ class Algorithms:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
         return updates
 
-    def _unsolved(self, cells: RBCCells) -> tuple[Cell, ...]:
-        return tuple(c for c in cells.cells if c.value is None)
+    def _unsolved_ids(self, cells: RBCCells) -> set[CellIds]:
+        return {c.id for c in cells.cells if c.value is None}
+
+    def _unsolved_candidates(self, cells: RBCCells, ids: set[CellIds]) -> set[int]:
+        return set().union(*(c.candidates for c in cells if c.id in ids))
 
     def _update_candidate_is_one(self, cell: Cell) -> Cell:
         if cell.candidates is not None and len(cell.candidates) == 1:
@@ -56,22 +60,25 @@ class Algorithms:
 
     def _update_candidate_is_one_all(self, cells: RBCCells) -> RBCCells:
         update = tuple(self._update_candidate_is_one(c) for c in cells.cells)
-        return self._update_rbc_cells(cells, update)
+        return cells.model_copy(update={"cells": update})
 
     def _update_cell_candidates(self, cell: Cell, candidates: set[int]) -> Cell:
-        if cell.value is not None:
+        if cell.value is not None and cell.candidates is None:
+            return cell
+        if cell.value is not None and cell.candidates is not None:
             return cell.model_copy(update={"candidates": None})
-        if cell.candidates is None:
+        if cell.value is None and cell.candidates is None:
             return cell.model_copy(update={"candidates": tuple(candidates)})
         update = tuple(c for c in cell.candidates if c in candidates)
+        if cell.candidates == update:
+            return cell
         return cell.model_copy(update={"candidates": update})
 
     def _update_all_candidates(self, cells: RBCCells) -> RBCCells:
-        candidates = self._candidates_new(cells.cells)
+        candidates = self._candidates(cells.cells)
         update = tuple(self._update_cell_candidates(c, candidates) for c in cells.cells)
-        return self._update_rbc_cells(cells, update)
-
-    def _update_rbc_cells(self, cells: RBCCells, update: tuple[Cell, ...]) -> RBCCells:
+        if cells.cells == update:
+            return cells
         return cells.model_copy(update={"cells": update})
 
     def _update_rbc(self, cells: RBCCells, updates: dict[object, Cell]) -> RBCCells:
@@ -83,7 +90,7 @@ class Algorithms:
 
     def hidden(self, cells: RBCCells, size: int) -> RBCCells:
         c_cells = self._update_all_candidates(cells)
-        h_cells = self._hidden_updates(c_cells, size)
+        h_cells = self._hidden_candidates_all(c_cells, size)
         u_cells = self._update_rbc(c_cells, h_cells)
         return self._update_candidate_is_one_all(u_cells)
 
