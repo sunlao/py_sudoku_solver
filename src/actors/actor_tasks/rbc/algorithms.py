@@ -23,7 +23,7 @@ class Algorithms:
         updates = {
             c.id: c.model_copy(update={"candidates": candidates})
             for c in cells.cells
-            if c.value is None
+            if c.value is None and c.candidates is None
         }
         return self._updated_rbc(cells, updates)
 
