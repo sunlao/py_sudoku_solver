@@ -5,9 +5,9 @@ from shared.models.messages import Cell, RBCCells
 class Algorithms:
     def _candidates_new(self, cells: RBCCells) -> set[int]:
         values = {c.value for c in cells.cells if c.value is not None}
-        return set(v for v in range(1, 10) if v not in values)
+        return {v for v in range(1, 10) if v not in values}
 
-    def _candidates_union(self, cells: tuple[Cell, ...]) -> set[int]:
+    def _candidates_union(self, cells: set[Cell]) -> set[int]:
         return set().union(*(c.candidates for c in cells))
 
     def _hidden_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
@@ -20,15 +20,13 @@ class Algorithms:
                 for cell in unsolved
                 if any(c in cell.candidates for c in combo)
             )
-            # print(f"\naffected1: {affected}")
             if len(affected) != size:
                 continue
             for cell in affected:
-                print(f"cell: {cell}")
+                print(f"\ncell: {cell}")
                 reduced = tuple(c for c in cell.candidates if c in combo)
                 if reduced != cell.candidates:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
-        print(f"updates:{updates}")        
         return updates
 
     def _naked_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
@@ -47,8 +45,8 @@ class Algorithms:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
         return updates
 
-    def _unsolved(self, cells: RBCCells) -> tuple[Cell, ...]:
-        return tuple(c for c in cells.cells if c.value is None)
+    def _unsolved(self, cells: RBCCells) -> set[Cell]:
+        return {c for c in cells.cells if c.value is None}
 
     def _update_candidate_is_one(self, cell: Cell) -> Cell:
         if cell.candidates is not None and len(cell.candidates) == 1:
@@ -59,7 +57,7 @@ class Algorithms:
         update = tuple(self._update_candidate_is_one(c) for c in cells.cells)
         return self._update_rbc_cells(cells, update)
 
-    def _update_cell_candidates(self, cell: Cell, candidates: tuple[int, ...]) -> Cell:
+    def _update_cell_candidates(self, cell: Cell, candidates: set[int]) -> Cell:
         if cell.value is not None:
             return cell.model_copy(update={"candidates": None})
         if cell.candidates is None:
