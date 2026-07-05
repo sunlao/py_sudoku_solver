@@ -5,7 +5,6 @@ from shared.models.side_effects import ActorSideEffects
 
 
 class Start:
-
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[RBCCells]
     ) -> None:
