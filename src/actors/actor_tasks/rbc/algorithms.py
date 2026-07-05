@@ -3,9 +3,9 @@ from shared.models.messages import Cell, RBCCells
 
 
 class Algorithms:
-    def _candidates_new(self, cells: RBCCells) -> tuple[int, ...]:
+    def _candidates_new(self, cells: RBCCells) -> set[int]:
         values = {c.value for c in cells.cells if c.value is not None}
-        return tuple(v for v in range(1, 10) if v not in values)
+        return set(v for v in range(1, 10) if v not in values)
 
     def _candidates_union(self, cells: tuple[Cell, ...]) -> set[int]:
         return set().union(*(c.candidates for c in cells))
@@ -61,7 +61,7 @@ class Algorithms:
         if cell.value is not None:
             return cell.model_copy(update={"candidates": None})
         if cell.candidates is None:
-            return cell.model_copy(update={"candidates": candidates})
+            return cell.model_copy(update={"candidates": tuple(candidates)})
         update = tuple(c for c in cell.candidates if c in candidates)
         return cell.model_copy(update={"candidates": update})
 
