@@ -3,6 +3,10 @@ from shared.models.messages import Cell, RBCCells
 
 
 class Algorithms:
+
+    def _candidate_options(self, cells: tuple[Cell, ...]) -> tuple[int, ...]:
+        return tuple(sorted(set().union(*(c.candidates for c in cells))))
+
     def _candidate_single(self, cells: RBCCells) -> RBCCells:
         updates = {
             c.id: c.model_copy(update={"value": c.candidates[0]})
@@ -31,7 +35,8 @@ class Algorithms:
     def _hidden_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
         updates: dict[object, Cell] = {}
         unsolved = self._unsolved_cells(cells)
-        for candidates in combinations(range(1, 10), size):
+        options = self._candidate_options(unsolved)
+        for candidates in combinations(options, size):
             affected = tuple(
                 cell
                 for cell in unsolved
@@ -44,7 +49,7 @@ class Algorithms:
                 reduced = tuple(c for c in cell.candidates if c in candidate_set)
                 if reduced != cell.candidates:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
-        return updates 
+        return updates
 
     def _naked_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
         updates: dict[object, Cell] = {}
