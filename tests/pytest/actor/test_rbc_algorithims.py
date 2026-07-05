@@ -1,9 +1,14 @@
 from shared.models.messages import ActorNames, Cell, CellIds, RBCCells
 
 
+def candidates(cells: RBCCells, cell_id: CellIds) -> Cell:
+    return next(sorted(c.candidates) for c in cells.cells if c.id == cell_id)
+
+def value(cells: RBCCells, cell_id: CellIds) -> Cell:
+    return next(c.value for c in cells.cells if c.id == cell_id)
+
 def cell(cells: RBCCells, cell_id: CellIds) -> Cell:
     return next(c for c in cells.cells if c.id == cell_id)
-
 
 def rbc_cells(*cells: Cell) -> RBCCells:
     return RBCCells(actor=ActorNames.ROW1, cells=cells)
@@ -22,8 +27,8 @@ def test_hidden_1(rbc_algorithms):
         Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=None),
     )
     result = rbc_algorithms.hidden(cells, 1)
-    assert cell(result, CellIds.R1C9).value == 9
-    assert cell(result, CellIds.R1C9).candidates == (9,)
+    assert value(result, CellIds.R1C9) == 9
+    assert candidates(result, CellIds.R1C9) == [9,]
 
 
 def test_hidden_2(rbc_algorithms):
@@ -39,11 +44,11 @@ def test_hidden_2(rbc_algorithms):
         Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=None),
     )
     row1_results = rbc_algorithms.hidden(row1_cells, 2)
-    assert cell(row1_results, CellIds.R1C5).candidates == (5, 6, 7, 8, 9)
-    assert cell(row1_results, CellIds.R1C6).candidates == (5, 6, 7, 8, 9)
-    assert cell(row1_results, CellIds.R1C7).candidates == (5, 6, 7, 8, 9)
-    assert cell(row1_results, CellIds.R1C8).candidates == (5, 6, 7, 8, 9)
-    assert cell(row1_results, CellIds.R1C9).candidates == (5, 6, 7, 8, 9)
+    assert candidates(row1_results, CellIds.R1C5) == [5, 6, 7, 8, 9]
+    assert candidates(row1_results, CellIds.R1C6) == [5, 6, 7, 8, 9]
+    assert candidates(row1_results, CellIds.R1C7) == [5, 6, 7, 8, 9]
+    assert candidates(row1_results, CellIds.R1C8) == [5, 6, 7, 8, 9]
+    assert candidates(row1_results, CellIds.R1C9) == [5, 6, 7, 8, 9]
     col5_cells = rbc_cells(
         cell(row1_results, CellIds.R1C5),
         Cell(id=CellIds.R2C5, row=2, column=5, box=2, value=1),
@@ -56,9 +61,9 @@ def test_hidden_2(rbc_algorithms):
         Cell(id=CellIds.R9C5, row=9, column=5, box=8, value=None),
     )
     col5_results = rbc_algorithms.hidden(col5_cells, 2)
-    assert cell(col5_results, CellIds.R1C5).candidates == (5, 6, 7) 
-    assert cell(col5_results, CellIds.R8C5).candidates == (5, 6, 7)
-    assert cell(col5_results, CellIds.R9C5).candidates == (5, 6, 7)
+    assert candidates(col5_results, CellIds.R1C5) == [5, 6, 7]
+    assert candidates(col5_results, CellIds.R8C5) == [5, 6, 7]
+    assert candidates(col5_results, CellIds.R9C5) == [5, 6, 7]
 
 
 def test_hidden_3(rbc_algorithms):
