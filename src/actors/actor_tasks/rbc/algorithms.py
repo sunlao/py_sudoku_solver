@@ -11,25 +11,26 @@ class Algorithms:
     def _hidden_candidates(
         self, cell: Cell, unsolved_ids: set[CellIds], candidates: set[int]
     ):
-        if cell.id not in unsolved_ids:
-            return cell
-        update = tuple(c for c in cell.candidates if c not in candidates)
-        if cell.candidates == update:
-            return cell
-        return cell.model_copy(update={"candidates": update})
+        if cell.id in unsolved_ids:
+            update = tuple(c for c in cell.candidates if c in candidates)
+        if cell.candidates != update:
+            return {
+                "cell": cell.model_copy(update={"candidates": update}),
+                "update": True,
+            }
+        return {"cell": cell, "flag": False}
 
     def _hidden_candidates_all(self, cells: RBCCells, size: int) -> RBCCells:
         unsolved_ids = self._unsolved_ids(cells)
         candidates = self._unsolved_candidates(cells, unsolved_ids)
-        if len(candidates) != size:
-            return cells
-        update = [
-            self._hidden_candidates_all(cell, unsolved_ids, candidates)
-            for cell in cells
+        hidden_candidates = [
+            self._hidden_candidates(cell, unsolved_ids, candidates)
+            for cell in cells.cells
         ]
-        if cells.cells == update:
-            return cells
-        return cells.model_copy(update={"cells": update})
+        if len([hc for hc in hidden_candidates if hc["update"] == True]) == size:
+            update = tuple(hc["cell"] for hc in hidden_candidates)
+            return cells.model_copy(update={"cells": update})
+        return cells
 
     def _naked_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
         updates: dict[object, Cell] = {}
