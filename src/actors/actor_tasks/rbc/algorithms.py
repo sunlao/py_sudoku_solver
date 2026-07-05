@@ -32,15 +32,15 @@ class Algorithms:
     def _naked_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
         updates: dict[object, Cell] = {}
         unsolved = self._unsolved(cells)
-        for candidates in combinations(unsolved, size):
-            candidate_set = self._candidates_union(candidates)
-            if len(candidate_set) != size:
+        for combo in combinations(unsolved, size):
+            candidates = self._candidates_union(combo)
+            if len(candidates) != size:
                 continue
-            candidate_ids = {c.id for c in candidates}
+            candidate_ids = {c.id for c in combo}
             for cell in unsolved:
                 if cell.id in candidate_ids:
                     continue
-                reduced = tuple(c for c in cell.candidates if c not in candidate_set)
+                reduced = tuple(c for c in cell.candidates if c not in candidates)
                 if reduced != cell.candidates:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
         return updates
