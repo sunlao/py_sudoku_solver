@@ -1,4 +1,5 @@
 pytest_plugins = [
+    "fixtures.alorithims",
     "fixtures.api_client",
     "fixtures.api",
     "fixtures.boards",

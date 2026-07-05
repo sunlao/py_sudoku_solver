@@ -3,8 +3,22 @@ from shared.models.messages import Cell, RBCCells
 
 
 class Algorithms:
+
     def _candidate_union(self, cells: tuple[Cell, ...]) -> set[int]:
         return set().union(*(c.candidates for c in cells))
+
+    def _candidate_update(self, cells: RBCCells) -> RBCCells:
+        candidates = self._candidate_values(cells)
+        updates = {
+            c.id: c.model_copy(update={"candidates": candidates})
+            for c in cells.cells
+            if c.value is None and c.candidates is None
+        }
+        return self._updated_rbc(cells, updates)
+
+    def _candidate_values(self, cells: RBCCells) -> tuple[int, ...]:
+        used = {c.value for c in cells.cells if c.value is not None}
+        return tuple(v for v in range(1, 10) if v not in used)
 
     def _unsolved_cells(self, cells: RBCCells) -> tuple[Cell, ...]:
         return tuple(
@@ -18,7 +32,8 @@ class Algorithms:
             update={"cells": tuple(updates.get(c.id, c) for c in cells.cells)}
         )
 
-    def hidden_subset(self, cells: RBCCells, size: int) -> RBCCells:
+    def hidden_subset(self, input_cells: RBCCells, size: int) -> RBCCells:
+        cells = self._candidate_update(input_cells)
         updates: dict[object, Cell] = {}
         unsolved = self._unsolved_cells(cells)
         for candidates in combinations(range(1, 10), size):
@@ -36,7 +51,8 @@ class Algorithms:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
         return self._updated_rbc(cells, updates)
 
-    def naked_subset(self, cells: RBCCells, size: int) -> RBCCells:
+    def naked_subset(self, input_cells: RBCCells, size: int) -> RBCCells:
+        cells = self._candidate_update(input_cells)
         updates: dict[object, Cell] = {}
         unsolved = self._unsolved_cells(cells)
         for candidates in combinations(unsolved, size):

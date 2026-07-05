@@ -5,9 +5,7 @@ from shared.models.constants import ActorNames, ActorDomainStatus
 from shared.models.state import ActorDomainStates, ActorDomainState
 
 
-@pytest.fixture
-def state():
-    return State()
+
 
 
 @pytest.fixture
