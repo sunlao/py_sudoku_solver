@@ -16,9 +16,7 @@ def test_size_1(rbc_algorithms):
     )
     result = rbc_algorithms.hidden(cells, 1)
     assert value(result, CellIds.R1C9) == 9
-    assert candidates(result, CellIds.R1C9) == [
-        9,
-    ]
+    assert candidates(result, CellIds.R1C9) == [9]
 
 
 def test_size_2(rbc_algorithms):

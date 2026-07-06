@@ -18,13 +18,9 @@ def test_naked_2(rbc_algorithms):
     assert candidates(result, CellIds.R1C5) == [5, 6]
     assert candidates(result, CellIds.R1C6) == [5, 6]
     assert value(result, CellIds.R1C7) == 7
-    assert candidates(result, CellIds.R1C7) == [
-        7,
-    ]
+    assert candidates(result, CellIds.R1C7) == [7]
     assert value(result, CellIds.R1C8) == 8
-    assert candidates(result, CellIds.R1C8) == [
-        8,
-    ]
+    assert candidates(result, CellIds.R1C8) == [8]
     assert candidates(result, CellIds.R1C9) == [7, 8, 9]
 
 
@@ -53,15 +49,9 @@ def test_naked_3(rbc_algorithms):
     assert candidates(result, CellIds.R1C4) == [3, 4, 5]
     assert candidates(result, CellIds.R1C5) == [3, 4, 5]
     assert value(result, CellIds.R1C6) == 6
-    assert candidates(result, CellIds.R1C6) == [
-        6,
-    ]
+    assert candidates(result, CellIds.R1C6) == [6]
     assert value(result, CellIds.R1C7) == 7
-    assert candidates(result, CellIds.R1C7) == [
-        7,
-    ]
+    assert candidates(result, CellIds.R1C7) == [7]
     assert value(result, CellIds.R1C8) == 8
-    assert candidates(result, CellIds.R1C8) == [
-        8,
-    ]
+    assert candidates(result, CellIds.R1C8) == [8]
     assert candidates(result, CellIds.R1C9) == [6, 7, 8, 9]
