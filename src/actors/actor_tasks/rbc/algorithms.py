@@ -8,18 +8,6 @@ class Algorithms:
         values = {c.value for c in cells if c.value is not None}
         return {v for v in range(1, 10) if v not in values}
 
-    def _affected_ids(
-        self, cells: RBCCells, candidates: set[int], size: int
-    ) -> set[CellIds]:
-        ids = {
-            cell.id
-            for cell in cells.cells
-            if cell.value is None and any(c in cell.candidates for c in candidates)
-        }
-        if len(ids) != size:
-            return set()
-        return ids
-
     def _hidden_candidates(
         self, cell: Cell, affected_ids: set[CellIds], candidates: set[int]
     ) -> Cell:
@@ -36,7 +24,7 @@ class Algorithms:
         )
         for candidates in combinations(unsolved_candidates, size):
             candidates_set = set(candidates)
-            ids = self._affected_ids(cells, candidates_set, size)
+            ids = self._hidden_ids(cells, candidates_set, size)
             if ids == set():
                 continue
             hidden_candidates = tuple(
@@ -45,6 +33,18 @@ class Algorithms:
             if cells.cells != hidden_candidates:
                 return cells.model_copy(update={"cells": hidden_candidates})
         return cells
+
+    def _hidden_ids(
+        self, cells: RBCCells, candidates: set[int], size: int
+    ) -> set[CellIds]:
+        ids = {
+            cell.id
+            for cell in cells.cells
+            if cell.value is None and any(c in cell.candidates for c in candidates)
+        }
+        if len(ids) != size:
+            return set()
+        return ids
 
     def _naked_candidates(
         self, cell: Cell, affected_ids: set[CellIds], candidates: set[int]
