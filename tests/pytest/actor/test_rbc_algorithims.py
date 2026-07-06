@@ -79,13 +79,13 @@ def test_hidden_3(rbc_algorithms):
         Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=None, candidates=(6, 7, 8, 9)),
     )
     result = rbc_algorithms.hidden(cells, 3)
-    assert cell(result, CellIds.R1C3).candidates == (3, 4, 5)
-    assert cell(result, CellIds.R1C4).candidates == (3, 4, 5)
-    assert cell(result, CellIds.R1C5).candidates == (3, 4, 5)
-    assert cell(result, CellIds.R1C6).candidates == (6, 7, 8, 9)
-    assert cell(result, CellIds.R1C7).candidates == (6, 7, 8, 9)
-    assert cell(result, CellIds.R1C8).candidates == (6, 7, 8, 9)
-    assert cell(result, CellIds.R1C9).candidates == (6, 7, 8, 9)
+    assert candidates(result, CellIds.R1C3) == [3, 4, 5]
+    assert candidates(result, CellIds.R1C4) == [3, 4, 5]
+    assert candidates(result, CellIds.R1C5) == [3, 4, 5]
+    assert candidates(result, CellIds.R1C6) == [6, 7, 8, 9]
+    assert candidates(result, CellIds.R1C7) == [6, 7, 8, 9]
+    assert candidates(result, CellIds.R1C8) == [6, 7, 8, 9]
+    assert candidates(result, CellIds.R1C9) == [6, 7, 8, 9]
 
 
 def test_naked_1(rbc_algorithms):
@@ -101,8 +101,8 @@ def test_naked_1(rbc_algorithms):
         Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=None),
     )
     result = rbc_algorithms.naked(cells, 1)
-    assert cell(result, CellIds.R1C9).value == 9
-    assert cell(result, CellIds.R1C9).candidates == (9,)
+    assert value(result, CellIds.R1C9) == 9
+    assert candidates(result, CellIds.R1C9) == [9,]
 
 
 def test_naked_2(rbc_algorithms):
@@ -118,13 +118,13 @@ def test_naked_2(rbc_algorithms):
         Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=None, candidates=(7, 8, 9)),
     )
     result = rbc_algorithms.naked(cells, 2)
-    assert cell(result, CellIds.R1C5).candidates == (5, 6)
-    assert cell(result, CellIds.R1C6).candidates == (5, 6)
-    assert cell(result, CellIds.R1C7).value == 7
-    assert cell(result, CellIds.R1C7).candidates == (7,)
-    assert cell(result, CellIds.R1C8).value == 8
-    assert cell(result, CellIds.R1C8).candidates == (8,)
-    assert cell(result, CellIds.R1C9).candidates == (7, 8, 9)
+    assert candidates(result, CellIds.R1C5) == [5, 6]
+    assert candidates(result, CellIds.R1C6) == [5, 6]
+    assert value(result, CellIds.R1C7) == 7
+    assert candidates(result, CellIds.R1C7) == [7,]
+    assert value(result, CellIds.R1C8) == 8
+    assert candidates(result, CellIds.R1C8) == [8,]
+    assert candidates(result, CellIds.R1C9) == [7, 8, 9]
 
 
 def test_naked_3(rbc_algorithms):
@@ -140,13 +140,13 @@ def test_naked_3(rbc_algorithms):
         Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=None, candidates=(6, 7, 8, 9)),
     )
     result = rbc_algorithms.naked(cells, 3)
-    assert cell(result, CellIds.R1C3).candidates == (3, 4, 5)
-    assert cell(result, CellIds.R1C4).candidates == (3, 4, 5)
-    assert cell(result, CellIds.R1C5).candidates == (3, 4, 5)
-    assert cell(result, CellIds.R1C6).value == 6
-    assert cell(result, CellIds.R1C6).candidates == (6,)
-    assert cell(result, CellIds.R1C7).value == 7
-    assert cell(result, CellIds.R1C7).candidates == (7,)
-    assert cell(result, CellIds.R1C8).value == 8
-    assert cell(result, CellIds.R1C8).candidates == (8,)
-    assert cell(result, CellIds.R1C9).candidates == (6, 7, 8, 9)
+    assert candidates(result, CellIds.R1C3) == [3, 4, 5]
+    assert candidates(result, CellIds.R1C4) == [3, 4, 5]
+    assert candidates(result, CellIds.R1C5) == [3, 4, 5]
+    assert value(result, CellIds.R1C6) == 6
+    assert candidates(result, CellIds.R1C6) == [6,]
+    assert value(result, CellIds.R1C7) == 7
+    assert candidates(result, CellIds.R1C7) == [7,]
+    assert value(result, CellIds.R1C8) == 8
+    assert candidates(result, CellIds.R1C8) == [8,]
+    assert candidates(result, CellIds.R1C9) == [6, 7, 8, 9]
