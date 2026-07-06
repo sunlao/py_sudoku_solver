@@ -4,7 +4,6 @@ from shared.models.messages import Cell, RBCCells
 
 
 class Algorithms:
-    
     def _candidates(self, cells: tuple[Cell, ...]) -> set[int]:
         values = {c.value for c in cells if c.value is not None}
         return {v for v in range(1, 10) if v not in values}
@@ -22,29 +21,25 @@ class Algorithms:
         return affected
 
     def _hidden_candidates(
-        self, cell: Cell, unsolved_ids: set[CellIds], candidates: set[int]
-    ):
-        if cell.id in unsolved_ids:
+        self, cell: Cell, affected_ids: set[CellIds], candidates: set[int]
+    ) -> Cell:
+        update = None
+        if cell.id in affected_ids:
             update = tuple(c for c in cell.candidates if c in candidates)
-        if update is None:
-            return {"cell": cell, "update": False}
         if cell.candidates != update:
-            return {
-                "cell": cell.model_copy(update={"candidates": update}),
-                "update": True,
-            }
-        return {"cell": cell, "update": False}
+            return cell.model_copy(update={"candidates": update})
+        return cell
 
     def _hidden_candidates_all(self, cells: RBCCells, size: int) -> RBCCells:
-        unsolved_ids = self._unsolved_ids(cells)
-        unsolved_candidates = self._unsolved_candidates(cells, unsolved_ids)
+        unsolved_candidates = set().union(
+            *(c.candidates for c in cells.cells if c.value is None)
+        )
         for candidates in combinations(unsolved_candidates, size):
-            affected_ids = self._hidden_affected_ids(cells, set(candidates), size)
-            if affected_ids == set():
+            ids = self._hidden_affected_ids(cells, set(candidates), size)
+            if ids == set():
                 continue
             hidden_candidates = tuple(
-                self._hidden_candidates(cell, affected_ids, candidates)["cell"]
-                for cell in cells.cells
+                self._hidden_candidates(c, ids, candidates) for c in cells.cells
             )
             if cells.cells != hidden_candidates:
                 return cells.model_copy(update={"cells": hidden_candidates})
@@ -52,8 +47,8 @@ class Algorithms:
 
     def _naked_updates(self, cells: RBCCells, size: int) -> dict[object, Cell]:
         updates: dict[object, Cell] = {}
-        unsolved = self._unsolved_ids(cells)
-        for combo in combinations(unsolved, size):
+        unsolved_ids = {c.id for c in cells.cells if c.value is None}
+        for combo in combinations(unsolved_ids, size):
             candidates = set().union(*(cell.candidates for cell in combo))
             if len(candidates) != size:
                 continue
@@ -65,12 +60,6 @@ class Algorithms:
                 if reduced != cell.candidates:
                     updates[cell.id] = cell.model_copy(update={"candidates": reduced})
         return updates
-
-    def _unsolved_ids(self, cells: RBCCells) -> set[CellIds]:
-        return {c.id for c in cells.cells if c.value is None}
-
-    def _unsolved_candidates(self, cells: RBCCells, ids: set[CellIds]) -> set[int]:
-        return set().union(*(c.candidates for c in cells.cells if c.id in ids))
 
     def _update_candidate_is_one(self, cell: Cell) -> Cell:
         if cell.candidates is not None and len(cell.candidates) == 1:
