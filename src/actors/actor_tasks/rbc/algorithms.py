@@ -57,16 +57,15 @@ class Algorithms:
         return cell.model_copy(update={"candidates": update})
 
     def _naked_candidates_all(self, cells: RBCCells, size: int) -> RBCCells:
-        unsolved_candidates = set().union(
-            *(c.candidates for c in cells.cells if c.value is None)
-        )
-        for candidates in combinations(unsolved_candidates, size):
-            candidates_set = set(candidates)
-            ids = self._affected_ids(cells, candidates_set, size)
-            if ids == set():
+        unsolved = tuple(c for c in cells.cells if c.value is None)
+        for combo in combinations(unsolved, size):
+            candidates = set().union(*(c.candidates for c in combo))
+            if len(candidates) != size:
                 continue
+            naked_ids = {c.id for c in combo}
+            ids = {c.id for c in unsolved if c.id not in naked_ids}
             naked_candidates = tuple(
-                self._naked_candidates(c, ids, candidates_set) for c in cells.cells
+                self._naked_candidates(c, ids, candidates) for c in cells.cells
             )
             if cells.cells != naked_candidates:
                 return cells.model_copy(update={"cells": naked_candidates})
