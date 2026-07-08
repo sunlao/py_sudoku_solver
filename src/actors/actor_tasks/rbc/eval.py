@@ -4,14 +4,18 @@ from shared.models.messages import Message, RBCCells
 from shared.models.side_effects import ActorSideEffects
 
 
-class Start:
+class Eval:
+
+
+
+
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[RBCCells]
     ) -> None:
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
+        
         side_effects.state.set_rbc_cell(dto, dto.content.cells)
-
         msg = xform_update_state_msg(
             sending_actor=actor,
             status=ActorDomainStatus.WORKING,

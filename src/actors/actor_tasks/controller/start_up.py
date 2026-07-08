@@ -82,7 +82,7 @@ class StartUp:
 
     def _xform_rbc_start(self, dto: Board, actor: Actor) -> Message[RBCCells]:
         m = Metadata(
-            actor_behavior=ActorBehaviors(f"{actor.name}.start"), rbc_flag=True
+            actor_behavior=ActorBehaviors(f"{actor.name}.eval"), rbc_flag=True
         )
         ids = set(actor.cell_ids)
         c = tuple(c for c in dto.cells if c.id in ids)
