@@ -17,7 +17,7 @@ class Handler:
             transport_client=dto.transport_client,
             fastapi_app=dto.fastapi_app,
             gather=dto.gather,
-            run_sync=dto.to_thread,
+            run_sync=dto.run_sync,
             state=dto.state,
             now=dto.now,
         )
