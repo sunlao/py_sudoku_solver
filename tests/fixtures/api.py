@@ -9,6 +9,7 @@ from actors.handler import Handler
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read
 from actors.state import State
+from api.v1.addresses import controller
 from api.v1.helpers.client import transport_client
 from api.v1.helpers.load_executable import load_executable
 from shared.log.helpers.api_log_serializer import LogSerializer
@@ -54,6 +55,10 @@ async def _app_state(config_log, config_api):
     )
     s.handler = Handler(handler_side_effects)
     s.handler_task = s.handler.start()
+    app.include_router(
+        controller.router,
+        prefix="/address/v1/controller",
+    )    
     try:
         yield app
     finally:
