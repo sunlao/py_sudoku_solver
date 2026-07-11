@@ -15,8 +15,6 @@ from shared.models.static_data import Actors, Actor
 
 
 class StartUp:
-    def _get_actors(self, side_effects: ActorSideEffects, dto: Message) -> Actors:
-        return side_effects.static_data(dto).controller_actors()
 
     async def _send_start_game(
         self, side_effects: ActorSideEffects, dto: Message[GameStart]
@@ -90,7 +88,7 @@ class StartUp:
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]
     ) -> None:
         director_now = side_effects.now()
-        actors = self._get_actors(side_effects, dto)
+        actors = side_effects.static_data(dto).controller_actors()
         ads = self._xform_actor_domain_states(actors, director_now)
         side_effects.state.set_actor_domain_states(dto, ads)
         game = self._xform_game_start(dto.content.board)
