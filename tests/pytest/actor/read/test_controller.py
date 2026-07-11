@@ -2,7 +2,7 @@ from shared.models.constants import ActorNames
 
 
 # Assert the controller static data
-async def test_controller(controller):
+async def test_actors(controller):
     actors = controller.actors
 
     rbc = {a for a in actors if a.rbc_flag is True}

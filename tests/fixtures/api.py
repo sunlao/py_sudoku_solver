@@ -58,7 +58,7 @@ async def _app_state(config_log, config_api):
     app.include_router(
         controller.router,
         prefix="/address/v1/controller",
-    )    
+    )
     try:
         yield app
     finally:

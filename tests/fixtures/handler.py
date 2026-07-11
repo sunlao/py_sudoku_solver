@@ -6,7 +6,7 @@ from actors.static_data.read import Read
 from actors.state import State
 from api.v1.helpers.load_executable import load_executable
 from api.v1.helpers.client import transport_client
-from shared.models.side_effects import HandlerSideEffects, ActorSideEffects
+from shared.models.side_effects import HandlerSideEffects
 
 
 @pytest.fixture
