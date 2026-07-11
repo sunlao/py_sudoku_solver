@@ -1,406 +1,406 @@
 maps:
   - id: r1c1
     behaviors:
-      - row1.eval
-      - column1.eval
-      - box1.eval
+      - row1.update
+      - column1.update
+      - box1.update
   - id: r1c2
     behaviors:
-      - row1.eval
-      - column2.eval
-      - box1.eval
+      - row1.update
+      - column2.update
+      - box1.update
   - id: r1c3
     behaviors:
-      - row1.eval
-      - column3.eval
-      - box1.eval
+      - row1.update
+      - column3.update
+      - box1.update
   - id: r1c4
     behaviors:
-      - row1.eval
-      - column4.eval
-      - box2.eval
+      - row1.update
+      - column4.update
+      - box2.update
   - id: r1c5
     behaviors:
-      - row1.eval
-      - column5.eval
-      - box2.eval
+      - row1.update
+      - column5.update
+      - box2.update
   - id: r1c6
     behaviors:
-      - row1.eval
-      - column6.eval
-      - box2.eval
+      - row1.update
+      - column6.update
+      - box2.update
   - id: r1c7
     behaviors:
-      - row1.eval
-      - column7.eval
-      - box3.eval
+      - row1.update
+      - column7.update
+      - box3.update
   - id: r1c8
     behaviors:
-      - row1.eval
-      - column8.eval
-      - box3.eval
+      - row1.update
+      - column8.update
+      - box3.update
   - id: r1c9
     behaviors:
-      - row1.eval
-      - column9.eval
-      - box3.eval
+      - row1.update
+      - column9.update
+      - box3.update
   - id: r2c1
     behaviors:
-      - row2.eval
-      - column1.eval
-      - box1.eval
+      - row2.update
+      - column1.update
+      - box1.update
   - id: r2c2
     behaviors:
-      - row2.eval
-      - column2.eval
-      - box1.eval
+      - row2.update
+      - column2.update
+      - box1.update
   - id: r2c3
     behaviors:
-      - row2.eval
-      - column3.eval
-      - box1.eval
+      - row2.update
+      - column3.update
+      - box1.update
   - id: r2c4
     behaviors:
-      - row2.eval
-      - column4.eval
-      - box2.eval
+      - row2.update
+      - column4.update
+      - box2.update
   - id: r2c5
     behaviors:
-      - row2.eval
-      - column5.eval
-      - box2.eval
+      - row2.update
+      - column5.update
+      - box2.update
   - id: r2c6
     behaviors:
-      - row2.eval
-      - column6.eval
-      - box2.eval
+      - row2.update
+      - column6.update
+      - box2.update
   - id: r2c7
     behaviors:
-      - row2.eval
-      - column7.eval
-      - box3.eval
+      - row2.update
+      - column7.update
+      - box3.update
   - id: r2c8
     behaviors:
-      - row2.eval
-      - column8.eval
-      - box3.eval
+      - row2.update
+      - column8.update
+      - box3.update
   - id: r2c9
     behaviors:
-      - row2.eval
-      - column9.eval
-      - box3.eval
+      - row2.update
+      - column9.update
+      - box3.update
   - id: r3c1
     behaviors:
-      - row3.eval
-      - column1.eval
-      - box1.eval
+      - row3.update
+      - column1.update
+      - box1.update
   - id: r3c2
     behaviors:
-      - row3.eval
-      - column2.eval
-      - box1.eval
+      - row3.update
+      - column2.update
+      - box1.update
   - id: r3c3
     behaviors:
-      - row3.eval
-      - column3.eval
-      - box1.eval
+      - row3.update
+      - column3.update
+      - box1.update
   - id: r3c4
     behaviors:
-      - row3.eval
-      - column4.eval
-      - box2.eval
+      - row3.update
+      - column4.update
+      - box2.update
   - id: r3c5
     behaviors:
-      - row3.eval
-      - column5.eval
-      - box2.eval
+      - row3.update
+      - column5.update
+      - box2.update
   - id: r3c6
     behaviors:
-      - row3.eval
-      - column6.eval
-      - box2.eval
+      - row3.update
+      - column6.update
+      - box2.update
   - id: r3c7
     behaviors:
-      - row3.eval
-      - column7.eval
-      - box3.eval
+      - row3.update
+      - column7.update
+      - box3.update
   - id: r3c8
     behaviors:
-      - row3.eval
-      - column8.eval
-      - box3.eval
+      - row3.update
+      - column8.update
+      - box3.update
   - id: r3c9
     behaviors:
-      - row3.eval
-      - column9.eval
-      - box3.eval
+      - row3.update
+      - column9.update
+      - box3.update
   - id: r4c1
     behaviors:
-      - row4.eval
-      - column1.eval
-      - box4.eval
+      - row4.update
+      - column1.update
+      - box4.update
   - id: r4c2
     behaviors:
-      - row4.eval
-      - column2.eval
-      - box4.eval
+      - row4.update
+      - column2.update
+      - box4.update
   - id: r4c3
     behaviors:
-      - row4.eval
-      - column3.eval
-      - box4.eval
+      - row4.update
+      - column3.update
+      - box4.update
   - id: r4c4
     behaviors:
-      - row4.eval
-      - column4.eval
-      - box5.eval
+      - row4.update
+      - column4.update
+      - box5.update
   - id: r4c5
     behaviors:
-      - row4.eval
-      - column5.eval
-      - box5.eval
+      - row4.update
+      - column5.update
+      - box5.update
   - id: r4c6
     behaviors:
-      - row4.eval
-      - column6.eval
-      - box5.eval
+      - row4.update
+      - column6.update
+      - box5.update
   - id: r4c7
     behaviors:
-      - row4.eval
-      - column7.eval
-      - box6.eval
+      - row4.update
+      - column7.update
+      - box6.update
   - id: r4c8
     behaviors:
-      - row4.eval
-      - column8.eval
-      - box6.eval
+      - row4.update
+      - column8.update
+      - box6.update
   - id: r4c9
     behaviors:
-      - row4.eval
-      - column9.eval
-      - box6.eval
+      - row4.update
+      - column9.update
+      - box6.update
   - id: r5c1
     behaviors:
-      - row5.eval
-      - column1.eval
-      - box4.eval
+      - row5.update
+      - column1.update
+      - box4.update
   - id: r5c2
     behaviors:
-      - row5.eval
-      - column2.eval
-      - box4.eval
+      - row5.update
+      - column2.update
+      - box4.update
   - id: r5c3
     behaviors:
-      - row5.eval
-      - column3.eval
-      - box4.eval
+      - row5.update
+      - column3.update
+      - box4.update
   - id: r5c4
     behaviors:
-      - row5.eval
-      - column4.eval
-      - box5.eval
+      - row5.update
+      - column4.update
+      - box5.update
   - id: r5c5
     behaviors:
-      - row5.eval
-      - column5.eval
-      - box5.eval
+      - row5.update
+      - column5.update
+      - box5.update
   - id: r5c6
     behaviors:
-      - row5.eval
-      - column6.eval
-      - box5.eval
+      - row5.update
+      - column6.update
+      - box5.update
   - id: r5c7
     behaviors:
-      - row5.eval
-      - column7.eval
-      - box6.eval
+      - row5.update
+      - column7.update
+      - box6.update
   - id: r5c8
     behaviors:
-      - row5.eval
-      - column8.eval
-      - box6.eval
+      - row5.update
+      - column8.update
+      - box6.update
   - id: r5c9
     behaviors:
-      - row5.eval
-      - column9.eval
-      - box6.eval
+      - row5.update
+      - column9.update
+      - box6.update
   - id: r6c1
     behaviors:
-      - row6.eval
-      - column1.eval
-      - box4.eval
+      - row6.update
+      - column1.update
+      - box4.update
   - id: r6c2
     behaviors:
-      - row6.eval
-      - column2.eval
-      - box4.eval
+      - row6.update
+      - column2.update
+      - box4.update
   - id: r6c3
     behaviors:
-      - row6.eval
-      - column3.eval
-      - box4.eval
+      - row6.update
+      - column3.update
+      - box4.update
   - id: r6c4
     behaviors:
-      - row6.eval
-      - column4.eval
-      - box5.eval
+      - row6.update
+      - column4.update
+      - box5.update
   - id: r6c5
     behaviors:
-      - row6.eval
-      - column5.eval
-      - box5.eval
+      - row6.update
+      - column5.update
+      - box5.update
   - id: r6c6
     behaviors:
-      - row6.eval
-      - column6.eval
-      - box5.eval
+      - row6.update
+      - column6.update
+      - box5.update
   - id: r6c7
     behaviors:
-      - row6.eval
-      - column7.eval
-      - box6.eval
+      - row6.update
+      - column7.update
+      - box6.update
   - id: r6c8
     behaviors:
-      - row6.eval
-      - column8.eval
-      - box6.eval
+      - row6.update
+      - column8.update
+      - box6.update
   - id: r6c9
     behaviors:
-      - row6.eval
-      - column9.eval
-      - box6.eval
+      - row6.update
+      - column9.update
+      - box6.update
   - id: r7c1
     behaviors:
-      - row7.eval
-      - column1.eval
-      - box7.eval
+      - row7.update
+      - column1.update
+      - box7.update
   - id: r7c2
     behaviors:
-      - row7.eval
-      - column2.eval
-      - box7.eval
+      - row7.update
+      - column2.update
+      - box7.update
   - id: r7c3
     behaviors:
-      - row7.eval
-      - column3.eval
-      - box7.eval
+      - row7.update
+      - column3.update
+      - box7.update
   - id: r7c4
     behaviors:
-      - row7.eval
-      - column4.eval
-      - box8.eval
+      - row7.update
+      - column4.update
+      - box8.update
   - id: r7c5
     behaviors:
-      - row7.eval
-      - column5.eval
-      - box8.eval
+      - row7.update
+      - column5.update
+      - box8.update
   - id: r7c6
     behaviors:
-      - row7.eval
-      - column6.eval
-      - box8.eval
+      - row7.update
+      - column6.update
+      - box8.update
   - id: r7c7
     behaviors:
-      - row7.eval
-      - column7.eval
-      - box9.eval
+      - row7.update
+      - column7.update
+      - box9.update
   - id: r7c8
     behaviors:
-      - row7.eval
-      - column8.eval
-      - box9.eval
+      - row7.update
+      - column8.update
+      - box9.update
   - id: r7c9
     behaviors:
-      - row7.eval
-      - column9.eval
-      - box9.eval
+      - row7.update
+      - column9.update
+      - box9.update
   - id: r8c1
     behaviors:
-      - row8.eval
-      - column1.eval
-      - box7.eval
+      - row8.update
+      - column1.update
+      - box7.update
   - id: r8c2
     behaviors:
-      - row8.eval
-      - column2.eval
-      - box7.eval
+      - row8.update
+      - column2.update
+      - box7.update
   - id: r8c3
     behaviors:
-      - row8.eval
-      - column3.eval
-      - box7.eval
+      - row8.update
+      - column3.update
+      - box7.update
   - id: r8c4
     behaviors:
-      - row8.eval
-      - column4.eval
-      - box8.eval
+      - row8.update
+      - column4.update
+      - box8.update
   - id: r8c5
     behaviors:
-      - row8.eval
-      - column5.eval
-      - box8.eval
+      - row8.update
+      - column5.update
+      - box8.update
   - id: r8c6
     behaviors:
-      - row8.eval
-      - column6.eval
-      - box8.eval
+      - row8.update
+      - column6.update
+      - box8.update
   - id: r8c7
     behaviors:
-      - row8.eval
-      - column7.eval
-      - box9.eval
+      - row8.update
+      - column7.update
+      - box9.update
   - id: r8c8
     behaviors:
-      - row8.eval
-      - column8.eval
-      - box9.eval
+      - row8.update
+      - column8.update
+      - box9.update
   - id: r8c9
     behaviors:
-      - row8.eval
-      - column9.eval
-      - box9.eval
+      - row8.update
+      - column9.update
+      - box9.update
   - id: r9c1
     behaviors:
-      - row9.eval
-      - column1.eval
-      - box7.eval
+      - row9.update
+      - column1.update
+      - box7.update
   - id: r9c2
     behaviors:
-      - row9.eval
-      - column2.eval
-      - box7.eval
+      - row9.update
+      - column2.update
+      - box7.update
   - id: r9c3
     behaviors:
-      - row9.eval
-      - column3.eval
-      - box7.eval
+      - row9.update
+      - column3.update
+      - box7.update
   - id: r9c4
     behaviors:
-      - row9.eval
-      - column4.eval
-      - box8.eval
+      - row9.update
+      - column4.update
+      - box8.update
   - id: r9c5
     behaviors:
-      - row9.eval
-      - column5.eval
-      - box8.eval
+      - row9.update
+      - column5.update
+      - box8.update
   - id: r9c6
     behaviors:
-      - row9.eval
-      - column6.eval
-      - box8.eval
+      - row9.update
+      - column6.update
+      - box8.update
   - id: r9c7
     behaviors:
-      - row9.eval
-      - column7.eval
-      - box9.eval
+      - row9.update
+      - column7.update
+      - box9.update
   - id: r9c8
     behaviors:
-      - row9.eval
-      - column8.eval
-      - box9.eval
+      - row9.update
+      - column8.update
+      - box9.update
   - id: r9c9
     behaviors:
-      - row9.eval
-      - column9.eval
-      - box9.eval
+      - row9.update
+      - column9.update
+      - box9.update

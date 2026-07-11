@@ -1,9 +1,9 @@
 from helpers.data import rbc_cells
-from actors.actor_tasks.rbc.eval import Eval
+from actors.actor_tasks.rbc.start_up import StartUp
 from shared.models.constants import ActorBehaviors
 from shared.models.messages import Message, Metadata, Cell, CellIds
 
-rbc_eval = Eval()
+rbc_start_up = StartUp()
 
 
 # pylint: disable=protected-access
@@ -24,17 +24,17 @@ async def test_state(handler_solo, startup_message, test_actor_domain_state):
         Cell(id=CellIds.R1C8, row=1, column=8, box=3, value=8),
         Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=None),
     )
-    expected = await rbc_eval._eval_all(side_effects, rbc_init)
+    expected = await rbc_start_up._eval_all(side_effects, rbc_init)
     cell9 = next((c for c in expected.cells if c.id == CellIds.R1C9))
     assert cell9.value == 9
     message = Message(
         metadata=Metadata(
-            actor_behavior=ActorBehaviors.ROW1_EVAL,
+            actor_behavior=ActorBehaviors.ROW1_START_UP,
             rbc_flag=True,
         ),
         content=rbc_init,
     )
-    await rbc_eval.director(side_effects, message)
+    await rbc_start_up.director(side_effects, message)
     result = side_effects.state.get_cache(message)
     assert result == expected
 
@@ -49,16 +49,16 @@ async def test_state(handler_solo, startup_message, test_actor_domain_state):
         Cell(id=CellIds.R1C8, row=1, column=8, box=3, value=None),
         Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=9),
     )
-    expected = await rbc_eval._eval_all(side_effects, rbc)
+    expected = await rbc_start_up._eval_all(side_effects, rbc)
     cell8 = next((c for c in expected.cells if c.id == CellIds.R1C8))
     assert cell8.value == 8
     message = Message(
         metadata=Metadata(
-            actor_behavior=ActorBehaviors.ROW1_EVAL,
+            actor_behavior=ActorBehaviors.ROW1_START_UP,
             rbc_flag=True,
         ),
         content=rbc,
     )
-    await rbc_eval.director(side_effects, message)
+    await rbc_start_up.director(side_effects, message)
     result = side_effects.state.get_cache(message)
     assert result == expected

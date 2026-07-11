@@ -5,7 +5,7 @@ from shared.models.messages import Message, RBCCells, Cell
 from shared.models.side_effects import ActorSideEffects
 
 
-class Eval:
+class StartUp:
     def __init__(self) -> None:
         self.algorithms = Algorithms()
 
@@ -55,7 +55,7 @@ class Eval:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[RBCCells]
     ) -> None:
-        print(f"**director rbc:eval start {dto.metadata.actor_behavior}")
+        print(f"**director rbc:start-up start {dto.metadata.actor_behavior}")
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
         rbc_cells = await self._eval_all(side_effects, dto.content)
@@ -69,4 +69,4 @@ class Eval:
             rbc_flag=True,
         )
         await send_update_msg(side_effects, msg)
-        print(f"**director rbc:eval end {dto.metadata.actor_behavior}")
+        print(f"**director rbc:start-up end {dto.metadata.actor_behavior}")

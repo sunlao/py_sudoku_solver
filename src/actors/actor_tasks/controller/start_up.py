@@ -79,7 +79,9 @@ class StartUp:
         return Message(metadata=m, content=GameStart(board=dto))
 
     def _xform_rbc_start(self, dto: Board, actor: Actor) -> Message[RBCCells]:
-        m = Metadata(actor_behavior=ActorBehaviors(f"{actor.name}.eval"), rbc_flag=True)
+        m = Metadata(
+            actor_behavior=ActorBehaviors(f"{actor.name}.start-up"), rbc_flag=True
+        )
         ids = set(actor.cell_ids)
         c = tuple(c for c in dto.cells if c.id in ids)
         return Message(metadata=m, content=RBCCells(actor=actor.name, cells=c))
