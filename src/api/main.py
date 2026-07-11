@@ -59,6 +59,7 @@ async def lifespan(app: FastAPI):
         transport_client=s.transport_client,
         fastapi_app=app,
         gather=asyncio.gather,
+        run_sync=asyncio.to_thread,
         state=s.actor_state,
         now=s.now,
     )

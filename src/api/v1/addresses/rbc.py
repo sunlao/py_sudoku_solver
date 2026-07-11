@@ -14,4 +14,3 @@ async def start_up(request: Request, dto: Message[RBCCells]) -> None:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Message not accepted",
         ) from exc
-

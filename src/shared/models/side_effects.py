@@ -20,7 +20,8 @@ class ActorSideEffects(BaseModel):
     static_data: Callable[[Message], Read]
     transport_client: Callable
     fastapi_app: FastAPI
-    gather: Callable[..., Awaitable[tuple[Any, ...]]]
+    gather: Callable[..., Awaitable[list[Any]]]
+    run_sync: Callable[..., Awaitable[Any]]
     state: State
     now: Callable[[], datetime]
 
@@ -43,6 +44,7 @@ class HandlerSideEffects(BaseModel):
     - transportclient to send messages
     - fast api app
     - asyncio gather
+    - asyncio to thread
     - actor state
     - now
     """
@@ -56,6 +58,7 @@ class HandlerSideEffects(BaseModel):
     load_executable: Callable[[str], Callable]
     transport_client: Callable
     fastapi_app: FastAPI
-    gather: Callable[..., Awaitable[tuple[Any, ...]]]
+    gather: Callable[..., Awaitable[list[Any]]]
+    run_sync: Callable[..., Awaitable[Any]]
     state: State
     now: Callable[[], datetime]
