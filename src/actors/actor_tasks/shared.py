@@ -22,7 +22,7 @@ async def send_update_msg(
 
 def xform_update_state_msg(
     sending_actor: ActorNames,
-    status: ActorDomainStatus,
+    sending_status: ActorDomainStatus,
     last_director_timestamp: datetime,
     rbc_flag: bool,
 ) -> Message[ActorDomainState]:
@@ -30,7 +30,7 @@ def xform_update_state_msg(
         metadata=Metadata(actor_behavior=ActorBehaviors.CONTROLLER_UPDATE_STATUS),
         content=ActorDomainState(
             actor=sending_actor,
-            status=status,
+            status=sending_status,
             last_director_timestamp=last_director_timestamp,
             rbc_flag=rbc_flag,
         ),

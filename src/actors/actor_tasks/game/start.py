@@ -13,7 +13,7 @@ class Start:
         side_effects.state.set_game_board(dto, dto.content.board)
         msg = xform_update_state_msg(
             sending_actor=actor,
-            status=ActorDomainStatus.STARTED,
+            sending_status=ActorDomainStatus.STARTED,
             last_director_timestamp=director_now,
             rbc_flag=False,
         )

@@ -7,6 +7,6 @@ pytest_plugins = [
     "fixtures.handler",
     "fixtures.mailbox",
     "fixtures.messages",
-    "fixtures.static_data",
     "fixtures.state",
+    "fixtures.static_data",
 ]

@@ -69,6 +69,7 @@ class RBCCells(BaseModel):
     model_config = DTO_CONFIG
     actor: ActorNames
     cells: tuple[Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
+
     @field_validator("cells")
     @classmethod
     def validate_unique_coordinates(cls, cells: tuple[Cell, ...]) -> tuple[Cell, ...]:

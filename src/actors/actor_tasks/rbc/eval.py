@@ -47,14 +47,14 @@ class Eval:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[RBCCells]
     ) -> None:
-        print(f"**director rbc:eval start {dto.metadata.actor_behavior}")        
+        print(f"**director rbc:eval start {dto.metadata.actor_behavior}")
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
         cells = await self._eval_all(side_effects, dto.content)
         side_effects.state.set_rbc_cell(dto, cells)
         msg = xform_update_state_msg(
             sending_actor=actor,
-            status=ActorDomainStatus.WORKING,
+            sending_status=ActorDomainStatus.WORKING,
             last_director_timestamp=director_now,
             rbc_flag=True,
         )
