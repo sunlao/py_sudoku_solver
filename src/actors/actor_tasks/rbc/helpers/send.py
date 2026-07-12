@@ -45,12 +45,10 @@ class Send:
         )
 
     async def rbcs(
-        self, side_effects: ActorSideEffects, dto: Message[RBCCells], new: RBCCells
+        self, side_effects: ActorSideEffects, dto: Message, old: RBCCells, new: RBCCells
     ):
-        ids = self._updated_cell_ids(dto.content, new)
+        ids = self._updated_cell_ids(old, new)
         maps = side_effects.static_data(dto).rbc_cell_behavior_maps()
         cell_behavior_maps = self._cell_behavior_maps(ids, maps)
         messages = self._messages(cell_behavior_maps, new)
-        await side_effects.gather(
-            *(send_update_msg(side_effects, m) for m in messages)
-        )
+        await side_effects.gather(*(send_update_msg(side_effects, m) for m in messages))
