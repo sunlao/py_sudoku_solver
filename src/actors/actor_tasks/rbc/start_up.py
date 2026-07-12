@@ -14,7 +14,6 @@ class StartUp:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[RBCCells]
     ) -> None:
-        print(f"**director rbc:start-up start {dto.metadata.actor_behavior}")
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
         rbc_cells = await self.evaluate.all(side_effects, dto.content)

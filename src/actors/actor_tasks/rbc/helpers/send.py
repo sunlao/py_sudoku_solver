@@ -1,3 +1,4 @@
+from actors.actor_tasks.shared import send_update_msg
 from shared.models.board import CellBehaviorMaps, CellBehaviors
 from shared.models.constants import CellIds
 from shared.models.messages import Message, RBCCells, Cell, Metadata, ActorBehaviors
@@ -51,5 +52,5 @@ class Send:
         cell_behavior_maps = self._cell_behavior_maps(ids, maps)
         messages = self._messages(cell_behavior_maps, new)
         await side_effects.gather(
-            *(side_effects.mailbox.enqueue(message) for message in messages)
+            *(send_update_msg(side_effects, m) for m in messages)
         )
