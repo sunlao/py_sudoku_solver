@@ -1,5 +1,5 @@
 import pytest
-from actors.actor_tasks.rbc.algorithms import Algorithms
+from actors.actor_tasks.rbc.helpers.algorithms import Algorithms
 
 
 @pytest.fixture

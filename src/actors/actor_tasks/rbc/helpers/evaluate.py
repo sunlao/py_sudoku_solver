@@ -1,4 +1,4 @@
-from actors.actor_tasks.rbc.algorithms import Algorithms
+from actors.actor_tasks.rbc.helpers.algorithms import Algorithms
 from shared.models.messages import RBCCells, Cell
 from shared.models.side_effects import ActorSideEffects
 
@@ -29,9 +29,7 @@ class Evaluate:
             return rbc
         return rbc.model_copy(update={"cells": cells})
 
-    async def all(
-        self, side_effects: ActorSideEffects, cells: RBCCells
-    ) -> RBCCells:
+    async def all(self, side_effects: ActorSideEffects, cells: RBCCells) -> RBCCells:
         results = await side_effects.gather(
             side_effects.run_sync(self.algorithms.naked, cells, 1),
             side_effects.run_sync(self.algorithms.hidden, cells, 1),
