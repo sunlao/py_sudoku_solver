@@ -13,7 +13,7 @@ class Update:
         self.send = Send()
 
     @staticmethod
-    def _already_completed(cell_cnt: int) -> bool:
+    def _already_completed(cell_cnt: list[Cell]) -> bool:
         if len(cell_cnt) == 0:
             print("NoOp-Already-Completed")
             return True
@@ -46,7 +46,7 @@ class Update:
         actor: ActorNames,
         status: ActorDomainStatus,
         director_now: datetime,
-    ):
+    ) -> None:
         msg = xform_update_state_msg(
             sending_actor=actor,
             sending_status=status,
@@ -76,7 +76,7 @@ class Update:
         return False
 
     @staticmethod
-    def _update_cell_candidates(old_cell, new_cell):
+    def _update_cell_candidates(old_cell: Cell, new_cell: Cell) -> Cell:
         if old_cell.candidates is None:
             candidates = new_cell.candidates
         else:
