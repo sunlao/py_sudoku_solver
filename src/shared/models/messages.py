@@ -3,7 +3,12 @@ from uuid import UUID, uuid4
 from typing import Annotated
 from typing import Generic
 from pydantic import BaseModel, Field, field_validator
-from shared.models.constants import ActorBehaviors, ActorNames, CellIds, MessageType
+from shared.models.constants import (
+    ActorBehaviors,
+    ActorNames,
+    CellIds,    
+    MessageType,
+)
 from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
 
 Candidate = Annotated[int, Field(ge=1, le=9)]
@@ -100,3 +105,9 @@ class Message(BaseModel, Generic[INPUTTYPE]):
     model_config = DTO_EDGE_CONFIG
     metadata: Metadata
     content: INPUTTYPE
+
+class ControllerMessageInput(BaseModel):
+    model_config = DTO_CONFIG
+    side_effects: ActorSideEffects
+    actor_name: ActorNames
+    director_now: datetime  

@@ -3,7 +3,7 @@ from actors.actor_tasks.shared import send_update_msg, xform_update_state_msg
 from actors.actor_tasks.rbc.helpers.evaluate import Evaluate
 from actors.actor_tasks.rbc.helpers.send import Send
 from shared.models.constants import ActorDomainStatus, ActorNames
-from shared.models.messages import Message, Cell, RBCCells
+from shared.models.messages import Message, Cell, RBCCells, ControllerMessageInput
 from shared.models.side_effects import ActorSideEffects
 
 
@@ -42,18 +42,15 @@ class Update:
 
     @staticmethod
     async def _send_message(
-        side_effects: ActorSideEffects,
-        actor: ActorNames,
-        status: ActorDomainStatus,
-        director_now: datetime,
+        msg: ControllerMessageInput, status: ActorDomainStatus
     ) -> None:
-        msg = xform_update_state_msg(
-            sending_actor=actor,
+        m = xform_update_state_msg(
+            sending_actor=msg.actor_name,
             sending_status=status,
-            last_director_timestamp=director_now,
+            last_director_timestamp=msg.director_now,
             rbc_flag=True,
         )
-        await send_update_msg(side_effects, msg)
+        await send_update_msg(msg.side_effects, m)
 
     @staticmethod
     def _set_state_completed(
@@ -90,6 +87,9 @@ class Update:
     ) -> None:
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
+        msg = ControllerMessageInput(
+            side_effects=side_effects, actor_name=actor, director_now=director_now
+        )
         rbc_old = side_effects.state.get_cache(dto)
         cell_cnt = [c for c in rbc_old.cells if c.value is None]
         new_cell = dto.content
@@ -114,7 +114,5 @@ class Update:
         rbc_cells = await self.evaluate.all(side_effects, rbc_update)
         side_effects.state.set_rbc_cell(dto, rbc_cells)
         await self.send.rbcs(side_effects, dto, rbc_old, rbc_cells)
-        await self._send_message(
-            side_effects, actor, ActorDomainStatus.WORKING, director_now
-        )
+        await self._send_message(msg, status=ActorDomainStatus.WORKING)
         print(f"**director rbc:update end {dto.metadata.actor_behavior}")
