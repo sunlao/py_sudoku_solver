@@ -1,28 +1,30 @@
 #!/usr/bin/env python3
-"""Copy the GitHub wiki into docs/wiki for local repository access."""
+"""Copy a local GitHub wiki checkout into docs/wiki."""
 
+import argparse
 import shutil
-import subprocess
-import tempfile
 from pathlib import Path
 
 REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
-WIKI_URL = "https://github.com/sunlao/py_sudoku_solver.wiki.git"
 WIKI_DOCS = REPOSITORY_ROOT / "docs" / "wiki"
 
 
-def copy_wiki() -> None:
-    with tempfile.TemporaryDirectory() as temporary_directory:
-        wiki_checkout = Path(temporary_directory) / "wiki"
-        subprocess.run(
-            ["git", "clone", "--depth", "1", WIKI_URL, str(wiki_checkout)],
-            check=True,
-        )
-        shutil.rmtree(WIKI_DOCS, ignore_errors=True)
-        shutil.copytree(wiki_checkout, WIKI_DOCS, ignore=shutil.ignore_patterns(".git"))
+def copy_wiki(source: Path) -> None:
+    source = source.expanduser().resolve()
+    if not source.is_dir():
+        raise NotADirectoryError(f"Wiki directory does not exist: {source}")
 
-    print(f"Wiki copied to {WIKI_DOCS}")
+    shutil.copytree(
+        source,
+        WIKI_DOCS,
+        dirs_exist_ok=True,
+        ignore=shutil.ignore_patterns(".git"),
+    )
+    print(f"Wiki copied from {source} to {WIKI_DOCS}")
 
 
 if __name__ == "__main__":
-    copy_wiki()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source", type=Path, help="path to the local wiki directory")
+    arguments = parser.parse_args()
+    copy_wiki(arguments.source)
