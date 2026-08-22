@@ -3,6 +3,8 @@ from pathlib import Path
 
 
 def copy() -> None:
+    """manual script to be ran locally to keep wiki in-sync because chatgbt can't read 
+    wiki via plugin"""
     src = Path("/Users/sunlao93/Documents/Git/SunLao/py_sudoku_solver.wiki")
     files = [
         "1-‐-Actor-Overview.md", 
@@ -10,7 +12,6 @@ def copy() -> None:
         "4-‐-Product-Spec.md",
         "5-‐-AI-Agents-in-Actors.md",
         "Home.md"
-
     ]
     trg = Path("/Users/sunlao93/Documents/Git/SunLao/py_sudoku_solver/docs/llm_spec")
     for f in files:
