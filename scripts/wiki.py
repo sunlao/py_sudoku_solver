@@ -1,30 +1,34 @@
 #!/usr/bin/env python3
-"""Copy a local GitHub wiki checkout into docs/wiki."""
+"""Copy selected files from one directory to another."""
 
 import argparse
 import shutil
 from pathlib import Path
 
-REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
-WIKI_DOCS = REPOSITORY_ROOT / "docs" / "wiki"
 
+def copy_files(
+    source_dir: Path,
+    file_names: tuple[str, ...],
+    target_dir: Path,
+) -> None:
+    target_dir.mkdir(parents=True, exist_ok=True)
 
-def copy_wiki(source: Path) -> None:
-    source = source.expanduser().resolve()
-    if not source.is_dir():
-        raise NotADirectoryError(f"Wiki directory does not exist: {source}")
-
-    shutil.copytree(
-        source,
-        WIKI_DOCS,
-        dirs_exist_ok=True,
-        ignore=shutil.ignore_patterns(".git"),
-    )
-    print(f"Wiki copied from {source} to {WIKI_DOCS}")
+    for file_name in file_names:
+        source_file = source_dir / file_name
+        if not source_file.is_file():
+            raise FileNotFoundError(source_file)
+        shutil.copy2(source_file, target_dir / file_name)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("source", type=Path, help="path to the local wiki directory")
+    parser.add_argument("source_dir", type=Path)
+    parser.add_argument("target_dir", type=Path)
+    parser.add_argument("file_names", nargs="+")
     arguments = parser.parse_args()
-    copy_wiki(arguments.source)
+
+    copy_files(
+        arguments.source_dir,
+        tuple(arguments.file_names),
+        arguments.target_dir,
+    )
