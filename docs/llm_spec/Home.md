@@ -6,7 +6,7 @@ This provides a working reference implementation demonstrating FIFO queue-based 
 
 ## Why Actor Models
 
-Discussions of actor models often start with scale mythology: millions of actors, massive concurrency, distributed runtimes, and telecom war stories. 
+Discussions of actor models often start with scale mythology: millions of actors, massive concurrency, distributed runtimes, and telecom war stories.
 
 This RI takes a different path.
 
@@ -20,7 +20,7 @@ It focuses on why systems become hard to operationalize:
 
 Actor patterns matter because they force these concerns into explicit boundaries. State has an owner. Communication happens through messages. Behavior is isolated. Side effects are explicitly controlled. Coordination emerges from well-defined participants rather than hidden orchestration state. This RI enforces delivery and ownership characteristics at the architectural level as invariants that contributes to the following:
 
-### Policy Enforcement 
+### Policy Enforcement
 
 - Agentic AI and other dynamic meta-programming message systems need safe boundaries that can act as a control plane with policy enforcement of side effects
 - Actor boundaries constrain with architectural invariants

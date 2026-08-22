@@ -6,7 +6,7 @@ Demonstrate the actor model by implementing domain logic to solve sudoku puzzles
 
 ### Controller
 
-![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/ControllerActor.svg)
+![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/diagrams/ControllerActor.svg)
 
 #### Description
 
@@ -23,7 +23,7 @@ The Controller manages the domain actor's lifecycle. Recieves update messages fr
 
 ### Game
 
-![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/GameActor.svg)
+![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/diagrams/GameActor.svg)
 
 #### Description
 
@@ -40,7 +40,7 @@ The Game actor manages the game lifecycle and initializes RBC and Board actors.
 
 ### RBC
 
-![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/RBCActor.svg)
+![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/diagrams/RBCActor.svg)
 
 #### Description
 
@@ -67,7 +67,7 @@ The RBC actor manages one row, box, or column set.
 
 ### Board
 
-![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/BoardActor.svg)
+![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/diagrams/BoardActor.svg)
 
 #### Description
 

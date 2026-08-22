@@ -1,4 +1,4 @@
-![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/Operationalization.svg)
+![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/diagrams/Operationalization.svg)
 
 This RI introduces opinions about how to operationalize an Actor-Model by creating a domain actor hierarchy for actors and introducing two domain agnostic actor-like shapes. In addition it shows explicitly how to interact with observability.
 

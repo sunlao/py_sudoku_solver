@@ -1,4 +1,4 @@
-![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/ActorOverview.svg)
+![alt](https://github.com/sunlao/py_sudoku_solver/blob/main/docs/diagrams/ActorOverview.svg)
 
 ## Overview
 
@@ -13,7 +13,7 @@ Actors can only send and receive messages. All actors behave the same regardless
 
 ## Actor Address
 
-The API lives and is made available by the actor runtime on 
+The API lives and is made available by the actor runtime on
 
 - Each actor:behavior has exactly one address that is associated to exactly one API and receives exactly one message.
 - A Messages is a semantically defined and validated immutable data transport object (DTO) that contains metadata and composable immutable content.
@@ -33,11 +33,11 @@ The mailbox is started by the actor runtime
 The actor runtime starts a handler to
 
 - Dequeue messages from Mailbox
-- Responsible for dynamically routing valid messages to the task director 
+- Responsible for dynamically routing valid messages to the task director
 - Manages retry logic for any failed task
 - Emits structured logs to observability service
 
-## Tasks 
+## Tasks
 
 A Task encapsulates a behavior. Each task is associated to exactly one behavior. Tasks are executed on the actor runtime.
 
