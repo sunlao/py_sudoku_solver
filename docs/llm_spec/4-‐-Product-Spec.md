@@ -10,7 +10,7 @@ Demonstrate the actor model by implementing domain logic to solve sudoku puzzles
 
 #### Description
 
-The Controller manages the domain actor's lifecycle. Recieves update messages from domain actors and pushes them to the framework administrator.
+The Controller manages the domain actor's lifecycle. Receives update messages from domain actors and pushes them to the framework administrator.
 
 #### Message Spec
 
@@ -19,7 +19,7 @@ The Controller manages the domain actor's lifecycle. Recieves update messages fr
 
 #### Static info
 
-- List of actors with attributes and the associated cell id's for RBC acttors
+- List of actors with attributes and the associated cell id's for RBC actors
 
 ### Game
 
@@ -27,16 +27,12 @@ The Controller manages the domain actor's lifecycle. Recieves update messages fr
 
 #### Description
 
-The Game actor manages the game lifecycle and initializes RBC and Board actors.
+The Game actor manages the game lifecycle.
 
 #### Message Spec
 
-- Start Gagem
-- Cell Update
-
-#### Static info
-
-- controller address
+- Start - set game state
+- Cell - Update board by cell and evaluate state
 
 ### RBC
 
@@ -90,7 +86,3 @@ The Board actor manages the board and runs algorithms that require board-level v
 - Unique Rectangle
 - Pointing Pair / Pointing Triple
 - Box-Line Reduction
-
-#### Static info
-
-- controller address
