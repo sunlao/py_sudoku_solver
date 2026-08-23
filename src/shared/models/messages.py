@@ -5,11 +5,13 @@ from typing import Generic
 from pydantic import BaseModel, Field, field_validator
 from shared.models.constants import (
     ActorBehaviors,
+    ActorDomainStatus,
     ActorNames,
-    CellIds,    
+    CellIds,
     MessageType,
 )
 from shared.models.policy import DTO_CONFIG, INPUTTYPE, DTO_EDGE_CONFIG
+from shared.models.side_effects import ActorSideEffects
 
 Candidate = Annotated[int, Field(ge=1, le=9)]
 
@@ -106,7 +108,10 @@ class Message(BaseModel, Generic[INPUTTYPE]):
     metadata: Metadata
     content: INPUTTYPE
 
-class ControllerMessageInput(BaseModel):
-    model_config = DTO_CONFIG
-    actor_name: ActorNames
-    director_now: datetime  
+class PostControllerUpdate(BaseModel):
+    model_config = DTO_EDGE_CONFIG
+    side_effects: ActorSideEffects
+    sending_actor: ActorNames
+    sending_status: ActorDomainStatus
+    last_director_timestamp: datetime
+    rbc_flag: bool

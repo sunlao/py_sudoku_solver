@@ -1,406 +1,406 @@
 maps:
   - id: r1c1
     behaviors:
-      - row1.update
-      - column1.update
-      - box1.update
+      - row1.evaluate
+      - column1.evaluate
+      - box1.evaluate
   - id: r1c2
     behaviors:
-      - row1.update
-      - column2.update
-      - box1.update
+      - row1.evaluate
+      - column2.evaluate
+      - box1.evaluate
   - id: r1c3
     behaviors:
-      - row1.update
-      - column3.update
-      - box1.update
+      - row1.evaluate
+      - column3.evaluate
+      - box1.evaluate
   - id: r1c4
     behaviors:
-      - row1.update
-      - column4.update
-      - box2.update
+      - row1.evaluate
+      - column4.evaluate
+      - box2.evaluate
   - id: r1c5
     behaviors:
-      - row1.update
-      - column5.update
-      - box2.update
+      - row1.evaluate
+      - column5.evaluate
+      - box2.evaluate
   - id: r1c6
     behaviors:
-      - row1.update
-      - column6.update
-      - box2.update
+      - row1.evaluate
+      - column6.evaluate
+      - box2.evaluate
   - id: r1c7
     behaviors:
-      - row1.update
-      - column7.update
-      - box3.update
+      - row1.evaluate
+      - column7.evaluate
+      - box3.evaluate
   - id: r1c8
     behaviors:
-      - row1.update
-      - column8.update
-      - box3.update
+      - row1.evaluate
+      - column8.evaluate
+      - box3.evaluate
   - id: r1c9
     behaviors:
-      - row1.update
-      - column9.update
-      - box3.update
+      - row1.evaluate
+      - column9.evaluate
+      - box3.evaluate
   - id: r2c1
     behaviors:
-      - row2.update
-      - column1.update
-      - box1.update
+      - row2.evaluate
+      - column1.evaluate
+      - box1.evaluate
   - id: r2c2
     behaviors:
-      - row2.update
-      - column2.update
-      - box1.update
+      - row2.evaluate
+      - column2.evaluate
+      - box1.evaluate
   - id: r2c3
     behaviors:
-      - row2.update
-      - column3.update
-      - box1.update
+      - row2.evaluate
+      - column3.evaluate
+      - box1.evaluate
   - id: r2c4
     behaviors:
-      - row2.update
-      - column4.update
-      - box2.update
+      - row2.evaluate
+      - column4.evaluate
+      - box2.evaluate
   - id: r2c5
     behaviors:
-      - row2.update
-      - column5.update
-      - box2.update
+      - row2.evaluate
+      - column5.evaluate
+      - box2.evaluate
   - id: r2c6
     behaviors:
-      - row2.update
-      - column6.update
-      - box2.update
+      - row2.evaluate
+      - column6.evaluate
+      - box2.evaluate
   - id: r2c7
     behaviors:
-      - row2.update
-      - column7.update
-      - box3.update
+      - row2.evaluate
+      - column7.evaluate
+      - box3.evaluate
   - id: r2c8
     behaviors:
-      - row2.update
-      - column8.update
-      - box3.update
+      - row2.evaluate
+      - column8.evaluate
+      - box3.evaluate
   - id: r2c9
     behaviors:
-      - row2.update
-      - column9.update
-      - box3.update
+      - row2.evaluate
+      - column9.evaluate
+      - box3.evaluate
   - id: r3c1
     behaviors:
-      - row3.update
-      - column1.update
-      - box1.update
+      - row3.evaluate
+      - column1.evaluate
+      - box1.evaluate
   - id: r3c2
     behaviors:
-      - row3.update
-      - column2.update
-      - box1.update
+      - row3.evaluate
+      - column2.evaluate
+      - box1.evaluate
   - id: r3c3
     behaviors:
-      - row3.update
-      - column3.update
-      - box1.update
+      - row3.evaluate
+      - column3.evaluate
+      - box1.evaluate
   - id: r3c4
     behaviors:
-      - row3.update
-      - column4.update
-      - box2.update
+      - row3.evaluate
+      - column4.evaluate
+      - box2.evaluate
   - id: r3c5
     behaviors:
-      - row3.update
-      - column5.update
-      - box2.update
+      - row3.evaluate
+      - column5.evaluate
+      - box2.evaluate
   - id: r3c6
     behaviors:
-      - row3.update
-      - column6.update
-      - box2.update
+      - row3.evaluate
+      - column6.evaluate
+      - box2.evaluate
   - id: r3c7
     behaviors:
-      - row3.update
-      - column7.update
-      - box3.update
+      - row3.evaluate
+      - column7.evaluate
+      - box3.evaluate
   - id: r3c8
     behaviors:
-      - row3.update
-      - column8.update
-      - box3.update
+      - row3.evaluate
+      - column8.evaluate
+      - box3.evaluate
   - id: r3c9
     behaviors:
-      - row3.update
-      - column9.update
-      - box3.update
+      - row3.evaluate
+      - column9.evaluate
+      - box3.evaluate
   - id: r4c1
     behaviors:
-      - row4.update
-      - column1.update
-      - box4.update
+      - row4.evaluate
+      - column1.evaluate
+      - box4.evaluate
   - id: r4c2
     behaviors:
-      - row4.update
-      - column2.update
-      - box4.update
+      - row4.evaluate
+      - column2.evaluate
+      - box4.evaluate
   - id: r4c3
     behaviors:
-      - row4.update
-      - column3.update
-      - box4.update
+      - row4.evaluate
+      - column3.evaluate
+      - box4.evaluate
   - id: r4c4
     behaviors:
-      - row4.update
-      - column4.update
-      - box5.update
+      - row4.evaluate
+      - column4.evaluate
+      - box5.evaluate
   - id: r4c5
     behaviors:
-      - row4.update
-      - column5.update
-      - box5.update
+      - row4.evaluate
+      - column5.evaluate
+      - box5.evaluate
   - id: r4c6
     behaviors:
-      - row4.update
-      - column6.update
-      - box5.update
+      - row4.evaluate
+      - column6.evaluate
+      - box5.evaluate
   - id: r4c7
     behaviors:
-      - row4.update
-      - column7.update
-      - box6.update
+      - row4.evaluate
+      - column7.evaluate
+      - box6.evaluate
   - id: r4c8
     behaviors:
-      - row4.update
-      - column8.update
-      - box6.update
+      - row4.evaluate
+      - column8.evaluate
+      - box6.evaluate
   - id: r4c9
     behaviors:
-      - row4.update
-      - column9.update
-      - box6.update
+      - row4.evaluate
+      - column9.evaluate
+      - box6.evaluate
   - id: r5c1
     behaviors:
-      - row5.update
-      - column1.update
-      - box4.update
+      - row5.evaluate
+      - column1.evaluate
+      - box4.evaluate
   - id: r5c2
     behaviors:
-      - row5.update
-      - column2.update
-      - box4.update
+      - row5.evaluate
+      - column2.evaluate
+      - box4.evaluate
   - id: r5c3
     behaviors:
-      - row5.update
-      - column3.update
-      - box4.update
+      - row5.evaluate
+      - column3.evaluate
+      - box4.evaluate
   - id: r5c4
     behaviors:
-      - row5.update
-      - column4.update
-      - box5.update
+      - row5.evaluate
+      - column4.evaluate
+      - box5.evaluate
   - id: r5c5
     behaviors:
-      - row5.update
-      - column5.update
-      - box5.update
+      - row5.evaluate
+      - column5.evaluate
+      - box5.evaluate
   - id: r5c6
     behaviors:
-      - row5.update
-      - column6.update
-      - box5.update
+      - row5.evaluate
+      - column6.evaluate
+      - box5.evaluate
   - id: r5c7
     behaviors:
-      - row5.update
-      - column7.update
-      - box6.update
+      - row5.evaluate
+      - column7.evaluate
+      - box6.evaluate
   - id: r5c8
     behaviors:
-      - row5.update
-      - column8.update
-      - box6.update
+      - row5.evaluate
+      - column8.evaluate
+      - box6.evaluate
   - id: r5c9
     behaviors:
-      - row5.update
-      - column9.update
-      - box6.update
+      - row5.evaluate
+      - column9.evaluate
+      - box6.evaluate
   - id: r6c1
     behaviors:
-      - row6.update
-      - column1.update
-      - box4.update
+      - row6.evaluate
+      - column1.evaluate
+      - box4.evaluate
   - id: r6c2
     behaviors:
-      - row6.update
-      - column2.update
-      - box4.update
+      - row6.evaluate
+      - column2.evaluate
+      - box4.evaluate
   - id: r6c3
     behaviors:
-      - row6.update
-      - column3.update
-      - box4.update
+      - row6.evaluate
+      - column3.evaluate
+      - box4.evaluate
   - id: r6c4
     behaviors:
-      - row6.update
-      - column4.update
-      - box5.update
+      - row6.evaluate
+      - column4.evaluate
+      - box5.evaluate
   - id: r6c5
     behaviors:
-      - row6.update
-      - column5.update
-      - box5.update
+      - row6.evaluate
+      - column5.evaluate
+      - box5.evaluate
   - id: r6c6
     behaviors:
-      - row6.update
-      - column6.update
-      - box5.update
+      - row6.evaluate
+      - column6.evaluate
+      - box5.evaluate
   - id: r6c7
     behaviors:
-      - row6.update
-      - column7.update
-      - box6.update
+      - row6.evaluate
+      - column7.evaluate
+      - box6.evaluate
   - id: r6c8
     behaviors:
-      - row6.update
-      - column8.update
-      - box6.update
+      - row6.evaluate
+      - column8.evaluate
+      - box6.evaluate
   - id: r6c9
     behaviors:
-      - row6.update
-      - column9.update
-      - box6.update
+      - row6.evaluate
+      - column9.evaluate
+      - box6.evaluate
   - id: r7c1
     behaviors:
-      - row7.update
-      - column1.update
-      - box7.update
+      - row7.evaluate
+      - column1.evaluate
+      - box7.evaluate
   - id: r7c2
     behaviors:
-      - row7.update
-      - column2.update
-      - box7.update
+      - row7.evaluate
+      - column2.evaluate
+      - box7.evaluate
   - id: r7c3
     behaviors:
-      - row7.update
-      - column3.update
-      - box7.update
+      - row7.evaluate
+      - column3.evaluate
+      - box7.evaluate
   - id: r7c4
     behaviors:
-      - row7.update
-      - column4.update
-      - box8.update
+      - row7.evaluate
+      - column4.evaluate
+      - box8.evaluate
   - id: r7c5
     behaviors:
-      - row7.update
-      - column5.update
-      - box8.update
+      - row7.evaluate
+      - column5.evaluate
+      - box8.evaluate
   - id: r7c6
     behaviors:
-      - row7.update
-      - column6.update
-      - box8.update
+      - row7.evaluate
+      - column6.evaluate
+      - box8.evaluate
   - id: r7c7
     behaviors:
-      - row7.update
-      - column7.update
-      - box9.update
+      - row7.evaluate
+      - column7.evaluate
+      - box9.evaluate
   - id: r7c8
     behaviors:
-      - row7.update
-      - column8.update
-      - box9.update
+      - row7.evaluate
+      - column8.evaluate
+      - box9.evaluate
   - id: r7c9
     behaviors:
-      - row7.update
-      - column9.update
-      - box9.update
+      - row7.evaluate
+      - column9.evaluate
+      - box9.evaluate
   - id: r8c1
     behaviors:
-      - row8.update
-      - column1.update
-      - box7.update
+      - row8.evaluate
+      - column1.evaluate
+      - box7.evaluate
   - id: r8c2
     behaviors:
-      - row8.update
-      - column2.update
-      - box7.update
+      - row8.evaluate
+      - column2.evaluate
+      - box7.evaluate
   - id: r8c3
     behaviors:
-      - row8.update
-      - column3.update
-      - box7.update
+      - row8.evaluate
+      - column3.evaluate
+      - box7.evaluate
   - id: r8c4
     behaviors:
-      - row8.update
-      - column4.update
-      - box8.update
+      - row8.evaluate
+      - column4.evaluate
+      - box8.evaluate
   - id: r8c5
     behaviors:
-      - row8.update
-      - column5.update
-      - box8.update
+      - row8.evaluate
+      - column5.evaluate
+      - box8.evaluate
   - id: r8c6
     behaviors:
-      - row8.update
-      - column6.update
-      - box8.update
+      - row8.evaluate
+      - column6.evaluate
+      - box8.evaluate
   - id: r8c7
     behaviors:
-      - row8.update
-      - column7.update
-      - box9.update
+      - row8.evaluate
+      - column7.evaluate
+      - box9.evaluate
   - id: r8c8
     behaviors:
-      - row8.update
-      - column8.update
-      - box9.update
+      - row8.evaluate
+      - column8.evaluate
+      - box9.evaluate
   - id: r8c9
     behaviors:
-      - row8.update
-      - column9.update
-      - box9.update
+      - row8.evaluate
+      - column9.evaluate
+      - box9.evaluate
   - id: r9c1
     behaviors:
-      - row9.update
-      - column1.update
-      - box7.update
+      - row9.evaluate
+      - column1.evaluate
+      - box7.evaluate
   - id: r9c2
     behaviors:
-      - row9.update
-      - column2.update
-      - box7.update
+      - row9.evaluate
+      - column2.evaluate
+      - box7.evaluate
   - id: r9c3
     behaviors:
-      - row9.update
-      - column3.update
-      - box7.update
+      - row9.evaluate
+      - column3.evaluate
+      - box7.evaluate
   - id: r9c4
     behaviors:
-      - row9.update
-      - column4.update
-      - box8.update
+      - row9.evaluate
+      - column4.evaluate
+      - box8.evaluate
   - id: r9c5
     behaviors:
-      - row9.update
-      - column5.update
-      - box8.update
+      - row9.evaluate
+      - column5.evaluate
+      - box8.evaluate
   - id: r9c6
     behaviors:
-      - row9.update
-      - column6.update
-      - box8.update
+      - row9.evaluate
+      - column6.evaluate
+      - box8.evaluate
   - id: r9c7
     behaviors:
-      - row9.update
-      - column7.update
-      - box9.update
+      - row9.evaluate
+      - column7.evaluate
+      - box9.evaluate
   - id: r9c8
     behaviors:
-      - row9.update
-      - column8.update
-      - box9.update
+      - row9.evaluate
+      - column8.evaluate
+      - box9.evaluate
   - id: r9c9
     behaviors:
-      - row9.update
-      - column9.update
-      - box9.update
+      - row9.evaluate
+      - column9.evaluate
+      - box9.evaluate
