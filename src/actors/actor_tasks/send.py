@@ -63,7 +63,7 @@ class Send:
         async with dto.side_effects.transport_client(
             dto.side_effects.fastapi_app, msg_dto
         ) as client:
-            response = await client.post("/", json=dto.model_dump(mode="json"))
+            response = await client.post("/", json=msg_dto.model_dump(mode="json"))
             self._check_error(
                 response.status_code,
                 msg_dto.metadata.actor_behavior,
