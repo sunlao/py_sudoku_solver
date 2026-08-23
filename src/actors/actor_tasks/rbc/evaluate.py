@@ -19,11 +19,11 @@ class Evaluate:
         rbc_cells = await self.evaluate.all(side_effects, dto.content)
         side_effects.state.set_rbc_cells(dto, rbc_cells)
         await self.send.rbcs(side_effects, dto, dto.content, rbc_cells)
-        controller_msg = controller_msg(
+        msg_cntrl = controller_msg(
             sending_actor=actor,
             sending_status=ActorDomainStatus.WORKING,
             last_director_timestamp=director_now,
             rbc_flag=True,
         )
-        await post_controller_msg(side_effects, controller_msg)
+        await post_controller_msg(side_effects, msg_cntrl)
         print(f"**director rbc:start-up end {dto.metadata.actor_behavior}")
