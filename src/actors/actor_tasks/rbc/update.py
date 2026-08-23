@@ -1,5 +1,5 @@
 from datetime import datetime
-from actors.actor_tasks.shared import send_update_msg, xform_update_state_msg
+from actors.actor_tasks.shared import post_controller_msg, controller_msg
 from actors.actor_tasks.rbc.helpers.evaluate import Evaluate
 from actors.actor_tasks.rbc.helpers.send import Send
 from shared.models.constants import ActorDomainStatus, ActorNames
@@ -44,13 +44,13 @@ class Update:
     async def _send_message(
         msg: ControllerMessageInput, status: ActorDomainStatus
     ) -> None:
-        m = xform_update_state_msg(
+        m = controller_msg(
             sending_actor=msg.actor_name,
             sending_status=status,
             last_director_timestamp=msg.director_now,
             rbc_flag=True,
         )
-        await send_update_msg(msg.side_effects, m)
+        await post_controller_msg(msg.side_effects, m)
 
     @staticmethod
     def _set_state_completed(
@@ -67,7 +67,7 @@ class Update:
                     )
                 }
             )
-            side_effects.state.set_rbc_cell(dto, rbc_update)
+            side_effects.state.set_rbc_cells(dto, rbc_update)
             print("Set-State-Completed")
             return True
         return False
@@ -112,7 +112,7 @@ class Update:
             }
         )
         rbc_cells = await self.evaluate.all(side_effects, rbc_update)
-        side_effects.state.set_rbc_cell(dto, rbc_cells)
+        side_effects.state.set_rbc_cells(dto, rbc_cells)
         await self.send.rbcs(side_effects, dto, rbc_old, rbc_cells)
         await self._send_message(msg, status=ActorDomainStatus.WORKING)
         print(f"**director rbc:update end {dto.metadata.actor_behavior}")

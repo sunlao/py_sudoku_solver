@@ -1,4 +1,4 @@
-from actors.actor_tasks.shared import send_update_msg, xform_update_state_msg
+from actors.actor_tasks.shared import post_controller_msg, controller_msg
 from actors.actor_tasks.rbc.helpers.evaluate import Evaluate
 from actors.actor_tasks.rbc.helpers.send import Send
 from shared.models.constants import ActorDomainStatus
@@ -17,13 +17,13 @@ class StartUp:
         director_now = side_effects.now()
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
         rbc_cells = await self.evaluate.all(side_effects, dto.content)
-        side_effects.state.set_rbc_cell(dto, rbc_cells)
+        side_effects.state.set_rbc_cells(dto, rbc_cells)
         await self.send.rbcs(side_effects, dto, dto.content, rbc_cells)
-        msg = xform_update_state_msg(
+        msg = controller_msg(
             sending_actor=actor,
             sending_status=ActorDomainStatus.WORKING,
             last_director_timestamp=director_now,
             rbc_flag=True,
         )
-        await send_update_msg(side_effects, msg)
+        await post_controller_msg(side_effects, msg)
         print(f"**director rbc:start-up end {dto.metadata.actor_behavior}")

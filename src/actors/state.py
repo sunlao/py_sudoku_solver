@@ -18,15 +18,14 @@ class State:
     def get_cache(self, message: Message) -> object:
         return self._cache.get(self._key(message))
 
-    def set_actor_domain_states(self, message: Message, dto: ActorDomainStates) -> None:
-        """Set the process state for every eligible domain actor behavior for the
-        controller actor"""
+    def set_domain_actors_state(self, message: Message, dto: ActorDomainStates) -> None:
+        """Set each of domain actor behavior's process state for the controller"""
         self._cache[self._key(message)] = dto
 
     def set_game_board(self, message: Message, dto: Board) -> None:
         """Set the board state for the game actor"""
         self._cache[self._key(message)] = dto
 
-    def set_rbc_cell(self, message: Message, dto: RBCCells) -> None:
-        """Set the state for the one of the rbc actors"""
+    def set_rbc_cells(self, message: Message, dto: RBCCells) -> None:
+        """Reusable code to Set the state for each of the rbc actors"""
         self._cache[self._key(message)] = dto

@@ -24,4 +24,5 @@ class UpdateStatus:
     ) -> None:
         ads = side_effects.state.get_cache(dto)
         new_ads = self._xform_actor_domain_states(ads, dto.content)
-        side_effects.state.set_actor_domain_states(dto, new_ads)
+        side_effects.state.set_domain_actors_state(dto, new_ads)
+        print("**director controller: update_status end ")
