@@ -1,9 +1,9 @@
 from helpers.data import rbc_cells
-from actors.actor_tasks.rbc.start_up import StartUp
+from actors.actor_tasks.rbc.evaluate import Evaluate
 from shared.models.constants import ActorBehaviors
 from shared.models.messages import Message, Metadata, Cell, CellIds
 
-rbc_start_up = StartUp()
+rbc_start_up = Evaluate()
 
 
 # pylint: disable=protected-access

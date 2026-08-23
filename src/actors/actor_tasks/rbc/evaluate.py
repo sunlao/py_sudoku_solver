@@ -6,7 +6,7 @@ from shared.models.messages import Message, RBCCells
 from shared.models.side_effects import ActorSideEffects
 
 
-class StartUp:
+class Evaluate:
     def __init__(self) -> None:
         self.evaluate = Evaluate()
         self.send = Send()
