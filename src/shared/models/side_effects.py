@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from actors.static_data.read import Read
 from actors.state import State
+from shared.models.constants import ActorDomainStatus, ActorNames
 from shared.models.messages import Message
 from shared.models.policy import DTO_EDGE_CONFIG
 
@@ -50,7 +51,6 @@ class HandlerSideEffects(BaseModel):
     """
 
     model_config = DTO_EDGE_CONFIG
-
     mailbox: Any
     test_mailbox: Any | None
     static_data: Callable[[Message], Read]
@@ -62,3 +62,12 @@ class HandlerSideEffects(BaseModel):
     run_sync: Callable[..., Awaitable[Any]]
     state: State
     now: Callable[[], datetime]
+
+
+class PostControllerUpdate(BaseModel):
+    model_config = DTO_EDGE_CONFIG
+    side_effects: ActorSideEffects
+    sending_actor: ActorNames
+    sending_status: ActorDomainStatus
+    last_director_timestamp: datetime
+    rbc_flag: bool

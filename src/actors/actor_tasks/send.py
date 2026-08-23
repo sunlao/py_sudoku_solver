@@ -7,10 +7,9 @@ from shared.models.messages import (
     GameStart,
     Message,
     Metadata,
-    PostControllerUpdate,
     RBCCells,
 )
-from shared.models.side_effects import ActorSideEffects
+from shared.models.side_effects import ActorSideEffects, PostControllerUpdate
 from shared.models.state import ActorDomainState
 from shared.models.static_data import Actor
 
