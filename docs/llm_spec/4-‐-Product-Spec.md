@@ -48,8 +48,7 @@ The RBC actor manages one row, box, or column set.
 
 #### Message Spec
 
-- Initialize
-- Cell Update
+- Evaluate
 
 #### Algorithms
 
