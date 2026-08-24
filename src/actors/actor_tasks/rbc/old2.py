@@ -1,15 +1,15 @@
 from datetime import datetime
 from actors.actor_tasks.send import post_controller_msg, controller_msg
-from actors.actor_tasks.rbc.helpers.evaluate import Evaluate
+from actors.actor_tasks.rbc.helpers.evaluate import Start
 from actors.actor_tasks.rbc.helpers.send import Send
 from shared.models.constants import ActorDomainStatus
 from shared.models.messages import Message, Cell, RBCCells, ControllerMessageInput
 from shared.models.side_effects import ActorSideEffects
 
 
-class Evaluate:
+class Start:
     def __init__(self) -> None:
-        self.evaluate = Evaluate()
+        self.evaluate = Start()
         self.send = Send()
 
     @staticmethod
