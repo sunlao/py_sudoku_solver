@@ -11,19 +11,19 @@ class Start:
         self.send = Send()
 
     async def _send_controller(
-            self,
-            side_effects: ActorSideEffects,
-            dto: Message[GameStart],
-            director_now: datetime
-        ) -> None:
+        self,
+        side_effects: ActorSideEffects,
+        dto: Message[GameStart],
+        director_now: datetime,
+    ) -> None:
         """Send controntrol:update message the game actor status"""
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
         send_dto = PostControllerUpdate(
-            side_effects=side_effects, 
+            side_effects=side_effects,
             sending_actor=actor,
             sending_status=ActorDomainStatus.STARTED,
             last_director_timestamp=director_now,
-            rbc_flag=False
+            rbc_flag=False,
         )
         await self.send.post_controller_update(send_dto)
 

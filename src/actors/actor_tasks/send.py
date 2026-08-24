@@ -8,6 +8,7 @@ from shared.models.messages import (
     Message,
     Metadata,
     RBCCells,
+    CellBehaviors,
 )
 from shared.models.side_effects import ActorSideEffects, PostControllerUpdate
 from shared.models.state import ActorDomainState
