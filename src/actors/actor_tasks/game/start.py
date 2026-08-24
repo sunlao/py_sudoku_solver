@@ -16,9 +16,10 @@ class Start:
             dto: Message[GameStart],
             director_now: datetime
         ) -> None:
+        """Send controntrol:update message the game actor status"""
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
         send_dto = PostControllerUpdate(
-            side_effects=side_effects,
+            side_effects=side_effects, 
             sending_actor=actor,
             sending_status=ActorDomainStatus.STARTED,
             last_director_timestamp=director_now,

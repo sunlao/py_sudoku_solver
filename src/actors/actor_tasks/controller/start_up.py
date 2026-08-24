@@ -30,12 +30,12 @@ class StartUp:
         self, side_effects: ActorSideEffects, dto: Board, actors: Actors
     ) -> None:
         msgs = tuple(
-            self.send.msg_rbc_evaluate_board(dto, a)
+            self.send.msg_rbc_init_board(dto, a)
             for a in actors.actors
             if a.rbc_flag is True
         )
         await side_effects.gather(
-            *(self.send.post_rbc_evaluate(side_effects, m) for m in msgs)
+            *(self.send.post_rbc_init(side_effects, m) for m in msgs)
         )
 
     @staticmethod
