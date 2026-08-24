@@ -109,7 +109,7 @@ class Send:
                 dto.metadata.message_id,
             )
 
-    async def post_rbc_init(
+    async def post_rbc_update(
         self, side_effects: ActorSideEffects, dto: Message[Cell]
     ) -> None:
         async with side_effects.transport_client(
