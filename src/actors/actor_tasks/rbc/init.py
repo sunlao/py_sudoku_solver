@@ -83,4 +83,4 @@ class Init:
             ),
         )
         side_effects.state.set_rbc_cells(dto, rbc_new)
-        print("**rbc:eval end")
+        print("**rbc:init end")

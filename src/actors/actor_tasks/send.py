@@ -8,7 +8,6 @@ from shared.models.messages import (
     Message,
     Metadata,
     RBCCells,
-    CellBehaviors,
 )
 from shared.models.side_effects import ActorSideEffects, PostControllerUpdate
 from shared.models.state import ActorDomainState
@@ -44,7 +43,7 @@ class Send:
 
     @staticmethod
     def _msg_game_update(dto: Cell) -> Message[Cell]:
-        m = Metadata(actor_behavior=ActorBehaviors.GAME_CELL_UPDATE)
+        m = Metadata(actor_behavior=ActorBehaviors.GAME_UPDATE)
         return Message[Cell](metadata=m, content=dto)
 
     @staticmethod

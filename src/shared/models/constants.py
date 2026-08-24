@@ -44,10 +44,9 @@ class ActorBehaviors(StrEnum):
     CONTROLLER_UPDATE_STATUS = "controller.update-status"
 
     GAME_START = "game.start"
-    GAME_CELL_UPDATE = "game.cell-update"
+    GAME_UPDATE = "game.update"
 
-    BOARD_START = "board.start"
-    BOARD_CELL_UPDATE = "board.cell-update"
+    BOARD_EVALUATE = "board.evaluate"
 
     ROW1_INIT = "row1.init"
     ROW1_UPDATE = "row1.update"

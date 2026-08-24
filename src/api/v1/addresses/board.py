@@ -6,7 +6,7 @@ from shared.models.messages import Message
 router = APIRouter()
 
 
-@router.post("/init/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
+@router.post("/evaluate/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
 # async def start_up(request: Request, dto: Message) -> None:
 async def start_up(dto: Message) -> None:
     try:
