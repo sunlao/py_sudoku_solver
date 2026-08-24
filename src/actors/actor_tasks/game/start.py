@@ -1,3 +1,4 @@
+from datetime import datetime
 from actors.actor_tasks.send import Send
 from shared.models.constants import ActorDomainStatus
 from shared.models.messages import GameStart, Message
@@ -9,12 +10,13 @@ class Start:
     def __init__(self):
         self.send = Send()
 
-    async def director(
-        self, side_effects: ActorSideEffects, dto: Message[GameStart]
-    ) -> None:
-        director_now = side_effects.now()
+    async def _send_controller(
+            self, 
+            side_effects: ActorSideEffects, 
+            dto: Message[GameStart], 
+            director_now: datetime
+        ) -> None:
         actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
-        side_effects.state.set_game_board(dto, dto.content.board)
         dto = PostControllerUpdate(
             side_effects=side_effects, 
             sending_actor=actor,
@@ -23,4 +25,11 @@ class Start:
             rbc_flag=False
         )
         await self.send.post_controller_update(dto)
+
+    async def director(
+        self, side_effects: ActorSideEffects, dto: Message[GameStart]
+    ) -> None:
+        director_now = side_effects.now()
+        side_effects.state.set_game_board(dto, dto.content.board)
+        self._send_controller(side_effects, dto, director_now)
         print("**director game:start end")
