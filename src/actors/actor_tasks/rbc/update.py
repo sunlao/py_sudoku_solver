@@ -75,7 +75,7 @@ class Update:
         rbc_old = side_effects.state.get_cache(dto)
         cell = dto.content
         old_cell = next(c for c in rbc_old.cells if c.id == cell.id)
-        if old_cell == cell:
+        if old_cell.value is not None:
             await self._send_controller(
                 side_effects, dto, director_now, ActorDomainStatus.DONE
             )
