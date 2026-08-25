@@ -81,10 +81,17 @@ class Update:
             )
             print("**rbc:update NoOp")
             return None
+        updated_cell = self.evaluate.merge_cells((old_cell, cell))
+        if updated_cell == old_cell:
+            await self._send_controller(
+                side_effects, dto, director_now, ActorDomainStatus.DONE
+            )
+            print("**rbc:update NoOp")
+            return None
         rbc_update = rbc_old.model_copy(
             update={
                 "cells": tuple(
-                    cell if c.id == cell.id else c
+                    updated_cell if c.id == cell.id else c
                     for c in rbc_old.cells
                 )
             }
