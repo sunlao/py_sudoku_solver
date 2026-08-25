@@ -7,7 +7,7 @@ class Evaluate:
     def __init__(self) -> None:
         self.algorithms = Algorithms()
 
-    def _merge_cells(self, results: tuple[Cell, ...]) -> Cell:
+    def merge_cells(self, results: tuple[Cell, ...]) -> Cell:
         cell = results[0]
         values = {c.value for c in results if c.value is not None}
         value = next(iter(values), None)
@@ -24,7 +24,7 @@ class Evaluate:
     def _merge_rbcs(self, results: list[RBCCells]) -> RBCCells:
         rbc = results[0]
         results_transposed = zip(*(r.cells for r in results), strict=True)
-        cells = tuple(self._merge_cells(r) for r in results_transposed)
+        cells = tuple(self.merge_cells(r) for r in results_transposed)
         if rbc.cells == cells:
             return rbc
         return rbc.model_copy(update={"cells": cells})
