@@ -73,16 +73,28 @@ class Init:
     ) -> None:
         director_now = side_effects.now()
         rbc_old = side_effects.state.get_cache(dto)
-
-        
-        rbc_new = await self.evaluate.all(side_effects, dto.content)
+        cell = dto.content
+        old_cell = next(c for c in rbc_old.cells if c.id == cell.id)
+        if old_cell == cell:
+            await self._send_controller(
+                side_effects, dto, director_now, ActorDomainStatus.DONE
+            )
+            return None
+        rbc_new = rbc_old.model_copy(
+            update={
+                "cells": tuple(
+                    cell if c.id == cell.id else c
+                    for c in rbc_old.cells
+                )
+            }
+        )
         updated_cells = self._updated_cells(rbc_old, rbc_new)
         await side_effects.gather(
             self._send_game(side_effects, updated_cells),
             self._send_rbc(side_effects, dto, updated_cells),
             self._send_controller(
-                side_effects, dto, director_now, ActorDomainStatus.DONE
+                side_effects, dto, director_now, ActorDomainStatus.WORKING
             ),
         )
         side_effects.state.set_rbc_cells(dto, rbc_new)
-        print("**rbc:init end")
+        print("**rbc:update end")
