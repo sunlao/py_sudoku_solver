@@ -69,17 +69,19 @@ class Init:
         )
 
     async def director(
-        self, side_effects: ActorSideEffects, dto: Message[RBCCells]
+        self, side_effects: ActorSideEffects, dto: Message[Cell]
     ) -> None:
         director_now = side_effects.now()
-        rbc_old = dto.content
+        rbc_old = side_effects.state.get_cache(dto)
+
+        
         rbc_new = await self.evaluate.all(side_effects, dto.content)
         updated_cells = self._updated_cells(rbc_old, rbc_new)
         await side_effects.gather(
             self._send_game(side_effects, updated_cells),
             self._send_rbc(side_effects, dto, updated_cells),
             self._send_controller(
-                side_effects, dto, director_now, ActorDomainStatus.WORKING
+                side_effects, dto, director_now, ActorDomainStatus.DONE
             ),
         )
         side_effects.state.set_rbc_cells(dto, rbc_new)
