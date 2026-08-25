@@ -15,6 +15,7 @@ async def start_up(request: Request, dto: Message[ControllerStartup]) -> None:
             detail="Message not accepted",
         ) from exc
 
+
 @router.post("/update/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
 async def update(request: Request, dto: Message[Cell]) -> None:
     mailbox = request.app.state.mailbox
