@@ -79,6 +79,7 @@ class Update:
             await self._send_controller(
                 side_effects, dto, director_now, ActorDomainStatus.DONE
             )
+            print("**rbc:update NoOp")
             return None
         rbc_update = rbc_old.model_copy(
             update={
