@@ -6,7 +6,7 @@ from shared.models.messages import Message, Cell, RBCCells, Metadata
 from shared.models.side_effects import ActorSideEffects, PostControllerUpdate
 
 
-class Init:
+class Update:
 
     def __init__(self):
         self.send = Send()
@@ -15,7 +15,7 @@ class Init:
     async def _send_controller(
         self,
         side_effects: ActorSideEffects,
-        dto: Message[RBCCells],
+        dto: Message,
         director_now: datetime,
         sending_status: ActorDomainStatus,
     ) -> None:
@@ -41,7 +41,7 @@ class Init:
     async def _send_rbc(
         self,
         side_effects: ActorSideEffects,
-        dto: Message[RBCCells],
+        dto: Message,
         cells: tuple[Cell, ...],
     ) -> None:
         """Send rbc:update message for each effected behavior maped to cell"""
