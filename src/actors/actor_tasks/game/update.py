@@ -17,3 +17,4 @@ class Update:
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[Cell]
     ) -> None:
+        pass
