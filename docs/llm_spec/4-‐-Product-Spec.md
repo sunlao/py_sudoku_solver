@@ -14,8 +14,10 @@ The Controller manages the domain actor's lifecycle. Receives update messages fr
 
 #### Message Spec
 
-- Start-up
+- Start-up set game and rbc state via actors
 - Update Domain Actor Status
+  - if board status is done finish via side effect actor
+  - if all RBC are done execute board actor
 
 #### Static info
 
@@ -31,7 +33,7 @@ The Game actor manages the game lifecycle.
 
 #### Message Spec
 
-- Start - set game state
+- Start - set game state by board
 - Cell - Update board by cell and evaluate state
 
 ### RBC
@@ -44,7 +46,8 @@ The RBC actor manages one row, box, or column set.
 
 #### Message Spec
 
-- Evaluate
+- Init set state for all cells and evalute all aglorithms
+- Update by Cell if not already populated and evalute all aglorithms
 
 #### Algorithms
 
