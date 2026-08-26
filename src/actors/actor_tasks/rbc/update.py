@@ -46,6 +46,7 @@ class Update:
     ) -> None:
         """Send rbc:update message for each effected behavior maped to cell"""
         static_data = side_effects.static_data(dto).rbc_cell_behavior_maps()
+        actor, _ = dto.metadata.actor_behavior.split(".", maxsplit=1)
         messages = tuple(
             Message[Cell](
                 metadata=Metadata(actor_behavior=behavior, rbc_flag=True),
@@ -55,6 +56,7 @@ class Update:
             for map in static_data.maps
             if map.id == cell.id
             for behavior in map.behaviors
+            if behavior.split(".", maxsplit=1)[0] != actor
         )
         await side_effects.gather(
             *(self.send.post_rbc_update(side_effects, m) for m in messages)
