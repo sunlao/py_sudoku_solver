@@ -6,7 +6,7 @@ from shared.models.messages import Message, Cell, RBCCells, Metadata
 from shared.models.side_effects import ActorSideEffects, PostControllerUpdate
 
 
-class Init:
+class Start:
 
     def __init__(self):
         self.send = Send()
@@ -85,4 +85,4 @@ class Init:
             ),
         )
         side_effects.state.set_rbc_cells(dto, rbc_new)
-        print("**rbc:init end")
+        print("**rbc:start end")

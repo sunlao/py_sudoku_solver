@@ -21,7 +21,7 @@ class Start:
         send_dto = PostControllerUpdate(
             side_effects=side_effects,
             sending_actor=actor,
-            sending_status=ActorDomainStatus.STARTED,
+            sending_status=ActorDomainStatus.STARTING,
             last_director_timestamp=director_now,
             rbc_flag=False,
         )

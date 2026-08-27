@@ -42,7 +42,7 @@ class StartUp:
     def _status(actor: Actor):
         if actor.name == ActorNames.BOARD:
             return ActorDomainStatus.IDLE
-        return ActorDomainStatus.INIT
+        return ActorDomainStatus.STARTING
 
     async def director(
         self, side_effects: ActorSideEffects, dto: Message[ControllerStartup]

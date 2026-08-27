@@ -49,7 +49,7 @@ class Send:
     @staticmethod
     def msg_rbc_init_board(dto: Board, actor: Actor) -> Message[RBCCells]:
         name = actor.name
-        actor_behavior = ActorBehaviors(f"{name}.init")
+        actor_behavior = ActorBehaviors(f"{name}.start")
         meta_data = Metadata(actor_behavior=actor_behavior, rbc_flag=True)
         ids = set(actor.cell_ids)
         cells = tuple(c for c in dto.cells if c.id in ids)

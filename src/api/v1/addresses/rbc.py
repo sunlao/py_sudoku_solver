@@ -4,7 +4,7 @@ from shared.models.messages import Message, RBCCells, Cell
 router = APIRouter()
 
 
-@router.post("/init/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
+@router.post("/start/", response_model=None, status_code=status.HTTP_202_ACCEPTED)
 async def start_up(request: Request, dto: Message[RBCCells]) -> None:
     mailbox = request.app.state.mailbox
     try:
