@@ -86,7 +86,7 @@ class Update:
         updated_cell = self.evaluate.merge_cells((old_cell, cell))
         if updated_cell == old_cell:
             await self._send_controller(
-                side_effects, dto, director_now, ActorDomainStatus.DONE
+                side_effects, dto, director_now, ActorDomainStatus.IDLE
             )
             print("**rbc:update NoOp")
             return None
