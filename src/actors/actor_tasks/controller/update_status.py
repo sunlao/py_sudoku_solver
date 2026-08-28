@@ -1,6 +1,11 @@
 from shared.models.messages import Message
 from shared.models.side_effects import ActorSideEffects
-from shared.models.state import ActorDomainState, ActorDomainStates, ActorNames, ActorDomainStatus
+from shared.models.state import (
+    ActorDomainState,
+    ActorDomainStates,
+    ActorNames,
+    ActorDomainStatus,
+)
 
 
 class UpdateStatus:
@@ -23,8 +28,7 @@ class UpdateStatus:
     @staticmethod
     def _game_done(new: ActorDomainStates) -> bool:
         return any(
-            state.actor == ActorNames.GAME
-            and state.status == ActorDomainStatus.DONE
+            state.actor == ActorNames.GAME and state.status == ActorDomainStatus.DONE
             for state in new.states
         )
 
@@ -44,8 +48,8 @@ class UpdateStatus:
         side_effects.state.set_domain_actors_state(dto, new)
         if self._game_done(new) is True:
             print("controller: game done")
-            pass # send
+            pass  # send
         if self._rbc_working(new) is False:
             print("controller: send board")
-            pass # send
+            pass  # send
         print("**director controller: update_status end ")

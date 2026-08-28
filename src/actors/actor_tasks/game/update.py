@@ -13,12 +13,7 @@ class Update:
     @staticmethod
     def _new_board(board: Board, cell: Cell) -> Board:
         return board.model_copy(
-            update={
-                "cells": tuple(
-                    cell if c.id == cell.id else c
-                    for c in board.cells
-                )
-            }
+            update={"cells": tuple(cell if c.id == cell.id else c for c in board.cells)}
         )
 
     @staticmethod

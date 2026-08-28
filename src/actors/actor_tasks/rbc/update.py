@@ -93,8 +93,7 @@ class Update:
         rbc_update = rbc_old.model_copy(
             update={
                 "cells": tuple(
-                    updated_cell if c.id == cell.id else c
-                    for c in rbc_old.cells
+                    updated_cell if c.id == cell.id else c for c in rbc_old.cells
                 )
             }
         )
