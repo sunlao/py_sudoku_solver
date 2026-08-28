@@ -43,7 +43,9 @@ class UpdateStatus:
         new = self._actor_domain_states(old, dto.content)
         side_effects.state.set_domain_actors_state(dto, new)
         if self._game_done(new) is True:
+            print("controller: game done")
             pass # send
         if self._rbc_working(new) is False:
+            print("controller: send board")
             pass # send
         print("**director controller: update_status end ")
