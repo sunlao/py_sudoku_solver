@@ -1,6 +1,6 @@
 from collections import defaultdict, deque
 from actors.actor_tasks.board.algorithms.common import (
-    candidates,
+    candidates as com_candicandidates,
     cell_map,
     peers,
     remove,
@@ -13,7 +13,7 @@ class Forcing:
 
     def _assume(self, board: Board, assumed: Cell, value: int) -> Board | None:
         candidates: dict[CellIds, set[int]] = {
-            cell.id: candidates(cell)
+            cell.id: com_candicandidates(cell)
             for cell in board.cells
             if cell.value is None and cell.candidates is not None
         }
@@ -56,10 +56,10 @@ class Forcing:
 
     def forcing_chains(self, board: Board) -> Board:
         bivalue = tuple(
-            cell for cell in board.cells if len(candidates(cell)) == 2
+            cell for cell in board.cells if len(com_candicandidates(cell)) == 2
         )
         for pivot in bivalue:
-            values = tuple(candidates(pivot))
+            values = tuple(com_candicandidates(pivot))
             branch_a = self._assume(board, pivot, values[0])
             branch_b = self._assume(board, pivot, values[1])
             if branch_a is None and branch_b is None:
@@ -75,11 +75,11 @@ class Forcing:
                 branch_b.cells,
                 strict=True,
             ):
-                original_candidates = candidates(original)
+                original_candidates = com_candicandidates(original)
                 if not original_candidates:
                     continue
-                removed_a = original_candidates - candidates(branch_a_cell)
-                removed_b = original_candidates - candidates(branch_b_cell)
+                removed_a = original_candidates - com_candicandidates(branch_a_cell)
+                removed_b = original_candidates - com_candicandidates(branch_b_cell)
                 common = removed_a & removed_b
                 if common:
                     removals[original.id].update(common)

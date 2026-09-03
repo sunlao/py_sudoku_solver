@@ -1,4 +1,6 @@
 from itertools import combinations
+from actors.actor_tasks.board.algorithms.common import candidates, remove
+
 from shared.models.messages import Board
 
 
@@ -24,11 +26,11 @@ class Rectangle:
                 for pair in combinations(range(1, 10), 2):
                     pair_set = set(pair)
                     if not all(
-                        pair_set <= self._candidates(cell) for cell in rectangle
+                        pair_set <= candidates(cell) for cell in rectangle
                     ):
                         continue
                     exact = tuple(
-                        cell for cell in rectangle if self._candidates(cell) == pair_set
+                        cell for cell in rectangle if candidates(cell) == pair_set
                     )
                     if len(exact) != 3:
                         continue
@@ -37,7 +39,7 @@ class Rectangle:
                         for cell in rectangle
                         if cell.id not in {item.id for item in exact}
                     )
-                    extras = self._candidates(target) - pair_set
+                    extras = candidates(target) - pair_set
                     if not extras:
                         continue
 
