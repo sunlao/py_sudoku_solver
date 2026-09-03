@@ -37,6 +37,22 @@ class Color:
             pending = (*pending, *additions)
         return ColorComponent(cells=colored)
 
+    def _color_components(self, board: Board, candidate: int) -> ColorComponents:
+        links = self._strong_links(board, candidate)
+        components: tuple[ColorComponent, ...] = ()
+        for link in links.links:
+            if any(
+                colored.id == link.left
+                for component in components
+                for colored in component.cells
+            ):
+                continue
+            components = (
+                *components,
+                self._color_component(links, link.left),
+            )
+        return ColorComponents(components=components)
+
     @staticmethod
     def _linked_ids(
         links: StrongLinks,
@@ -111,8 +127,7 @@ class Color:
                     if colored.color == color
                 )
                 if any(
-                    sees(left, right)
-                    for left, right in combinations(colored_cells, 2)
+                    sees(left, right) for left, right in combinations(colored_cells, 2)
                 ):
                     for cell in colored_cells:
                         removals[cell.id].add(candidate)
@@ -129,9 +144,8 @@ class Color:
             for cell in board.cells:
                 if cell.id in component_ids or candidate not in candidates(cell):
                     continue
-                if (
-                    any(sees(cell, colored) for colored in color_a)
-                    and any(sees(cell, colored) for colored in color_b)
+                if any(sees(cell, colored) for colored in color_a) and any(
+                    sees(cell, colored) for colored in color_b
                 ):
                     removals[cell.id].add(candidate)
         return remove(board, removals)
