@@ -23,9 +23,7 @@ class Evaluate:
             if result.candidates is not None
         ]
         candidates = (
-            tuple(sorted(set.intersection(*candidates_set)))
-            if candidates_set
-            else None
+            tuple(sorted(set.intersection(*candidates_set))) if candidates_set else None
         )
         if cell.candidates == candidates:
             return cell
