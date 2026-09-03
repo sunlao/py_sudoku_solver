@@ -2,7 +2,7 @@ from itertools import combinations
 from shared.models.messages import Board, Cell
 
 
-class Algorithms:
+class Fish:
 
     @staticmethod
     def _candidate_rows(board: Board, candidate: int) -> dict[int, set[int]]:
