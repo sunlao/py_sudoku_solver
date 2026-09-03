@@ -1,4 +1,5 @@
 from collections import defaultdict
+from actors.actor_tasks.board.algorithms.common import candidates, remove
 from shared.models.constants import CellIds
 from shared.models.messages import Board
 
@@ -13,7 +14,7 @@ class Intersection:
             )
             for candidate in range(1, 10):
                 cells = tuple(
-                    cell for cell in box_cells if candidate in self._candidates(cell)
+                    cell for cell in box_cells if candidate in candidates(cell)
                 )
                 if len(cells) < 2:
                     continue
@@ -24,7 +25,7 @@ class Intersection:
                         if (
                             cell.row == row
                             and cell.box != box
-                            and candidate in self._candidates(cell)
+                            and candidate in candidates(cell)
                         ):
                             removals[cell.id].add(candidate)
                 columns = {cell.column for cell in cells}
@@ -34,10 +35,10 @@ class Intersection:
                         if (
                             cell.column == column
                             and cell.box != box
-                            and candidate in self._candidates(cell)
+                            and candidate in candidates(cell)
                         ):
                             removals[cell.id].add(candidate)
-        return self._remove(board, removals)
+        return remove(board, removals)
 
     def box_line(self, board: Board) -> Board:
         removals: dict[CellIds, set[int]] = defaultdict(set)
@@ -46,7 +47,7 @@ class Intersection:
                 cells = tuple(
                     cell
                     for cell in board.cells
-                    if cell.row == row and candidate in self._candidates(cell)
+                    if cell.row == row and candidate in candidates(cell)
                 )
                 if len(cells) < 2:
                     continue
@@ -57,14 +58,14 @@ class Intersection:
                         if (
                             cell.box == box
                             and cell.row != row
-                            and candidate in self._candidates(cell)
+                            and candidate in candidates(cell)
                         ):
                             removals[cell.id].add(candidate)
             for column in range(1, 10):
                 cells = tuple(
                     cell
                     for cell in board.cells
-                    if cell.column == column and candidate in self._candidates(cell)
+                    if cell.column == column and candidate in candidates(cell)
                 )
                 if len(cells) < 2:
                     continue
@@ -75,7 +76,7 @@ class Intersection:
                         if (
                             cell.box == box
                             and cell.column != column
-                            and candidate in self._candidates(cell)
+                            and candidate in candidates(cell)
                         ):
                             removals[cell.id].add(candidate)
-        return self._remove(board, removals)
+        return remove(board, removals)

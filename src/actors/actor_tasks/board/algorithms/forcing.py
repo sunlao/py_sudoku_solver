@@ -1,4 +1,10 @@
 from collections import defaultdict, deque
+from actors.actor_tasks.board.algorithms.common import (
+    candidates,
+    cell_map,
+    peers,
+    remove,
+)
 from shared.models.constants import CellIds
 from shared.models.messages import Board, Cell
 
@@ -7,13 +13,13 @@ class Forcing:
 
     def _assume(self, board: Board, assumed: Cell, value: int) -> Board | None:
         candidates: dict[CellIds, set[int]] = {
-            cell.id: self._candidates(cell)
+            cell.id: candidates(cell)
             for cell in board.cells
             if cell.value is None and cell.candidates is not None
         }
         candidates[assumed.id] = {value}
         queue = deque([assumed.id])
-        cells = self._cell_map(board)
+        cells = cell_map(board)
         while queue:
             solved_id = queue.popleft()
             solved_candidates = candidates.get(solved_id)
@@ -21,7 +27,7 @@ class Forcing:
                 continue
             solved_value = next(iter(solved_candidates))
             solved_cell = cells[solved_id]
-            for peer in self._peers(board, solved_cell):
+            for peer in peers(board, solved_cell):
                 peer_candidates = candidates.get(peer.id)
                 if peer_candidates is None or solved_value not in peer_candidates:
                     continue
@@ -50,18 +56,18 @@ class Forcing:
 
     def forcing_chains(self, board: Board) -> Board:
         bivalue = tuple(
-            cell for cell in board.cells if len(self._candidates(cell)) == 2
+            cell for cell in board.cells if len(candidates(cell)) == 2
         )
         for pivot in bivalue:
-            values = tuple(self._candidates(pivot))
+            values = tuple(candidates(pivot))
             branch_a = self._assume(board, pivot, values[0])
             branch_b = self._assume(board, pivot, values[1])
             if branch_a is None and branch_b is None:
                 continue
             if branch_a is None:
-                return self._remove(board, {pivot.id: {values[0]}})
+                return remove(board, {pivot.id: {values[0]}})
             if branch_b is None:
-                return self._remove(board, {pivot.id: {values[1]}})
+                return remove(board, {pivot.id: {values[1]}})
             removals: dict[CellIds, set[int]] = defaultdict(set)
             for original, branch_a_cell, branch_b_cell in zip(
                 board.cells,
@@ -69,15 +75,15 @@ class Forcing:
                 branch_b.cells,
                 strict=True,
             ):
-                original_candidates = self._candidates(original)
+                original_candidates = candidates(original)
                 if not original_candidates:
                     continue
-                removed_a = original_candidates - self._candidates(branch_a_cell)
-                removed_b = original_candidates - self._candidates(branch_b_cell)
+                removed_a = original_candidates - candidates(branch_a_cell)
+                removed_b = original_candidates - candidates(branch_b_cell)
                 common = removed_a & removed_b
                 if common:
                     removals[original.id].update(common)
-            updated = self._remove(board, removals)
+            updated = remove(board, removals)
             if updated != board:
                 return updated
         return board

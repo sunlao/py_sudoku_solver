@@ -1,5 +1,6 @@
-from collections import defaultdict, deque
+from collections import defaultdict
 from itertools import combinations
+from actors.actor_tasks.board.algorithms.common import candidates, remove, sees
 from shared.models.constants import CellIds
 from shared.models.messages import Board, Cell
 
@@ -7,20 +8,17 @@ from shared.models.messages import Board, Cell
 class XY:
 
     def y_wing(self, board: Board) -> Board:
-        bivalue = tuple(
-            cell for cell in board.cells if len(self._candidates(cell)) == 2
-        )
+        bivalue = tuple(cell for cell in board.cells if len(candidates(cell)) == 2)
         for pivot in bivalue:
-            pivot_candidates = self._candidates(pivot)
+            pivot_candidates = candidates(pivot)
             wings = tuple(
                 cell
                 for cell in bivalue
-                if self._sees(pivot, cell)
-                and len(pivot_candidates & self._candidates(cell)) == 1
+                if sees(pivot, cell) and len(pivot_candidates & candidates(cell)) == 1
             )
             for wing_a, wing_b in combinations(wings, 2):
-                a = self._candidates(wing_a)
-                b = self._candidates(wing_b)
+                a = candidates(wing_a)
+                b = candidates(wing_b)
                 shared_a = pivot_candidates & a
                 shared_b = pivot_candidates & b
                 if shared_a == shared_b:
@@ -38,31 +36,29 @@ class XY:
                     }:
                         continue
                     if (
-                        self._sees(cell, wing_a)
-                        and self._sees(cell, wing_b)
-                        and candidate in self._candidates(cell)
+                        sees(cell, wing_a)
+                        and sees(cell, wing_b)
+                        and candidate in candidates(cell)
                     ):
                         removals[cell.id].add(candidate)
-                updated = self._remove(board, removals)
+                updated = remove(board, removals)
                 if updated != board:
                     return updated
         return board
 
     def xyz_wing(self, board: Board) -> Board:
-        pivots = tuple(cell for cell in board.cells if len(self._candidates(cell)) == 3)
-        bivalue = tuple(
-            cell for cell in board.cells if len(self._candidates(cell)) == 2
-        )
+        pivots = tuple(cell for cell in board.cells if len(candidates(cell)) == 3)
+        bivalue = tuple(cell for cell in board.cells if len(candidates(cell)) == 2)
         for pivot in pivots:
-            pivot_candidates = self._candidates(pivot)
+            pivot_candidates = candidates(pivot)
             wings = tuple(
                 cell
                 for cell in bivalue
-                if self._sees(pivot, cell) and self._candidates(cell) < pivot_candidates
+                if sees(pivot, cell) and candidates(cell) < pivot_candidates
             )
             for wing_a, wing_b in combinations(wings, 2):
-                a = self._candidates(wing_a)
-                b = self._candidates(wing_b)
+                a = candidates(wing_a)
+                b = candidates(wing_b)
                 if a | b != pivot_candidates:
                     continue
                 shared = a & b
@@ -78,13 +74,13 @@ class XY:
                     }:
                         continue
                     if (
-                        self._sees(cell, pivot)
-                        and self._sees(cell, wing_a)
-                        and self._sees(cell, wing_b)
-                        and candidate in self._candidates(cell)
+                        sees(cell, pivot)
+                        and sees(cell, wing_a)
+                        and sees(cell, wing_b)
+                        and candidate in candidates(cell)
                     ):
                         removals[cell.id].add(candidate)
-                updated = self._remove(board, removals)
+                updated = remove(board, removals)
                 if updated != board:
                     return updated
         return board
@@ -102,12 +98,12 @@ class XY:
             cell
             for cell in board.cells
             if cell.id not in visited
-            and len(self._candidates(cell)) == 2
-            and outgoing in self._candidates(cell)
-            and self._sees(current, cell)
+            and len(candidates(cell)) == 2
+            and outgoing in candidates(cell)
+            and sees(current, cell)
         )
         for next_cell in bivalue:
-            candidates = self._candidates(next_cell)
+            candidates = candidates(next_cell)
             next_outgoing = next(
                 candidate for candidate in candidates if candidate != outgoing
             )
@@ -126,9 +122,9 @@ class XY:
         return None
 
     def xy_chain(self, board: Board) -> Board:
-        starts = tuple(cell for cell in board.cells if len(self._candidates(cell)) == 2)
+        starts = tuple(cell for cell in board.cells if len(candidates(cell)) == 2)
         for start in starts:
-            start_candidates = self._candidates(start)
+            start_candidates = candidates(start)
             for target in start_candidates:
                 outgoing = next(
                     candidate for candidate in start_candidates if candidate != target
@@ -150,12 +146,12 @@ class XY:
                     if cell.id in chain_ids:
                         continue
                     if (
-                        target in self._candidates(cell)
-                        and self._sees(cell, start)
-                        and self._sees(cell, end)
+                        target in candidates(cell)
+                        and sees(cell, start)
+                        and sees(cell, end)
                     ):
                         removals[cell.id].add(target)
-                updated = self._remove(board, removals)
+                updated = remove(board, removals)
                 if updated != board:
                     return updated
         return board

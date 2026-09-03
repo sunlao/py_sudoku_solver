@@ -1,4 +1,6 @@
-from actors.actor_tasks.board.algorithms.intersection import Board
+from actors.actor_tasks.board.algorithms.forcing import Forcing
+from actors.actor_tasks.board.algorithms.intersection import Intersection
+from actors.actor_tasks.board.algorithms.rectangle import Rectangle
 from actors.actor_tasks.board.algorithms.color import Color
 from actors.actor_tasks.board.algorithms.fish import Fish
 from actors.actor_tasks.board.algorithms.xy import XY
@@ -9,9 +11,11 @@ from shared.models.side_effects import ActorSideEffects
 class Evaluate:
 
     def __init__(self) -> None:
-        self.board = Board()
         self.color = Color()
         self.fish = Fish()
+        self.forcing = Forcing()
+        self.intersection = Intersection()
+        self.rectangle = Rectangle()
         self.xy = XY()
 
     @staticmethod
@@ -49,9 +53,9 @@ class Evaluate:
             side_effects.run_sync(self.color.coloring, board, False),
             side_effects.run_sync(self.color.coloring, board, True),
             side_effects.run_sync(self.xy.xy_chain, board),
-            side_effects.run_sync(self.board.forcing_chains, board),
-            side_effects.run_sync(self.board.unique_rectangle, board),
-            side_effects.run_sync(self.board.pointing, board),
-            side_effects.run_sync(self.board.box_line, board),
+            side_effects.run_sync(self.forcing.forcing_chains, board),
+            side_effects.run_sync(self.rectangle.unique_rectangle, board),
+            side_effects.run_sync(self.intersection.pointing, board),
+            side_effects.run_sync(self.intersection.box_line, board),
         )
         return self._merge_boards(results)

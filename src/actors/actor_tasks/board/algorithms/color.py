@@ -1,6 +1,11 @@
 from collections import defaultdict, deque
 from itertools import combinations
-
+from actors.actor_tasks.board.algorithms.common import (
+    candidates,
+    cell_map,
+    remove,
+    sees,
+)
 from shared.models.constants import CellIds
 from shared.models.messages import Board
 
@@ -19,7 +24,7 @@ class Color:
         for box in range(1, 10):
             units.append(tuple(c for c in board.cells if c.box == box))
         for unit in units:
-            cells = tuple(cell for cell in unit if candidate in self._candidates(cell))
+            cells = tuple(cell for cell in unit if candidate in candidates(cell))
             if len(cells) != 2:
                 continue
             a, b = cells
@@ -55,7 +60,7 @@ class Color:
         candidate: int,
         components: list[dict[CellIds, int]],
     ) -> Board:
-        cells = self._cell_map(board)
+        cells = cell_map(board)
         removals: dict[CellIds, set[int]] = defaultdict(set)
         for component in components:
             for color in (0, 1):
@@ -64,7 +69,7 @@ class Color:
                     for cell_id, value in component.items()
                     if value == color
                 )
-                if any(self._sees(a, b) for a, b in combinations(colored, 2)):
+                if any(sees(a, b) for a, b in combinations(colored, 2)):
                     for cell in colored:
                         removals[cell.id].add(candidate)
             color_a = tuple(
@@ -74,13 +79,13 @@ class Color:
                 cells[cell_id] for cell_id, color in component.items() if color == 1
             )
             for cell in board.cells:
-                if cell.id in component or candidate not in self._candidates(cell):
+                if cell.id in component or candidate not in candidates(cell):
                     continue
-                if any(self._sees(cell, c) for c in color_a) and any(
-                    self._sees(cell, c) for c in color_b
+                if any(sees(cell, c) for c in color_a) and any(
+                    sees(cell, c) for c in color_b
                 ):
                     removals[cell.id].add(candidate)
-        return self._remove(board, removals)
+        return remove(board, removals)
 
     def _multi_coloring(
         self,
@@ -88,7 +93,7 @@ class Color:
         candidate: int,
         components: list[dict[CellIds, int]],
     ) -> Board:
-        cells = self._cell_map(board)
+        cells = cell_map(board)
         removals: dict[CellIds, set[int]] = defaultdict(set)
         for component_a, component_b in combinations(components, 2):
             valid: set[tuple[int, int]] = set()
@@ -104,7 +109,7 @@ class Color:
                         for cell_id, color in component_b.items()
                         if color == truth_b
                     )
-                    conflict = any(self._sees(a, b) for a in true_a for b in true_b)
+                    conflict = any(sees(a, b) for a in true_a for b in true_b)
                     if not conflict:
                         valid.add((truth_a, truth_b))
             if not valid:
@@ -121,7 +126,7 @@ class Color:
                 for cell_id, color in component_b.items():
                     if color != true_color:
                         removals[cell_id].add(candidate)
-        return self._remove(board, removals)
+        return remove(board, removals)
 
     def coloring(self, board: Board, multi: bool) -> Board:
         for candidate in range(1, 10):
