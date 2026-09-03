@@ -1,4 +1,4 @@
-from actors.actor_tasks.board.algorithms.board import Board
+from actors.actor_tasks.board.algorithms.intersection import Board
 from actors.actor_tasks.board.algorithms.color import Color
 from actors.actor_tasks.board.algorithms.fish import Fish
 from actors.actor_tasks.board.algorithms.xy import XY
