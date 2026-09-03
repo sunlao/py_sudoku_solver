@@ -43,5 +43,5 @@ class Rectangle:
                     if not extras:
                         continue
 
-                    return self._remove(board, {target.id: pair_set})
+                    return remove(board, {target.id: pair_set})
         return board
