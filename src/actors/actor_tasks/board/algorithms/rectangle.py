@@ -25,9 +25,7 @@ class Rectangle:
                     continue
                 for pair in combinations(range(1, 10), 2):
                     pair_set = set(pair)
-                    if not all(
-                        pair_set <= candidates(cell) for cell in rectangle
-                    ):
+                    if not all(pair_set <= candidates(cell) for cell in rectangle):
                         continue
                     exact = tuple(
                         cell for cell in rectangle if candidates(cell) == pair_set

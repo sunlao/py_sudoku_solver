@@ -1,6 +1,10 @@
 from collections import defaultdict
 from itertools import combinations
-from actors.actor_tasks.board.algorithms.common import candidates as com_candidates, remove, sees
+from actors.actor_tasks.board.algorithms.common import (
+    candidates as com_candidates,
+    remove,
+    sees,
+)
 from shared.models.constants import CellIds
 from shared.models.messages import Board, Cell
 
@@ -14,7 +18,8 @@ class XY:
             wings = tuple(
                 cell
                 for cell in bivalue
-                if sees(pivot, cell) and len(pivot_candidates & com_candidates(cell)) == 1
+                if sees(pivot, cell)
+                and len(pivot_candidates & com_candidates(cell)) == 1
             )
             for wing_a, wing_b in combinations(wings, 2):
                 a = com_candidates(wing_a)

@@ -8,57 +8,63 @@ from actors.actor_tasks.board.algorithms.common import (
 )
 from shared.models.constants import CellIds
 from shared.models.messages import Board
+from shared.models.board import (
+    ColoredCell,
+    ColorComponent,
+    ColorComponents,
+    StrongLink,
+    StrongLinks,
+)
 
 
 class Color:
 
-    def _strong_links(
-        self, board: Board, candidate: int
-    ) -> dict[CellIds, set[CellIds]]:
-        links: dict[CellIds, set[CellIds]] = defaultdict(set)
-        units = []
-        for row in range(1, 10):
-            units.append(tuple(c for c in board.cells if c.row == row))
-        for column in range(1, 10):
-            units.append(tuple(c for c in board.cells if c.column == column))
-        for box in range(1, 10):
-            units.append(tuple(c for c in board.cells if c.box == box))
-        for unit in units:
-            cells = tuple(cell for cell in unit if candidate in candidates(cell))
-            if len(cells) != 2:
-                continue
-            a, b = cells
-            links[a.id].add(b.id)
-            links[b.id].add(a.id)
-        return links
+    def _strong_links(self, board: Board, candidate: int) -> StrongLinks:
+        units = (
+            *(tuple(cell for cell in board.cells if cell.row == row) for row in range(1, 10)),
+            *(
+                tuple(cell for cell in board.cells if cell.column == column)
+                for column in range(1, 10)
+            ),
+            *(tuple(cell for cell in board.cells if cell.box == box) for box in range(1, 10)),
+        )
+        links = tuple(
+            StrongLink(left=cells[0].id, right=cells[1].id)
+            for unit in units
+            if len(
+                cells := tuple(
+                    cell for cell in unit if candidate in candidates(cell)
+                )
+            )
+            == 2
+        )
+        return StrongLinks(links=links)
 
-    def _color_components(
-        self, board: Board, candidate: int
-    ) -> list[dict[CellIds, int]]:
-        links = self._strong_links(board, candidate)
-        components: list[dict[CellIds, int]] = []
-        visited: set[CellIds] = set()
-        for start in links:
-            if start in visited:
+    def _color_component(
+        self,
+        links: StrongLinks,
+        start: CellIds,
+    ) -> ColorComponent:
+        pending = (ColoredCell(id=start, color=0),)
+        colored: tuple[ColoredCell, ...] = ()
+        while pending:
+            current = pending[0]
+            pending = pending[1:]
+            if any(cell.id == current.id for cell in colored):
                 continue
-            colors: dict[CellIds, int] = {start: 0}
-            queue = deque([start])
-            while queue:
-                current = queue.popleft()
-                visited.add(current)
-                for linked in links[current]:
-                    expected = 1 - colors[current]
-                    if linked not in colors:
-                        colors[linked] = expected
-                        queue.append(linked)
-            components.append(colors)
-        return components
+            colored = (*colored, current)
+            linked_color = 1 - current.color
+            additions = tuple(
+                ColoredCell(id=linked_id, color=linked_color)
+                for linked_id in self._linked_ids(links, current.id)
+                if not any(cell.id == linked_id for cell in colored)
+                and not any(cell.id == linked_id for cell in pending)
+            )
+            pending = (*pending, *additions)
+        return ColorComponent(cells=colored)
 
     def _simple_coloring(
-        self,
-        board: Board,
-        candidate: int,
-        components: list[dict[CellIds, int]],
+        self, board: Board, candidate: int, components: list[dict[CellIds, int]]
     ) -> Board:
         cells = cell_map(board)
         removals: dict[CellIds, set[int]] = defaultdict(set)
@@ -88,10 +94,7 @@ class Color:
         return remove(board, removals)
 
     def _multi_coloring(
-        self,
-        board: Board,
-        candidate: int,
-        components: list[dict[CellIds, int]],
+        self, board: Board, candidate: int, components: list[dict[CellIds, int]]
     ) -> Board:
         cells = cell_map(board)
         removals: dict[CellIds, set[int]] = defaultdict(set)
