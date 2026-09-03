@@ -1,4 +1,4 @@
-from actors.actor_tasks.board.helpers.algorithms import Algorithms
+from actors.actor_tasks.board.algorithms.fish import Fish
 from shared.models.messages import Board, Cell
 from shared.models.side_effects import ActorSideEffects
 
@@ -6,20 +6,16 @@ from shared.models.side_effects import ActorSideEffects
 class Evaluate:
 
     def __init__(self) -> None:
-        self.algorithms = Algorithms()
+        self.algorithms = Fish()
 
     @staticmethod
     def _merge_cells(results: tuple[Cell, ...]) -> Cell:
         cell = results[0]
         candidates_set = [
-            set(c.candidates)
-            for c in results
-            if c.candidates is not None
+            set(c.candidates) for c in results if c.candidates is not None
         ]
         candidates = (
-            tuple(sorted(set.intersection(*candidates_set)))
-            if candidates_set
-            else None
+            tuple(sorted(set.intersection(*candidates_set))) if candidates_set else None
         )
         if cell.candidates == candidates:
             return cell
@@ -35,9 +31,7 @@ class Evaluate:
             return board
         return board.model_copy(update={"cells": cells})
 
-    async def all(
-        self, side_effects: ActorSideEffects, board: Board
-    ) -> Board:
+    async def all(self, side_effects: ActorSideEffects, board: Board) -> Board:
         results = await side_effects.gather(
             side_effects.run_sync(self.algorithms.fish, board, 2),
             side_effects.run_sync(self.algorithms.fish, board, 3),
