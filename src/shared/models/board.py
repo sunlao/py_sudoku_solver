@@ -25,6 +25,7 @@ class CellBehaviorMaps(BaseModel):
     model_config = DTO_CONFIG
     maps: tuple[CellBehaviors, ...]
 
+
 class StrongLink(BaseModel):
     model_config = DTO_CONFIG
     left: CellIds

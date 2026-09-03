@@ -1,13 +1,6 @@
-from collections import defaultdict, deque
+from collections import defaultdict
 from itertools import combinations
-from actors.actor_tasks.board.algorithms.common import (
-    candidates,
-    cell_map,
-    remove,
-    sees,
-)
-from shared.models.constants import CellIds
-from shared.models.messages import Board
+from actors.actor_tasks.board.algorithms.common import candidates, remove, sees
 from shared.models.board import (
     ColoredCell,
     ColorComponent,
@@ -15,36 +8,17 @@ from shared.models.board import (
     StrongLink,
     StrongLinks,
 )
+from shared.models.constants import CellIds
+from shared.models.messages import Board, Cell
 
 
 class Color:
 
-    def _strong_links(self, board: Board, candidate: int) -> StrongLinks:
-        units = (
-            *(tuple(cell for cell in board.cells if cell.row == row) for row in range(1, 10)),
-            *(
-                tuple(cell for cell in board.cells if cell.column == column)
-                for column in range(1, 10)
-            ),
-            *(tuple(cell for cell in board.cells if cell.box == box) for box in range(1, 10)),
-        )
-        links = tuple(
-            StrongLink(left=cells[0].id, right=cells[1].id)
-            for unit in units
-            if len(
-                cells := tuple(
-                    cell for cell in unit if candidate in candidates(cell)
-                )
-            )
-            == 2
-        )
-        return StrongLinks(links=links)
+    @staticmethod
+    def _cell(board: Board, cell_id: CellIds) -> Cell:
+        return next(cell for cell in board.cells if cell.id == cell_id)
 
-    def _color_component(
-        self,
-        links: StrongLinks,
-        start: CellIds,
-    ) -> ColorComponent:
+    def _color_component(self, links: StrongLinks, start: CellIds) -> ColorComponent:
         pending = (ColoredCell(id=start, color=0),)
         colored: tuple[ColoredCell, ...] = ()
         while pending:
@@ -63,78 +37,134 @@ class Color:
             pending = (*pending, *additions)
         return ColorComponent(cells=colored)
 
-    def _simple_coloring(
-        self, board: Board, candidate: int, components: list[dict[CellIds, int]]
+    @staticmethod
+    def _linked_ids(
+        links: StrongLinks,
+        cell_id: CellIds,
+    ) -> tuple[CellIds, ...]:
+        linked_ids = tuple(
+            link.right if link.left == cell_id else link.left
+            for link in links.links
+            if link.left == cell_id or link.right == cell_id
+        )
+        return tuple(
+            linked_id
+            for index, linked_id in enumerate(linked_ids)
+            if linked_id not in linked_ids[:index]
+        )
+
+    def _multi_coloring(
+        self, board: Board, candidate: int, components: ColorComponents
     ) -> Board:
-        cells = cell_map(board)
         removals: dict[CellIds, set[int]] = defaultdict(set)
-        for component in components:
-            for color in (0, 1):
-                colored = tuple(
-                    cells[cell_id]
-                    for cell_id, value in component.items()
-                    if value == color
+        for component_a, component_b in combinations(components.components, 2):
+            valid = tuple(
+                (truth_a, truth_b)
+                for truth_a in (0, 1)
+                for truth_b in (0, 1)
+                if not any(
+                    sees(left, right)
+                    for left in (
+                        self._cell(board, colored.id)
+                        for colored in component_a.cells
+                        if colored.color == truth_a
+                    )
+                    for right in (
+                        self._cell(board, colored.id)
+                        for colored in component_b.cells
+                        if colored.color == truth_b
+                    )
                 )
-                if any(sees(a, b) for a, b in combinations(colored, 2)):
-                    for cell in colored:
+            )
+            if not valid:
+                continue
+            valid_a = tuple(
+                color
+                for color in (0, 1)
+                if any(truth_a == color for truth_a, _ in valid)
+            )
+            valid_b = tuple(
+                color
+                for color in (0, 1)
+                if any(truth_b == color for _, truth_b in valid)
+            )
+            if len(valid_a) == 1:
+                for colored in component_a.cells:
+                    if colored.color != valid_a[0]:
+                        removals[colored.id].add(candidate)
+            if len(valid_b) == 1:
+                for colored in component_b.cells:
+                    if colored.color != valid_b[0]:
+                        removals[colored.id].add(candidate)
+        return remove(board, removals)
+
+    def _simple_coloring(
+        self, board: Board, candidate: int, components: ColorComponents
+    ) -> Board:
+        removals: dict[CellIds, set[int]] = defaultdict(set)
+        for component in components.components:
+            component_ids = tuple(colored.id for colored in component.cells)
+            for color in (0, 1):
+                colored_cells = tuple(
+                    self._cell(board, colored.id)
+                    for colored in component.cells
+                    if colored.color == color
+                )
+                if any(
+                    sees(left, right)
+                    for left, right in combinations(colored_cells, 2)
+                ):
+                    for cell in colored_cells:
                         removals[cell.id].add(candidate)
             color_a = tuple(
-                cells[cell_id] for cell_id, color in component.items() if color == 0
+                self._cell(board, colored.id)
+                for colored in component.cells
+                if colored.color == 0
             )
             color_b = tuple(
-                cells[cell_id] for cell_id, color in component.items() if color == 1
+                self._cell(board, colored.id)
+                for colored in component.cells
+                if colored.color == 1
             )
             for cell in board.cells:
-                if cell.id in component or candidate not in candidates(cell):
+                if cell.id in component_ids or candidate not in candidates(cell):
                     continue
-                if any(sees(cell, c) for c in color_a) and any(
-                    sees(cell, c) for c in color_b
+                if (
+                    any(sees(cell, colored) for colored in color_a)
+                    and any(sees(cell, colored) for colored in color_b)
                 ):
                     removals[cell.id].add(candidate)
         return remove(board, removals)
 
-    def _multi_coloring(
-        self, board: Board, candidate: int, components: list[dict[CellIds, int]]
-    ) -> Board:
-        cells = cell_map(board)
-        removals: dict[CellIds, set[int]] = defaultdict(set)
-        for component_a, component_b in combinations(components, 2):
-            valid: set[tuple[int, int]] = set()
-            for truth_a in (0, 1):
-                for truth_b in (0, 1):
-                    true_a = tuple(
-                        cells[cell_id]
-                        for cell_id, color in component_a.items()
-                        if color == truth_a
-                    )
-                    true_b = tuple(
-                        cells[cell_id]
-                        for cell_id, color in component_b.items()
-                        if color == truth_b
-                    )
-                    conflict = any(sees(a, b) for a in true_a for b in true_b)
-                    if not conflict:
-                        valid.add((truth_a, truth_b))
-            if not valid:
-                continue
-            valid_a = {a for a, _ in valid}
-            valid_b = {b for _, b in valid}
-            if len(valid_a) == 1:
-                true_color = next(iter(valid_a))
-                for cell_id, color in component_a.items():
-                    if color != true_color:
-                        removals[cell_id].add(candidate)
-            if len(valid_b) == 1:
-                true_color = next(iter(valid_b))
-                for cell_id, color in component_b.items():
-                    if color != true_color:
-                        removals[cell_id].add(candidate)
-        return remove(board, removals)
+    def _strong_links(self, board: Board, candidate: int) -> StrongLinks:
+        units = (
+            *(
+                tuple(cell for cell in board.cells if cell.row == row)
+                for row in range(1, 10)
+            ),
+            *(
+                tuple(cell for cell in board.cells if cell.column == column)
+                for column in range(1, 10)
+            ),
+            *(
+                tuple(cell for cell in board.cells if cell.box == box)
+                for box in range(1, 10)
+            ),
+        )
+        links = tuple(
+            StrongLink(left=cells[0].id, right=cells[1].id)
+            for unit in units
+            if len(
+                cells := tuple(cell for cell in unit if candidate in candidates(cell))
+            )
+            == 2
+        )
+        return StrongLinks(links=links)
 
     def coloring(self, board: Board, multi: bool) -> Board:
         for candidate in range(1, 10):
             components = self._color_components(board, candidate)
-            if not components:
+            if not components.components:
                 continue
             updated = self._simple_coloring(
                 board,
