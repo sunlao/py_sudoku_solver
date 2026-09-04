@@ -3,7 +3,6 @@ from shared.models.messages import Board, Cell
 
 
 class Fish:
-
     @staticmethod
     def _candidate_rows(board: Board, candidate: int) -> dict[int, set[int]]:
         return {
@@ -42,7 +41,7 @@ class Fish:
             or candidate not in cell.candidates
         ):
             return cell
-        candidates = tuple(c for c in cell.candidates if c != candidate)
+        candidates = tuple(value for value in cell.candidates if value != candidate)
         if candidates == cell.candidates:
             return cell
         return cell.model_copy(update={"candidates": candidates})
@@ -99,7 +98,7 @@ class Fish:
                 return board.model_copy(update={"cells": cells})
         return board
 
-    def fish(self, board: Board, size: int) -> Board:
+    def _fish(self, board: Board, size: int) -> Board:
         for candidate in range(1, 10):
             updated = self._fish_rows(board, candidate, size)
             if updated != board:
@@ -108,3 +107,12 @@ class Fish:
             if updated != board:
                 return updated
         return board
+
+    def x_wing(self, board: Board) -> Board:
+        return self._fish(board, 2)
+
+    def swordfish(self, board: Board) -> Board:
+        return self._fish(board, 3)
+
+    def jellyfish(self, board: Board) -> Board:
+        return self._fish(board, 4)
