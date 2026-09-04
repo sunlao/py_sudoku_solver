@@ -217,16 +217,20 @@ class Color:
             return board
         return board.model_copy(update={"cells": cells})
 
-    def coloring(self, board: Board, multi: bool) -> Board:
+    def simple(self, board: Board) -> Board:
         for candidate in range(1, 10):
             components = self._color_components(board, candidate)
-            if not components.components:
-                continue
-            updated = (
-                self._multi_coloring(board, candidate, components)
-                if multi
-                else self._simple_coloring(board, candidate, components)
-            )
-            if updated != board:
-                return updated
+            if components.components:
+                updated = self._simple_coloring(board, candidate, components)
+                if updated != board:
+                    return updated
+        return board
+
+    def multi(self, board: Board) -> Board:
+        for candidate in range(1, 10):
+            components = self._color_components(board, candidate)
+            if components.components:
+                updated = self._multi_coloring(board, candidate, components)
+                if updated != board:
+                    return updated
         return board
