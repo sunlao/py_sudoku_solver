@@ -51,19 +51,3 @@ class ColorComponent(BaseModel):
 class ColorComponents(BaseModel):
     model_config = DTO_CONFIG
     components: tuple[ColorComponent, ...]
-
-
-class LinkedCellIds(BaseModel):
-    model_config = DTO_CONFIG
-    ids: tuple[CellIds, ...]
-
-
-class CandidateRemoval(BaseModel):
-    model_config = DTO_CONFIG
-    id: CellIds
-    candidates: tuple[int, ...]
-
-
-class CandidateRemovals(BaseModel):
-    model_config = DTO_CONFIG
-    removals: tuple[CandidateRemoval, ...]
