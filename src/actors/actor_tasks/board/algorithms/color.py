@@ -1,10 +1,17 @@
-from collections import defaultdict
+from actors.actor_tasks.board.algorithms.common import (
+    add_removal,
+    candidates,
+    remove,
+    sees,
+)
+from shared.models.board import CandidateRemovals
 from itertools import combinations
 from actors.actor_tasks.board.algorithms.common import candidates, remove, sees
 from shared.models.board import (
     ColoredCell,
     ColorComponent,
     ColorComponents,
+    LinkedCellIds,
     StrongLink,
     StrongLinks,
 )
@@ -57,22 +64,24 @@ class Color:
     def _linked_ids(
         links: StrongLinks,
         cell_id: CellIds,
-    ) -> tuple[CellIds, ...]:
+    ) -> LinkedCellIds:
         linked_ids = tuple(
             link.right if link.left == cell_id else link.left
             for link in links.links
             if link.left == cell_id or link.right == cell_id
         )
-        return tuple(
-            linked_id
-            for index, linked_id in enumerate(linked_ids)
-            if linked_id not in linked_ids[:index]
+        return LinkedCellIds(
+            ids=tuple(
+                linked_id
+                for index, linked_id in enumerate(linked_ids)
+                if linked_id not in linked_ids[:index]
+            )
         )
 
     def _multi_coloring(
         self, board: Board, candidate: int, components: ColorComponents
     ) -> Board:
-        removals: dict[CellIds, set[int]] = defaultdict(set)
+        removals = add_removal(removals, cell.id, candidate)
         for component_a, component_b in combinations(components.components, 2):
             valid = tuple(
                 (truth_a, truth_b)
@@ -117,7 +126,7 @@ class Color:
     def _simple_coloring(
         self, board: Board, candidate: int, components: ColorComponents
     ) -> Board:
-        removals: dict[CellIds, set[int]] = defaultdict(set)
+        removals = add_removal(removals, cell.id, candidate)
         for component in components.components:
             component_ids = tuple(colored.id for colored in component.cells)
             for color in (0, 1):
