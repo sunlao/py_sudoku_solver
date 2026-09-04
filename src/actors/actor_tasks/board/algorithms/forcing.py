@@ -55,9 +55,7 @@ class Forcing:
         return board.model_copy(update={"cells": tuple(updated_cells)})
 
     def forcing_chains(self, board: Board) -> Board:
-        bivalue = tuple(
-            cell for cell in board.cells if len(cell_candidates(cell)) == 2
-        )
+        bivalue = tuple(cell for cell in board.cells if len(cell_candidates(cell)) == 2)
         for pivot in bivalue:
             values = tuple(cell_candidates(pivot))
             branch_a = self._assume(board, pivot, values[0])
