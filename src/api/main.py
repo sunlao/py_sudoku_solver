@@ -10,6 +10,7 @@ from actors.mailbox import Mailbox
 from actors.static_data.read import Read
 from actors.state import State
 from api.metadata import tags
+from api.v1 import flush
 from api.v1.addresses import controller, game, board, rbc
 from api.v1.helpers.boards import Boards
 from api.v1.helpers.client import transport_client
@@ -145,6 +146,7 @@ def create_api() -> FastAPI:
     # routing
     _api.include_router(version.router, prefix="/api/v1/info", tags=["info"])
     _api.include_router(ready.router, prefix="/api/v1/info", tags=["info"])
+    _api.include_router(flush.router, prefix="/api/v1", tags=["cicd"])
 
     _api.include_router(
         controller.router, prefix="/address/v1/controller", tags=["actor", "controller"]
