@@ -15,6 +15,8 @@ The Controller manages the domain actor's lifecycle. Receives update messages fr
 #### Message Spec
 
 - Start-up set game and rbc state via actors
+  - send game start message
+  - send rbc start mmessage
 - Update Domain Actor Status
   - if board status is done finish via side effect actor
   - if all RBC are done execute board actor
@@ -34,7 +36,9 @@ The Game actor manages the game lifecycle.
 #### Message Spec
 
 - Start - set game state by board
-- Cell - Update board by cell and evaluate state
+  - send controller status message
+- Update - Update board by cell and evaluate state
+  - send controller status message
 
 ### RBC
 
@@ -47,7 +51,13 @@ The RBC actor manages one row, box, or column set.
 #### Message Spec
 
 - Init set state for all cells and evalute all aglorithms
+  - send game update if cell value changed
+  - send other assoicated RBC updates if cell value changed
+  - send controller status message
 - Update by Cell if not already populated and evalute all aglorithms
+  - send game update if cell value changed
+  - send other assoicated RBC updates if cell value changed
+  - send controller status message
 
 #### Algorithms
 
@@ -60,8 +70,7 @@ The RBC actor manages one row, box, or column set.
 
 #### Static info
 
-- association of RBC set to shared cells with other RBC Actors
-- controller address
+- cells with their assocaited RBC Actors
 
 ### Board
 
@@ -73,7 +82,10 @@ The Board actor manages the board and runs algorithms that require board-level v
 
 #### Message Spec
 
-- Initialize
+- Evaluate - get fresh board state everytime and evaluate algorightms
+  - send game update if cell value changed
+  - send other assoicated RBC updates if cell value changed
+  - send controller status message
 
 #### Algorithms
 
@@ -89,3 +101,7 @@ The Board actor manages the board and runs algorithms that require board-level v
 - Unique Rectangle
 - Pointing Pair / Pointing Triple
 - Box-Line Reduction
+
+#### Static info
+
+- cells with their assocaited RBC Actors
