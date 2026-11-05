@@ -11,6 +11,7 @@ from shared.models.side_effects import HandlerSideEffects
 
 @pytest.fixture
 async def handler_solo(mailbox, test_mailbox, api_with_state):
+    api_with_state.state.mailbox = test_mailbox
     handler = Handler(
         HandlerSideEffects(
             mailbox=mailbox,

@@ -1,4 +1,5 @@
-# pylint: disable=too-many-locals, too-many-statements, too-many-arguments, too-many-positional-arguments
+# pylint: disable=too-many-locals, too-many-statements, too-many-arguments
+# pylint: disable=too-many-positional-arguments
 from collections import defaultdict
 from itertools import combinations
 from actors.actor_tasks.board.algorithms.common import (

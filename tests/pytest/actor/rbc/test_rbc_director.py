@@ -1,64 +1,131 @@
+from asyncio import wait_for
+import pytest
 from helpers.data import rbc_cells
-from actors.actor_tasks.rbc.old import Solve
-from shared.models.constants import ActorBehaviors
-from shared.models.messages import Message, Metadata, Cell, CellIds
+from actors.actor_tasks.rbc.start import Start
+from actors.actor_tasks.rbc.update import Update
+from shared.models.constants import ActorBehaviors, ActorDomainStatus, ActorNames
+from shared.models.messages import Message, Metadata
 
-rbc_start_up = Solve()
+
+def assert_messages(messages, changed, status):
+    expected_messages = {
+        (cell.id, behavior)
+        for cell in changed
+        for behavior in (
+            ActorBehaviors.GAME_UPDATE,
+            ActorBehaviors(f"column{cell.column}.update"),
+            ActorBehaviors(f"box{cell.box}.update"),
+        )
+    }
+    cell_messages = [
+        sent
+        for sent in messages
+        if sent.metadata.actor_behavior != ActorBehaviors.CONTROLLER_UPDATE_STATUS
+    ]
+    assert len(cell_messages) == len(expected_messages)
+    assert {
+        (sent.content.id, sent.metadata.actor_behavior) for sent in cell_messages
+    } == expected_messages
+    for sent in cell_messages:
+        assert sent.content in changed
+        assert sent.metadata.rbc_flag == (
+            sent.metadata.actor_behavior != ActorBehaviors.GAME_UPDATE
+        )
+
+    statuses = [
+        sent.content
+        for sent in messages
+        if sent.metadata.actor_behavior == ActorBehaviors.CONTROLLER_UPDATE_STATUS
+    ]
+    assert len(statuses) == 1
+    assert len(messages) == len(cell_messages) + 1
+    assert statuses[0].actor == ActorNames.ROW1
+    assert statuses[0].status == status
+    assert statuses[0].rbc_flag is True
 
 
-# pylint: disable=protected-access
-async def test_state(handler_solo, startup_message, test_actor_domain_state):
+@pytest.mark.parametrize(
+    "scenario",
+    (
+        (Start, {}, (1, 2, 4, 6, 8, 9)),
+        (Update, {"value": 4}, (1, 2, 6, 8, 9)),
+        (Update, {"candidates": (1, 2)}, (1, 2, 4, 6, 8, 9)),
+    ),
+)
+async def test_director(handler_solo, test_mailbox, startup_board, scenario):
+    task_type, cell_update, candidates = scenario
+    behavior = (
+        ActorBehaviors.ROW1_START if task_type is Start else ActorBehaviors.ROW1_UPDATE
+    )
     side_effects = handler_solo.actor_side_effects
-    side_effects.fastapi_app.state.actor_state.set_actor_domain_states(
-        startup_message,
-        test_actor_domain_state,
-    )
-    rbc_init = rbc_cells(
-        Cell(id=CellIds.R1C1, row=1, column=1, box=1, value=1),
-        Cell(id=CellIds.R1C2, row=1, column=2, box=1, value=2),
-        Cell(id=CellIds.R1C3, row=1, column=3, box=1, value=3),
-        Cell(id=CellIds.R1C4, row=1, column=4, box=2, value=4),
-        Cell(id=CellIds.R1C5, row=1, column=5, box=2, value=5),
-        Cell(id=CellIds.R1C6, row=1, column=6, box=2, value=6),
-        Cell(id=CellIds.R1C7, row=1, column=7, box=3, value=7),
-        Cell(id=CellIds.R1C8, row=1, column=8, box=3, value=8),
-        Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=None),
-    )
-    expected = await rbc_start_up._eval_all(side_effects, rbc_init)
-    cell9 = next((c for c in expected.cells if c.id == CellIds.R1C9))
-    assert cell9.value == 9
+    initial = rbc_cells(*startup_board.cells[:9])
+    incoming = initial.cells[2].model_copy(update=cell_update)
     message = Message(
-        metadata=Metadata(
-            actor_behavior=ActorBehaviors.ROW1_START_UP,
-            rbc_flag=True,
-        ),
-        content=rbc_init,
+        metadata=Metadata(actor_behavior=behavior, rbc_flag=True),
+        content=initial if task_type is Start else incoming,
     )
-    await rbc_start_up.director(side_effects, message)
-    result = side_effects.state.get_cache(message)
-    assert result == expected
+    if task_type is Update:
+        side_effects.state.set_rbc_cells(message, initial)
 
-    rbc = rbc_cells(
-        Cell(id=CellIds.R1C1, row=1, column=1, box=1, value=1),
-        Cell(id=CellIds.R1C2, row=1, column=2, box=1, value=2),
-        Cell(id=CellIds.R1C3, row=1, column=3, box=1, value=3),
-        Cell(id=CellIds.R1C4, row=1, column=4, box=2, value=4),
-        Cell(id=CellIds.R1C5, row=1, column=5, box=2, value=5),
-        Cell(id=CellIds.R1C6, row=1, column=6, box=2, value=6),
-        Cell(id=CellIds.R1C7, row=1, column=7, box=3, value=7),
-        Cell(id=CellIds.R1C8, row=1, column=8, box=3, value=None),
-        Cell(id=CellIds.R1C9, row=1, column=9, box=3, value=9),
+    expected = initial.model_copy(
+        update={
+            "cells": tuple(
+                (
+                    cell
+                    if cell.value is not None
+                    else (
+                        incoming
+                        if task_type is Update and cell.id == incoming.id
+                        else cell.model_copy(update={"candidates": candidates})
+                    )
+                )
+                for cell in initial.cells
+            )
+        }
     )
-    expected = await rbc_start_up._eval_all(side_effects, rbc)
-    cell8 = next((c for c in expected.cells if c.id == CellIds.R1C8))
-    assert cell8.value == 8
+    changed = tuple(
+        new
+        for old, new in zip(initial.cells, expected.cells, strict=True)
+        if old != new
+    )
+
+    await task_type().director(side_effects, message)
+    assert side_effects.state.get_cache(message) == expected
+    assert initial.cells == startup_board.cells[:9]
+    messages = [
+        await wait_for(test_mailbox.dequeue(), timeout=1)
+        for _ in range(3 * len(changed) + 1)
+    ]
+    assert_messages(messages, changed, ActorDomainStatus.WORKING)
+
+
+@pytest.mark.parametrize(
+    ("cell_index", "expected_status"),
+    ((0, ActorDomainStatus.DONE), (2, ActorDomainStatus.IDLE)),
+)
+async def test_update_no_op(
+    handler_solo,
+    test_mailbox,
+    startup_board,
+    cell_index,
+    expected_status,
+):
+    side_effects = handler_solo.actor_side_effects
+    initial = rbc_cells(*startup_board.cells[:9])
     message = Message(
         metadata=Metadata(
-            actor_behavior=ActorBehaviors.ROW1_START_UP,
+            actor_behavior=ActorBehaviors.ROW1_UPDATE,
             rbc_flag=True,
         ),
-        content=rbc,
+        content=initial.cells[cell_index],
     )
-    await rbc_start_up.director(side_effects, message)
-    result = side_effects.state.get_cache(message)
-    assert result == expected
+    side_effects.state.set_rbc_cells(message, initial)
+
+    await Update().director(side_effects, message)
+
+    assert side_effects.state.get_cache(message) is initial
+    sent = await wait_for(test_mailbox.dequeue(), timeout=1)
+    assert sent.metadata.actor_behavior == ActorBehaviors.CONTROLLER_UPDATE_STATUS
+    assert sent.content.actor == ActorNames.ROW1
+    assert sent.content.status == expected_status
+    assert sent.content.rbc_flag is True

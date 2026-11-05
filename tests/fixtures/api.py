@@ -9,14 +9,14 @@ from actors.handler import Handler
 from actors.mailbox import Mailbox
 from actors.static_data.read import Read
 from actors.state import State
-from api.v1.addresses import controller
+from api.v1.addresses import controller, game, rbc
 from api.v1.helpers.client import transport_client
 from api.v1.helpers.load_executable import load_executable
 from shared.log.helpers.api_log_serializer import LogSerializer
 from shared.log.helpers.error import Error
 from shared.log.helpers.core import build as core_log
 from shared.log.writer import Writer
-from shared.models.constants import Events, LogLevel
+from shared.models.constants import ActorNames, Events, LogLevel
 from shared.models.side_effects import MailboxSideEffects, HandlerSideEffects
 
 
@@ -59,6 +59,13 @@ async def _app_state(config_log, config_api):
         controller.router,
         prefix="/address/v1/controller",
     )
+    app.include_router(game.router, prefix="/address/v1/game")
+    for actor in ActorNames:
+        if actor.value.startswith(("row", "column", "box")):
+            app.include_router(
+                rbc.router,
+                prefix=f"/address/v1/{actor.value}",
+            )
     try:
         yield app
     finally:

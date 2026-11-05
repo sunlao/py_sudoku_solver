@@ -26,7 +26,7 @@ def startup_rbc_message(startup_board: Board) -> Message:
         update={
             "metadata": m.metadata.model_copy(
                 update={
-                    "actor_behavior": ActorBehaviors.ROW1_START_UP,
+                    "actor_behavior": ActorBehaviors.ROW1_START,
                     "type": MessageType.TEST,
                     "rbc_flag": True,
                 }
