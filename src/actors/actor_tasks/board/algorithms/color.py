@@ -72,7 +72,7 @@ class Color:
             linked_ids = tuple(
                 link.right if link.left == current.id else link.left
                 for link in links.links
-                if link.left == current.id or link.right == current.id
+                if current.id in (link.left, link.right)
             )
             additions = tuple(
                 ColoredCell(id=linked_id, color=linked_color)

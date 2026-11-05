@@ -16,11 +16,7 @@ See the Github [Project Page](https://github.com/users/sunlao/projects/1) for im
 
 Review the [Getting Started](https://github.com/sunlao/py_sudoku_solver/wiki/Getting-Started) for more info for Mac setup and virtual environment details on how to use this repo.
 
-## Local Development
-
-After following prerequisites:
-
-set local .env file with
+## Environmnet Variables
 
 ```text
 APP_CODE=pss
@@ -31,9 +27,18 @@ API_STATIC_DIR=/app/src/api/static
 START_UP=true
 ```
 
+set local .env file with
+
+## Lifecycle
+
 - start with `make up`
 - end with `make down`
 
 ## Testing
+
+- make test-build
+- make test
+- make test-po
+- make test-po arg="-- -k {args}"
 
 Visit [Testing Page](https://github.com/sunlao/py_sudoku_solver/wiki/Testing) for information on how this repo impelements testing

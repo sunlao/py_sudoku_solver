@@ -56,7 +56,8 @@ class Send:
         return Message(metadata=meta_data, content=RBCCells(actor=name, cells=cells))
 
     async def post_controller_update(self, dto: PostControllerUpdate) -> None:
-        """post ActorDomainState update message to a dynamicaly generated route from dto.metadata.actor_behavior
+        """post ActorDomainState update message to a dynamicaly generated route from
+        dto.metadata.actor_behavior
         - /address/v1/{actor}/{behavior}
         """
         msg_dto = self._msg_controller_update(dto)

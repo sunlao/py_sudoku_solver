@@ -1,3 +1,4 @@
+# pylint: disable=too-many-locals
 from collections import defaultdict, deque
 from actors.actor_tasks.board.algorithms.common import (
     candidates as cell_candidates,
