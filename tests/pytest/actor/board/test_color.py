@@ -1,6 +1,6 @@
 import pytest
 
-from helpers.board import ALL, WITHOUT_ONE, candidate_board, check_candidates
+from helpers.data import ALL, WITHOUT_ONE, board_with_candidates, candidate_board
 
 from actors.actor_tasks.board.algorithms.color import Color
 
@@ -21,7 +21,13 @@ def test_simple_color_trap(linked):
         if linked
         else {}
     )
-    check_candidates(Color().simple, candidate_board(updates), expected)
+    board = candidate_board(updates)
+    snapshot = board.model_dump()
+
+    result = Color().simple(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, expected)
 
 
 def test_simple_color_wrap():
@@ -34,14 +40,17 @@ def test_simple_color_wrap():
     updates.update(
         {position: ALL for position in ((1, 1), (1, 4), (4, 4), (4, 2), (2, 2))}
     )
-    check_candidates(
-        Color().simple,
-        candidate_board(updates),
-        {
-            position: WITHOUT_ONE
-            for position in ((1, 1), (4, 4), (2, 2), (5, 1), (6, 1), (2, 5), (2, 6))
-        },
-    )
+    board = candidate_board(updates)
+    expected = {
+        position: WITHOUT_ONE
+        for position in ((1, 1), (4, 4), (2, 2), (5, 1), (6, 1), (2, 5), (2, 6))
+    }
+    snapshot = board.model_dump()
+
+    result = Color().simple(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, expected)
 
 
 @pytest.mark.parametrize("linked", (False, True))
@@ -55,10 +64,22 @@ def test_multi_color_forced_component(linked):
     updates.update({position: ALL for position in ((1, 1), (1, 5), (5, 5), (2, 2))})
     updates[5 if linked else 8, 2] = ALL
     expected = {(1, 1): WITHOUT_ONE, (5, 5): WITHOUT_ONE} if linked else {}
-    check_candidates(Color().multi, candidate_board(updates), expected)
+    board = candidate_board(updates)
+    snapshot = board.model_dump()
+
+    result = Color().multi(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, expected)
 
 
 @pytest.mark.parametrize("method", ("simple", "multi"))
 def test_no_coloring(method):
     board = candidate_board({})
-    assert check_candidates(getattr(Color(), method), board, {}) is board
+    snapshot = board.model_dump()
+
+    result = getattr(Color(), method)(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
+    assert result is board

@@ -1,6 +1,6 @@
 import pytest
 
-from helpers.board import ALL, candidate_board, check_candidates
+from helpers.data import ALL, board_with_candidates, candidate_board
 
 from actors.actor_tasks.board.algorithms.xy import XY
 
@@ -14,13 +14,24 @@ def test_y_wing():
             (5, 5): (3, 4, 5),
         }
     )
-    check_candidates(XY().y_wing, board, {(5, 5): (4, 5)})
+    snapshot = board.model_dump()
+
+    result = XY().y_wing(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {(5, 5): (4, 5)})
 
 
 @pytest.mark.parametrize("wing", ((1, 3), (2, 4)))
 def test_y_wing_missing_distinct_links(wing):
     board = candidate_board({(2, 2): (1, 2), (2, 5): (1, 3), (5, 2): wing})
-    assert check_candidates(XY().y_wing, board, {}) is board
+    snapshot = board.model_dump()
+
+    result = XY().y_wing(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
+    assert result is board
 
 
 def test_xyz_wing():
@@ -34,8 +45,12 @@ def test_xyz_wing():
         }
     )
     # r3c5 sees both wings but cannot see the pivot: its 3 must remain.
-    check_candidates(
-        XY().xyz_wing,
+    snapshot = board.model_dump()
+
+    result = XY().xyz_wing(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(
         board,
         {
             (2, 1): tuple(value for value in ALL if value != 3),
@@ -47,7 +62,13 @@ def test_xyz_wing():
 @pytest.mark.parametrize("wing", ((2, 4), (1, 3)))
 def test_xyz_wing_missing_union(wing):
     board = candidate_board({(2, 2): (1, 2, 3), (2, 5): (1, 3), (3, 3): wing})
-    assert check_candidates(XY().xyz_wing, board, {}) is board
+    snapshot = board.model_dump()
+
+    result = XY().xyz_wing(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
+    assert result is board
 
 
 def test_xy_chain():
@@ -59,8 +80,12 @@ def test_xy_chain():
             (5, 1): (1, 4),
         }
     )
-    check_candidates(
-        XY().xy_chain,
+    snapshot = board.model_dump()
+
+    result = XY().xy_chain(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(
         board,
         {(row, 1): tuple(range(2, 10)) for row in range(1, 10) if row not in (1, 5)},
     )
@@ -75,10 +100,22 @@ def test_xy_chain_broken_link():
             (5, 1): (1, 4),
         }
     )
-    assert check_candidates(XY().xy_chain, board, {}) is board
+    snapshot = board.model_dump()
+
+    result = XY().xy_chain(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
+    assert result is board
 
 
 @pytest.mark.parametrize("method", ("y_wing", "xyz_wing", "xy_chain"))
 def test_no_wings_or_chain(method):
     board = candidate_board({})
-    assert check_candidates(getattr(XY(), method), board, {}) is board
+    snapshot = board.model_dump()
+
+    result = getattr(XY(), method)(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
+    assert result is board

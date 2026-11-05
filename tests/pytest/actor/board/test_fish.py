@@ -1,5 +1,7 @@
 import pytest
-from helpers.board import ALL, WITHOUT_ONE, candidate_board, check_candidates
+
+from helpers.data import ALL, WITHOUT_ONE, board_with_candidates, candidate_board
+
 from actors.actor_tasks.board.algorithms.fish import Fish
 
 
@@ -42,10 +44,22 @@ def test_fish(scenario, transpose, qualifies):
     if transpose:
         updates = {(column, row): values for (row, column), values in updates.items()}
         expected = {(column, row): values for (row, column), values in expected.items()}
-    check_candidates(getattr(Fish(), method), candidate_board(updates), expected)
+    board = candidate_board(updates)
+    snapshot = board.model_dump()
+
+    result = getattr(Fish(), method)(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, expected)
 
 
 @pytest.mark.parametrize("method", ("x_wing", "swordfish", "jellyfish"))
 def test_no_fish(method):
     board = candidate_board({})
-    assert check_candidates(getattr(Fish(), method), board, {}) is board
+    snapshot = board.model_dump()
+
+    result = getattr(Fish(), method)(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
+    assert result is board

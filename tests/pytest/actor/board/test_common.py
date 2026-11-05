@@ -1,5 +1,7 @@
 import pytest
-from helpers.board import ALL, candidate_board, check_candidates
+
+from helpers.data import ALL, board_with_candidates, candidate_board
+
 from actors.actor_tasks.board.algorithms import common
 
 
@@ -37,8 +39,12 @@ def test_candidates(startup_board):
 
 def test_remove_candidates():
     board = candidate_board({(1, 1): (1, 3, 5)})
-    check_candidates(
-        lambda value: common.remove(value, {board.cells[0].id: {1, 5}}),
+    snapshot = board.model_dump()
+
+    result = common.remove(board, {board.cells[0].id: {1, 5}})
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(
         board,
         {(1, 1): (3,)},
     )
@@ -47,16 +53,20 @@ def test_remove_candidates():
 @pytest.mark.parametrize("removals", (set(), {2, 4}))
 def test_remove_absent_candidates(removals):
     board = candidate_board({(1, 1): (1, 3, 5)})
-    result = check_candidates(
-        lambda value: common.remove(value, {board.cells[0].id: removals}), board, {}
-    )
+    snapshot = board.model_dump()
+
+    result = common.remove(board, {board.cells[0].id: removals})
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
     assert result is board
 
 
 def test_remove_preserves_cells_without_candidates(startup_board):
-    result = check_candidates(
-        lambda value: common.remove(value, {startup_board.cells[0].id: set(ALL)}),
-        startup_board,
-        {},
-    )
+    snapshot = startup_board.model_dump()
+
+    result = common.remove(startup_board, {startup_board.cells[0].id: set(ALL)})
+
+    assert startup_board.model_dump() == snapshot
+    assert result == board_with_candidates(startup_board, {})
     assert result is startup_board

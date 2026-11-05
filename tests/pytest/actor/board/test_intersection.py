@@ -1,5 +1,7 @@
 import pytest
-from helpers.board import ALL, WITHOUT_ONE, candidate_board, check_candidates
+
+from helpers.data import ALL, WITHOUT_ONE, board_with_candidates, candidate_board
+
 from actors.actor_tasks.board.algorithms.intersection import Intersection
 
 
@@ -19,7 +21,13 @@ def test_pointing(size, transpose, qualifies):
     if transpose:
         updates = {(column, row): values for (row, column), values in updates.items()}
         expected = {(column, row): values for (row, column), values in expected.items()}
-    check_candidates(Intersection().pointing, candidate_board(updates), expected)
+    board = candidate_board(updates)
+    snapshot = board.model_dump()
+
+    result = Intersection().pointing(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, expected)
 
 
 @pytest.mark.parametrize("size", (2, 3))
@@ -38,10 +46,22 @@ def test_box_line(size, transpose, qualifies):
     if transpose:
         updates = {(column, row): values for (row, column), values in updates.items()}
         expected = {(column, row): values for (row, column), values in expected.items()}
-    check_candidates(Intersection().box_line, candidate_board(updates), expected)
+    board = candidate_board(updates)
+    snapshot = board.model_dump()
+
+    result = Intersection().box_line(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, expected)
 
 
 @pytest.mark.parametrize("method", ("pointing", "box_line"))
 def test_no_intersection(method):
     board = candidate_board({})
-    assert check_candidates(getattr(Intersection(), method), board, {}) is board
+    snapshot = board.model_dump()
+
+    result = getattr(Intersection(), method)(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
+    assert result is board

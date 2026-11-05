@@ -1,5 +1,7 @@
 import pytest
-from helpers.board import candidate_board, check_candidates
+
+from helpers.data import board_with_candidates, candidate_board
+
 from actors.actor_tasks.board.algorithms.rectangle import Rectangle
 
 
@@ -13,7 +15,12 @@ def test_unique_rectangle(extras):
             (2, 4): (1, 2, *extras),
         }
     )
-    check_candidates(Rectangle().unique_rectangle, board, {(2, 4): extras})
+    snapshot = board.model_dump()
+
+    result = Rectangle().unique_rectangle(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {(2, 4): extras})
 
 
 @pytest.mark.parametrize(
@@ -37,4 +44,10 @@ def test_unique_rectangle(extras):
 )
 def test_no_unique_rectangle(updates):
     board = candidate_board(updates)
-    assert check_candidates(Rectangle().unique_rectangle, board, {}) is board
+    snapshot = board.model_dump()
+
+    result = Rectangle().unique_rectangle(board)
+
+    assert board.model_dump() == snapshot
+    assert result == board_with_candidates(board, {})
+    assert result is board
