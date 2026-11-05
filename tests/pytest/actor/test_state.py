@@ -11,10 +11,10 @@ def test_controller_process(
     """
     result = state.get_cache(startup_message)
     assert result is None
-    state.set_actor_domain_states(startup_message, test_actor_domain_state)
+    state.set_domain_actors_state(startup_message, test_actor_domain_state)
     result = state.get_cache(startup_message)
     assert result == test_actor_domain_state
     with raises(ValueError):
-        state.set_actor_domain_states(bad_message, test_actor_domain_state)
+        state.set_domain_actors_state(bad_message, test_actor_domain_state)
     with raises(ValueError):
         _ = state.get_cache(bad_message)
