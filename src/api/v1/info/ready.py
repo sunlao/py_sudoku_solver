@@ -28,7 +28,7 @@ async def ready(request: Request, response: Response) -> ReadyResponse:
         await mailbox.enqueue(probe)
         try:
             # shared test mailox the shared handler uses to route tests ressponses
-            ack = await request.app.state.wait(test_mailbox.dequeue(), timeout=15)
+            ack = await request.app.state.wait(test_mailbox.dequeue(), timeout=30)
             handler_result = ack.metadata.message_id == probe.metadata.message_id
         except request.app.state.time_out:
             handler_result = False

@@ -3,7 +3,7 @@ from urllib import request
 from json import loads
 
 
-def poke(service: str, port: int):
+def poke(port: int):
     """Post to flush api to make code coverage work
     Only used for CI pipelines"""
     url = f"http://pss-api:{port}/api/v1/flush"
@@ -17,4 +17,4 @@ def poke(service: str, port: int):
         print("flush failed:", url, e, file=stderr)
 
 
-poke("api", 80)
+poke(80)

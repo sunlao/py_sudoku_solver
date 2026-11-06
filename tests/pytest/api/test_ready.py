@@ -1,5 +1,5 @@
 async def test_api_ready(api_client):
-    response = await api_client.get("/api/v1/info/ready", timeout=15)
+    response = await api_client.get("/api/v1/info/ready", timeout=30)
     assert response.status_code == 200
     json_dict = response.json()
     assert json_dict["API"] is True
